@@ -1,0 +1,32 @@
+{
+  "name": "netplan.io",
+  "description": "Codebase for https://netplan.io",
+  "main": "_site/index.html",
+  "scripts": {
+    "test": "sass-lint _sass/**/*.scss --verbose --no-exit",
+    "watch": "watch -p '_sass/**/*.scss' -c 'yarn run build'",
+    "build": "node-sass --include-path node_modules _sass --output css && postcss --use autoprefixer --replace css/**/*.css && postcss --use cssnano --dir css/minified css/**/*.css",
+    "clean": "rm -rf node_modules yarn-error.log css css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/canonical-websites/netplan.io"
+  },
+  "author": "Anthony Dillon <anthony.dillon@canonical.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ubuntudesign/netplan.io/issues"
+  },
+  "homepage": "https://netplan.io",
+  "devDependencies": {
+    "autoprefixer": "^6.3.1",
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0",
+    "cssnano": "^3.10.0",
+    "node-sass": "^4.5.3",
+    "postcss-cli": "^4.1.0",
+    "sass-lint": "^1.10.2",
+    "vanilla-framework": "1.6.6",
+    "watch-cli": "^0.2.2"
+  }
+}

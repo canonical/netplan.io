@@ -1,0 +1,27 @@
+// sass-lint:disable no-color-literals class-name-format
+@mixin vfio-p-syntax-highlight {
+  .hljs-emphasis { font-style: italic; } // No result reported
+  .hljs-strong { font-weight: bold; } // No result reported
+  .hljs-comment { color: #595e62; } // No result reported
+  .hljs-string { color: #183691; } // No result reported
+  .hljs-number { color: #0086b3; } // No result reported
+  .hljs-name { color: #63a35c; } // No result reported
+  .hljs-selector-tag { color: #63a35c; } // No result reported
+  .hljs-link { color: #0086b3; } // No result reported
+  .hljs-keyword { color: #a71d5d; } // No result reported
+  .hljs-attribute { color: #a71d5d; } // No result reported
+  .hljs-attr { color: #795da3; } // No result reported
+  .hljs-built_in { color: #0086b3; } // No result reported
+  .hljs-title { color: #795da3; } // No result reported
+
+  .hljs-section {
+    color: #1d3e81; // No result reported
+    font-weight: bold;
+  }
+
+  .hljs-meta {
+    color: #1d3e81; // No result reported
+    font-weight: bold;
+  }
+}
+// sass-lint:enable no-color-literals class-name-format
