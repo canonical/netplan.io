@@ -1,0 +1,300 @@
+---
+layout: default
+desc: Design | netplan.io
+sitemap:
+    priority: 1.0
+    changefreq: 'monthly'
+    lastmod: 2017-01-13T17:20:30+00:00
+---
+<div class="p-strip--light is-bordered is-shallow">
+  <div class="row">
+    <div class="col-12">
+      <h1>Netplan design</h1>
+    </div>
+  </div>
+</div>
+
+<div class="p-strip">
+  <div class="row">
+    <div class="col-8">
+
+      <p>There are central network config files for Snappy, Server, Client, MaaS, cloud-init in /etc/netplan/*.yaml. All installers only generate such a file, no /etc/network/interfaces any more. There is also a netplan command line tool to drive some operations.</p>
+
+      <p>Systems are configured during early boot with a "network renderer" which reads /e/n/*.yaml and writes configuration to /run to hand off control of devices to the specified networking daemon.</p>
+
+      <ul>
+        <li>Wifi and WWAN get managed by <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a></li>
+        <li>Any other configured devices get handled by networkd by default, unless explicitly marked as managed by a specific manager (<a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>)</li>
+        <li>Devices not covered by the network config do not get touched at all.</li>
+      </ul>
+
+      <h2>Key goals</h2>
+
+      <ul>
+        <li>Usable in initramfs (few dependencies and fast)</li>
+        <li>No persistent generated config, only original YAML config</li>
+        <li>Default policy applies with no config file present</li>
+        <li>Parser supports multiple config files to allow applications (libvirt, lxd) to package up expected network config (virbr0, lxdbr0), or to change the global default policy to use <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>          for everything.</li>
+        <li>Retains the flexibility to change backends/policy later or adjust to "apt purge network-manager" as generated configuration is ephemeral</li>
+      </ul>
+
+      <h2>Requirements</h2>
+
+      <ul>
+        <li>Initial configuration of network on a host from an oracle: MaaS, Cloud, Installer (Subiquity/Ubiquity), WebDM</li>
+        <li>Machine-parseable, but human readable configuration: YAML</li>
+        <li>Allowing full control over links and ip configuration (link properties and ip network configuration options) bond-* bridge-* ipv6-* , etc</li>
+        <li>Mtu, wake-on-lan, ethtool settings</li>
+        <li>Rule-based application of configuration</li>
+        <li>Related to smart defaults, e.g. Ubuntu Core might want to always run DHCP on any on-board interface (it doesn&#39;t care which one)</li>
+        <li>Smart defaults, with predictable fallback configuration</li>
+        <li>Support VMs in cloud (EC2, and Azure variants)</li>
+        <li>Support containers in LXD</li>
+        <li>Support servers booting on baremetal (ISO)</li>
+        <li>Support servers booting via MAAS</li>
+        <li>Automatic appropriate backend selection without any config, but pluggable (config.d) policy for desktops to use NM for everything</li>
+        <li>Compatibility with older images which have existing 70-persistent-net.rules or boot with "net.ifnames=0" or similar.</li>
+      </ul>
+
+      <h2>Design overview</h2>
+
+      <p><img src="https://assets.ubuntu.com/v1/d277153c-netplan-design_overview.png" alt="" /></p>
+
+      <h2>Network Config format</h2>
+
+      <p>This is called "version 2", as current MaaS/curtin already use a (different) YAML format that is called "version 1".</p>
+
+      <h2>General structure</h2>
+
+      <p>The top-level node is a network: mapping that contains "version: 2" (the YAML currently being used by curtin, MaaS, etc. is version 1), and then device definitions grouped by their type, such as "ethernets:", "wifis:", or "bridges:". These are the
+        types that our renderer can understand and are supported by our backends.</p>
+
+      <p>Each type block contains device definitions as a map where the keys (called "configuration IDs") are defined as below.</p>
+
+      <h2>Device Configuration IDs</h2>
+
+      <p>The key names below the per-device-type definition maps (like "ethernets:") are called "ID"s. They must be unique throughout the entire set of configuration files. Their primary purpose is to serve as anchor names for composite devices, for example
+        to enumerate the members of a bridge that is currently being defined.</p>
+
+      <p>There are two physically/structurally different classes of device definitions, and the ID field has a different interpretation for each:</p>
+
+      <h3>Physical devices</h3>
+
+      <p>(Examples: ethernet, wifi)</p>
+
+      <p>These can dynamically come and go between reboots and even during runtime (hotplugging). In the generic case, they can be selected by "match:" rules on desired properties, such as name/name pattern, MAC address, driver, or device paths. In general
+        these will match any number of devices (unless they refer to properties which are unique such as the full path or MAC address), so without further knowledge about the hardware these will always be considered as a group.</p>
+
+      <p>With specific knowledge (taken from the admin, a gadget snap, etc.), or by using unique properties such as path or MAC, match rules can be written so that they only match one device. Then the "set-name:" property can be used to give that device
+        a more specific/desirable/nicer name than the default from udev&#39;s ifnames. Any additional device that satisfies the match rules will then fail to get renamed and keep the original kernel name (and dmesg will show an error).</p>
+
+      <p>It is valid to specify no match rules at all, in which case the ID field is simply the interface name to be matched. This is mostly useful if you want to keep simple cases simple, and it&#39;s how we have done network device configuration since
+        the mists of time.</p>
+
+      <p>If there are match: rules, then the ID field is a purely opaque name which is only being used for references from definitions of compound devices in the config.</p>
+
+      <h3>Virtual devices</h3>
+
+      <p>(Examples: veth, bridge, bond)</p>
+
+      <p>These are fully under the control of the config file(s) and the network stack. I. e. these devices are being created instead of matched. Thus "match:" and "set-name:" are not applicable for these, and the ID field is the name of the created virtual
+        device.</p>
+
+      <h2>Complex example</h2>
+
+      <p>This shows most available features that are planned for the initial 16.10 implementation:</p>
+
+
+
+      <pre><code>
+network:
+
+version: 2
+
+# if specified globally, can only realistically have that value, as networkd cannot
+# render wifi/3G. This would be shipped as a separate config.d/ by desktop images.
+# it can also be specified by-type or by-device
+#renderer: NetworkManager
+ethernets:
+
+# opaque ID for physical interfaces with match rules, only referred to by
+# other stanzas
+id0:
+
+match:
+
+macaddress: 00:11:22:33:44:55
+wakeonlan: true
+dhcp4: true
+addresses:
+
+- 192.168.14.2/24
+- 2001:1::1/64
+lom:
+
+# example for explicitly setting a backend (default would be networkd)
+renderer: network-manager
+match:
+
+driver: ixgbe
+
+# you are responsible for setting tight enough match rules
+# that only match one device if you use set-name
+set-name: lom1
+dhcp6: true
+switchports:
+
+# all cards on second PCI bus; unconfigured by themselves, will be added
+# to br0 below
+match:
+
+name: enp2*
+mtu: 1280
+wifis:
+
+all-wlans:
+
+# useful on a system where you know there is only ever going to be one device
+match: {}
+access-points:
+
+&quot;Joe&#39;s home&quot;:
+
+# mode defaults to &quot;managed&quot; (client), key type to wpa-psk
+password: &quot;s3kr1t&quot;
+# this creates an AP on wlp1s0 using hostapd; no match rules, thus ID
+# is the interface name
+wlp1s0:
+
+access-points:
+
+&quot;guest&quot;:
+
+mode: ap
+channel: 11
+
+# no WPA config implies default of open
+bridges:
+
+# renderer: NetworkManager
+# the key name is the name for virtual (created) interfaces;
+# no &#39;match&#39; or &#39;set-name&#39; attributes are allowed.
+br0:
+
+# IDs of the components; switchports expands into multiple interfaces
+interfaces: [wlp1s0, switchports]
+dhcp4: true
+routes:
+
+- to: 0.0.0.0/0
+via: 11.0.0.1
+metric: 3
+nameservers:
+
+search: [foo.local, bar.local]
+addresses: [8.8.8.8]
+</code>
+</pre>
+
+
+
+<h2>Commands</h2>
+
+<h3>Generate</h3>
+
+<p>Runs during early boot and will read config, and write files</p>
+
+<h3>Apply</h3>
+
+<p>Kicks the various backends to realize network config</p>
+
+<h3>List</h3>
+
+<h3>Update</h3>
+
+<h3>Config</h3>
+
+<h4>Set</h4>
+
+<p>Capture existing config on an interface into the equivalent YAML.</p>
+
+<h4>Show</h4>
+
+<p>Merge and display all the current available configuration on the system.</p>
+
+<h2>Use cases</h2>
+
+<p>Some of the possible ways of using netplan are captured below.</p>
+
+<h3>Discovery (Subiquity)</h3>
+
+<p>Cathy boots the latest Ubuntu Server Image on her Intel NUC via USB key. The NUC has both a wired ethernet port and a wireless NIC builtin and has added a third USB-NIC as well, though it&#39;s not currently connected. During the installation, the installer presents Cathy with the 3 interfaces. Cathy selects the wired ethernet device; it was the only one with an IP configured via DHCP. After the installation is complete Cathy reboots her NUC and finds the following in /etc/netplan/01-install.yaml:</p>
+
+
+
+<pre><code>
+network:
+
+version: 2
+ethernets:
+
+# configured by subiquity
+eno1:
+
+dhcp4: true
+</code>
+</pre>
+
+
+
+<p>The installer wrote out a config which included elements for the explicitly chosen/configured wired device. The other NICs are unconfigured, as the installer should not make any assumptions about their future usage or configuration.</p>
+
+<h3>Data oracle (cloud-init, MaaS, gadget snap)</h3>
+
+<p>A user creates a cloud-init userdata file for a cloud instance that will get two network cards attached. That cloud-init file contains a network definition that configures a bond device from these two.</p>
+
+<p>The gadget snap for a router specifies that all ethernet interfaces on the second PCI bus belong to the builtin switch, and configures a bridge for them. The other ethernet interface is renamed to "eth-uplink" to provide a more specific and useful name
+  for it.</p>
+
+<p>[TODO: add the yaml of the above description]</p>
+
+<p>In general there are many situations where users (via the installer), hardware vendors, or cloud management software can make assumptions about the nature, number, and purpose of network interfaces -- these should be expressible in terms of specific interface
+  names and vendor-provided configuration for them.</p>
+
+<h3>Device Add</h3>
+
+<p>Alice plugs a USB nic into her Intel NUC after installing Ubuntu Server. The default policy for server uses networkd, and does not attempt to do any networking configuration for devices that are not already present in /etc/netplan/. Alice can see the
+  new device in the listing of interfaces from `netplan list` output. Alice then uses `netplan update` command which notices the network device that&#39;s present on the host but not in /etc/netplan/, collects device information from the system, adds
+  a new entry to /etc/netplan/ with the collected information. At this time no ip configuration is added since none was found when the update command was run.</p>
+
+<p>Alice decides she wants to set a static ip for the new nic and issues the `netplan configure enp1s1u1 ip 192.168.23.2/24` which applies this network config. After applying the conf change, Alice runs `netplan apply`. The command notices that a config
+  change needs to be applied to the new interface which is currently not in-use, and immediately configures the interface as specified from the entry in /etc/netplan/.</p>
+
+<h4>Using a previously configured device</h4>
+
+<p>Sally plugs in USB NIC that previously had been configured and expects that it retains the same configuration despite being connected in a different port.</p>
+
+<p>On device removal, no config change has been made. If the server was rebooted, then when processing e/n/c, we will write out the config again in /run/network, including MATCH rules for .LINK to retain the name and likely the same MATCH rules .NETWORK
+  to apply the same config.</p>
+
+<p>(Note: This behaviour is already how NM/networkd/ifupdown etc. behave -- this use case is just for a complete behaviour description.)</p>
+
+<h3>Update network config on package install</h3>
+
+<p>lxd, libvirt, and others might include network config by shipping a /{etc,lib}/netplan/*.yaml snippet, for e. g. setting up a bridge (virbr0, lxdbr0).</p>
+
+<h3>Device configuration removal</h3>
+
+<p>Alice is done with the usb0 device that was added and now wants to purge the configuration from the system.</p>
+
+<h3>Show current config</h3>
+
+<p>Configuration is a merge of all /etc/netplan/*.yaml. The `netplan config show` command will read the current on-disk configuration and merge any configs in /etc/netplan/*.yaml merge them and produce a YAML formatted output to stdout.</p>
+
+<h2>Upgrading to netplan config</h2>
+
+<p>Parsing and interpreting /e/n/i on existing systems is a lot of effort with countless corner cases. For 16.10, we merely aim to convert "auto IFACE\niface IFACE inet dhcp" stanzas to YAML. Everything else will continue to be managed by ifupdown.</p>
+
+</div>
+</div>
+</div>
