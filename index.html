@@ -1,33 +1,46 @@
 ---
 layout: default
-desc: Netplan.io
+desc: netplan.io
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
     lastmod: 2017-01-13T17:20:30+00:00
 ---
 
-<div id="main-content" class="p-strip is-bordered is-deep">
-  <div class="row">
+<div id="main-content" class="p-strip--hero is-bordered is-deep">
+  <div class="row u-vertically-center">
     <div class="col-8">
       <h1>Netplan</h1>
       <p class="p-heading--four">
         The network configuration abstraction renderer
       </p>
       <p>Netplan is a utility for easily configuring networking on a linux system. You simply create a YAML description of the required network interfaces and what each should be configured to do. From this description Netplan will generate all the necessary configuration for your chosen renderer tool.</p>
-      <p>Netplan reads network configuration from <code>/etc/netplan/*.yaml</code> which are written by administrators, installers, cloud image instantiations, or other OS deployments. During early boot, Netplan generates backend specific configuration files in <code>/run</code> to hand off control of devices to a particular networking daemon.</p>
-      <p>Netplan currently works with these supported renderers</p>
-      <p>
-        <a href="https://wiki.ubuntu.com/NetworkManager" class="p-button--positive">
-          <span class="p-link--external">NetworkManager</span>
-        </a>
-        <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html" class="p-button--neutral">
-          <span class="p-link--external">Systemd-networkd</span>
-        </a>
-      </p>
+    </div>
+    <div class="col-4 u-align--center u-hidden--small">
+      <img src="https://assets.ubuntu.com/v1/0fbee9c4-pictogram_internet01.svg?w=200" width="200" alt="" />
     </div>
   </div>
 </div>
+
+<div id="quick-start" class="p-strip--light is-bordered is-deep">
+  <div class="row u-vertically-center">
+    <div class="col-4 u-align--center u-hidden--small">
+      <img src="https://assets.ubuntu.com/v1/4acd14d3-pictogram_article01a.svg?w=150" width="150" alt="" />
+    </div>
+    <div class="col-8">
+      <h2>How does it work?</h2>
+      <p>Netplan reads network configuration from <code>/etc/netplan/*.yaml</code> which are written by administrators, installers, cloud image instantiations, or other OS deployments. During early boot, Netplan generates backend specific configuration files in <code>/run</code> to hand off control of devices to a particular networking daemon.</p>
+      <p>Netplan currently works with these supported renderers</p>
+      <ul class="p-list">
+        <li class="p-list__item is-ticked">
+          <a href="https://wiki.ubuntu.com/NetworkManager" class="p-link--external">NetworkManager</a>
+        </li>
+        <li class="p-list__item is-ticked">
+          <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html" class="p-link--external">Systemd-networkd</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 <div id="quick-start" class="p-strip is-bordered is-deep">
   <div class="row">
@@ -53,16 +66,6 @@ sitemap:
         <li><strong>netplan apply</strong>: Apply all configuration for the renderers, restarting them as necessary.</li>
         <li><strong>netplan ifupdown-migrate</strong>: Attempt to generate an equivalent configuration to what is specified in <code>/etc/network/interfaces</code>.</li>
       </ul>
-    </div>
-  </div>
-</div>
-
-<div class="p-strip--accent is-bordered is-shallow">
-  <div class="row">
-    <div class="col-8">
-      <h3>Commercial support</h3>
-      <p>For commerical support please contact us</p>
-      <p><a href="/contact-us" class="p-button">Contact support</a></p>
     </div>
   </div>
 </div>
