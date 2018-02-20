@@ -1,6 +1,6 @@
 ---
 layout: default
-desc: Netplan.io
+desc: netplan.io
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
@@ -15,8 +15,6 @@ sitemap:
         The network configuration abstraction renderer
       </p>
       <p>Netplan is a utility for easily configuring networking on a linux system. You simply create a YAML description of the required network interfaces and what each should be configured to do. From this description Netplan will generate all the necessary configuration for your chosen renderer tool.</p>
-<<<<<<< Updated upstream
-=======
     </div>
     <div class="col-4 u-align--center u-hidden--small">
       <img src="https://assets.ubuntu.com/v1/0fbee9c4-pictogram_internet01.svg?w=200" width="200" alt="" />
@@ -24,21 +22,20 @@ sitemap:
   </div>
 </div>
 
-<div id="quick-start" class="p-strip--light is-bordered is-deep">
+<div id="how-does-it-work" class="p-strip--light is-bordered is-deep">
   <div class="row u-vertically-center">
     <div class="col-8">
       <h2>How does it work?</h2>
->>>>>>> Stashed changes
       <p>Netplan reads network configuration from <code>/etc/netplan/*.yaml</code> which are written by administrators, installers, cloud image instantiations, or other OS deployments. During early boot, Netplan generates backend specific configuration files in <code>/run</code> to hand off control of devices to a particular networking daemon.</p>
       <p>Netplan currently works with these supported renderers</p>
-      <p>
-        <a href="https://wiki.ubuntu.com/NetworkManager" class="p-button--positive">
-          <span class="p-link--external">NetworkManager</span>
-        </a>
-        <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html" class="p-button--neutral">
-          <span class="p-link--external">Systemd-networkd</span>
-        </a>
-      </p>
+      <ul class="p-list">
+        <li class="p-list__item is-ticked">
+          <a href="https://wiki.ubuntu.com/NetworkManager" class="p-link--external">NetworkManager</a>
+        </li>
+        <li class="p-list__item is-ticked">
+          <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html" class="p-link--external">Systemd-networkd</a>
+        </li>
+      </ul>
     </div>
     <div class="col-4 u-align--center u-hidden--small">
       <img src="https://assets.ubuntu.com/v1/4acd14d3-pictogram_article01a.svg?w=200" width="200" alt="" />
@@ -57,10 +54,10 @@ sitemap:
       <h3>Configuration</h3>
       <p>Obviously, without configuration, netplan will not do anything. The most useful configuration snippet (to bring up things via dhcp) is as follows:</p>
       <pre><code>network:
-    version: 2
-    renderer: NetworkManager</code></pre>
-        <p>This will make NetworkManager manage all devices (and by default, any ethernet device will come up with DHCP once carrier is detected).</p>
-        <p>Using networkd as a renderer does not let devices automatically come up using DHCP; each interface needs to be specified in a file in <code>/etc/netplan</code> for its configuration to be written and for it to be used in networkd.</p>
+  version: 2
+  renderer: NetworkManager</code></pre>
+      <p>This will make NetworkManager manage all devices (and by default, any ethernet device will come up with DHCP once carrier is detected).</p>
+      <p>Using networkd as a renderer does not let devices automatically come up using DHCP; each interface needs to be specified in a file in <code>/etc/netplan</code> for its configuration to be written and for it to be used in networkd.</p>
     </div>
     <div class="col-6">
       <h3>Commands</h3>
@@ -73,84 +70,3 @@ sitemap:
     </div>
   </div>
 </div>
-<<<<<<< Updated upstream
-
-<div class="p-strip--accent is-bordered is-shallow">
-  <div class="row">
-    <div class="col-8">
-      <h3>Commercial support</h3>
-      <p>For commerical support please contact us</p>
-      <p><a href="/contact-us" class="p-button">Contact support</a></p>
-    </div>
-  </div>
-</div>
-
-<div class="p-strip is-bordered is-deep">
-  <div class="row">
-    <div class="u-equal-height">
-      <div class="col-8">
-        <h2>Frequently-asked questions</h2>
-        <dl>
-          <dt>How do I bring interfaces up or down?</dt>
-          <dd>
-            <p>While we recommend that people do not change the state of network interfaces without a good reason and simply let the renderer configured in netplan handle the network interfaces it is meant to configure, you can always modify interface settings manually via the <strong>ip</strong> command.</p>
-            <p>To bring up an interface:</p>
-            <pre><code>ip link set eth0 up</code></pre>
-            <p>To bring and interface down:</p>
-            <pre><code>ip link set eth0 down</code></pre>
-            <p>See man ip for more information on how you can manipulate the state of network interfaces.</p>
-          </dd>
-          <dt>How can I look up the currently applied addresses for my system?</dt>
-          <dd>
-            <p>Netplan is only meant to translate configuration into the appropriate files for the backend you want to use. It does not display IP information by itself, since it does not manage those by itself.</p>
-            <p>You can always get the most accurate state of the IP addresses for your system using the ip addr command.</p>
-          </dd>
-          <dt>How do I configure a single interface with netplan so it works now and at next boot?</dt>
-          <dd>
-            <p>To achieve this you must write a simple netplan configuration file, such as this:</p>
-            <pre><code>network:
-    version: 2
-    renderer: networkd
-    ethernets:
-        eth0:
-            dhcp4: true</code></pre>
-            <p>Then save this to a file under <code>/etc/netplan</code> with a .yaml extension.</p>
-            <p>Finally, run netplan apply. This will enable DHCP on the eth0 interface, and immediately attempt to get a new IP address for it. Since the file is written to disk, the same rule will be applied at boot time.</p>
-            <p>To configure the interface for a static IP address, you could instead use:</p>
-            <pre><code>network:
-    version: 2
-    renderer: networkd
-    ethernets:
-        eth0:
-            addresses:
-                - 10.10.10.2/24
-            dhcp4: no</code></pre>
-              <p>Simply write under addresses the IP address (IPv4 or IPv6) you want assigned to the interface, along with its prefix length. On many networks, /24 is the prefix length you want.</p>
-          </dd>
-          <dt>How do I unconfigure a single interface with netplan so it stops and remains unconfigured at next boot?</dt>
-          <dd>
-            <p>Simply remove the configuration for it. If the interface is not configured in a .yaml file in <code>/etc/netplan</code>, it will not be configured at boot.</p>
-            <p>To retain connectivity while you configure interfaces, IP addresses are not removed from interfaces when you run <code>netplan apply</code>. To remove addresses manually, you can use <code>ip address del &lt;address&gt; dev &lt;interface&gt;</code>.</p>
-          </dd>
-          <dt>How can I add pre-up, post-up, etc. hook scripts?</dt>
-          <dd>
-            <p>While the netplan configuration does not include support for hook scripts, you can add systemd unit jobs with the appropriate Requires: and After: fields to run arbitrary commands once the network is up.</p>
-            <p>The same is possible with <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a> by writing a script watching for the right event in <code>/etc/NetworkManager/dispatcher.d</code>. See the <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>(8) manpage for details.</p>
-          </dd>
-          <dt>I currently use Openvswitch ifupdown declarations and would like to replicate this on 18.04, how can I do that?</dt>
-          <dd>
-            <p>Openvswitch support requires the use of hook scripts. You would need to write a systemd unit that runs ovs_vsctl correctly for your particular setup.</p>
-            <p><pre><code>#example systemd unit</code></pre></p>
-          </dd>
-          <dt>I really do need ifupdown, can I still use it?</dt>
-          <dd>
-            <p>If you run into a case where you do need to use ifupdown instead of netplan, we would really like to know about it, so you should <a href="http://bugs.launchpad.net/ubuntu/+source/nplan/+filebug">file a bug in Launchpad</a>.</p>
-            <p>While we don't recommend doing so, you can remove netplan and install ifupdown after install, and fill in <code>/etc/network/interfaces</code> manually to configure your network the way you want it.</p>
-            <p>You can also opt to use ifupdown instead of netplan at installation by preseeding <code>netcfg/do_not_use_netplan=true</code> (adding it the the command-line when you boot the Ubuntu Server installation media, in grub (when you see the menu hit "e" to edit; or in the bootsplash by hitting F6). This will fallback to installing ifupdown and configuring it for the network devices set up during the installation.</p>
-        </dl>
-      </div>
-    </div>
-  </div>
-</div>
-=======
->>>>>>> Stashed changes
