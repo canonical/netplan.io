@@ -33,7 +33,7 @@ sitemap:
 
       <h2 id="general-structure">General structure</h2>
       <p>netplan's configuration files use the <a href="http://yaml.org/spec/1.1/current.html">YAML</a> format. All <code>/{lib,etc,run}/netplan/*.yaml</code> are considered. Lexicographically later files (regardless of in which directory they are) amend (new mapping keys) or override (same mapping keys) previous ones. A file in <code>/run/netplan</code> completely shadows a file with same name in <code>/etc/netplan</code>, and a file in either of those directories shadows a file with the same name in <code>/lib/netplan</code>.</p>
-      <p>The top-level node in a netplan configuration file is a <code>network:</code> mapping that contains <code>version: 2</code> (the YAML currently being used by curtin, MaaS, etc. is version 1), and then device definitions grouped by their type, such as <code>ethernets:</code>, <code>wifis:</code>, or <code>bridges:</code>. These are the types that our renderer can understand and are supported by our backends.</p>
+      <p>The top-level node in a netplan configuration file is a <code>network:</code> mapping that contains <code>version: 2</code> (the YAML currently being used by curtin, MAAS, etc. is version 1), and then device definitions grouped by their type, such as <code>ethernets:</code>, <code>wifis:</code>, or <code>bridges:</code>. These are the types that our renderer can understand and are supported by our backends.</p>
       <p>Each type block contains device definitions as a map where the keys (called "configuration IDs") are defined as below.</p>
 
       <h2 id="device-configuration-ids">Device configuration IDs</h2>

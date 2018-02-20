@@ -19,7 +19,7 @@ source: https://wiki.ubuntu.com/Netplan/Design
   <div class="row">
     <div class="col-8">
 
-      <p>There are central network config files for Snappy, Server, Client, MaaS, cloud-init in <code>/etc/netplan/*.yaml</code>. All installers only generate such a file, no /etc/network/interfaces any more. There is also a netplan command line tool to drive some operations.</p>
+      <p>There are central network config files for Snappy, Server, Client, MAAS, cloud-init in <code>/etc/netplan/*.yaml</code>. All installers only generate such a file, no /etc/network/interfaces any more. There is also a netplan command line tool to drive some operations.</p>
 
       <p>Systems are configured during early boot with a "network renderer" which reads <code>/etc/netplan/*.yaml</code> and writes configuration to /run to hand off control of devices to the specified networking daemon.</p>
 
@@ -42,7 +42,7 @@ source: https://wiki.ubuntu.com/Netplan/Design
       <h2>Requirements</h2>
 
       <ul>
-        <li>Initial configuration of network on a host from an oracle: MaaS, Cloud, Installer (Subiquity/Ubiquity), WebDM</li>
+        <li>Initial configuration of network on a host from an oracle: MAAS, Cloud, Installer (Subiquity/Ubiquity), WebDM</li>
         <li>Machine-parseable, but human readable configuration: YAML</li>
         <li>Allowing full control over links and ip configuration (link properties and ip network configuration options) bond-* bridge-* ipv6-* , etc</li>
         <li>Mtu, wake-on-lan, ethtool settings</li>
@@ -63,11 +63,11 @@ source: https://wiki.ubuntu.com/Netplan/Design
 
       <h2>Network Config format</h2>
 
-      <p>This is called "version 2", as current MaaS/curtin already use a (different) YAML format that is called "version 1".</p>
+      <p>This is called "version 2", as current MAAS/curtin already use a (different) YAML format that is called "version 1".</p>
 
       <h2>General structure</h2>
 
-      <p>The top-level node is a network: mapping that contains "version: 2" (the YAML currently being used by curtin, MaaS, etc. is version 1), and then device definitions grouped by their type, such as "ethernets:", "wifis:", or "bridges:". These are the types that our renderer can understand and are supported by our backends.</p>
+      <p>The top-level node is a network: mapping that contains "version: 2" (the YAML currently being used by curtin, MAAS, etc. is version 1), and then device definitions grouped by their type, such as "ethernets:", "wifis:", or "bridges:". These are the types that our renderer can understand and are supported by our backends.</p>
 
       <p>Each type block contains device definitions as a map where the keys (called "configuration IDs") are defined as below.</p>
 
@@ -219,7 +219,7 @@ source: https://wiki.ubuntu.com/Netplan/Design
 
       <p>The installer wrote out a config which included elements for the explicitly chosen/configured wired device. The other NICs are unconfigured, as the installer should not make any assumptions about their future usage or configuration.</p>
 
-      <h3>Data oracle (cloud-init, MaaS, gadget snap)</h3>
+      <h3>Data oracle (cloud-init, MAAS, gadget snap)</h3>
 
       <p>A user creates a cloud-init userdata file for a cloud instance that will get two network cards attached. That cloud-init file contains a network definition that configures a bond device from these two.</p>
 
