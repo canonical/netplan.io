@@ -10,7 +10,7 @@ The simplest way to run the site locally is to first [install Docker](https://do
 ./run
 ```
 
-Once the containers are setup, you can visit <http://127.0.0.1:8014> in your browser.
+Once the containers are setup, you can visit <http://127.0.0.1:8024> in your browser.
 
 ### Building CSS
 
