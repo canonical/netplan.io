@@ -229,9 +229,7 @@ source: https://wiki.ubuntu.com/Netplan/Design
 
       <h3>Device Add</h3>
 
-      <p>Alice plugs a USB nic into her Intel NUC after installing Ubuntu Server. The default policy for server uses networkd, and does not attempt to do any networking configuration for devices that are not already present in <code>/etc/netplan/</code>. Alice can see the new device in the listing of interfaces from `netplan list` output. Alice then uses `netplan update` command which notices the network device that's present on the host but not in <code>/etc/netplan/</code>, collects device information from the system, adds  a new entry to <code>/etc/netplan/</code> with the collected information. At this time no ip configuration is added since none was found when the update command was run.</p>
-
-      <p>Alice decides she wants to set a static ip for the new nic and issues the `netplan configure enp1s1u1 ip 192.168.23.2/24` which applies this network config. After applying the conf change, Alice runs `netplan apply`. The command notices that a config change needs to be applied to the new interface which is currently not in-use, and immediately configures the interface as specified from the entry in <code>/etc/netplan/</code>.</p>
+      <p>Alice plugs a USB nic into her Intel NUC after installing Ubuntu Server. The default policy for server uses networkd, and does not attempt to do any networking configuration for devices that are not already present in <code>/etc/netplan/</code>.</p>
 
       <h4>Using a previously configured device</h4>
 
@@ -252,10 +250,6 @@ source: https://wiki.ubuntu.com/Netplan/Design
       <h3>Show current config</h3>
 
       <p>Configuration is a merge of all <code>/etc/netplan/*.yaml</code>. The <code>netplan config show</code> command will read the current on-disk configuration and merge any configs in <code>/etc/netplan/*.yaml</code> merge them and produce a YAML formatted output to stdout.</p>
-
-      <h2>Upgrading to netplan config</h2>
-
-      <p>Parsing and interpreting <code>/etc/netplan/</code> on existing systems is a lot of effort with countless corner cases. For 16.10, we merely aim to convert "auto IFACE\niface IFACE inet dhcp" stanzas to YAML. Everything else will continue to be managed by ifupdown.</p>
 
     </div>
   </div>
