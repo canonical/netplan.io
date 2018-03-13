@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+{% include head.html %}
+
+<body id="reference" class="reference">
+
+  {% include header.html %}
+
+      <div class="p-strip--light is-bordered is-shallow">
+        <div class="row">
+          <div class="col-12">
+            <h1>Netplan reference</h1>
+          </div>
+        </div>
+      </div>
+      <div class="p-strip">
+        <div class="row">
+          <div class="col-8">
+
+          {{ content }}
+
+          </div><!-- /.col-8 -->
+        </div><!-- /.row -->
+      </div><!-- /.p-strip... -->
+
+  {% include footer.html %}
+
+</body>
+
+</html>
