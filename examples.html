@@ -56,6 +56,10 @@ network:
       addresses:
         - 10.10.10.2/24
       dhcp4: no
+      gateway4: 10.10.10.1
+      nameservers:
+          search: [mydomain,otherdomain]
+          addresses: [10.10.10.1,1.1.1.1]
           </code></pre>
               <p>Simply write under addresses the IP address (IPv4 or IPv6) you want assigned to the interface, along with its prefix length. On many networks, /24 is the prefix length you want.</p>
           </dd>
