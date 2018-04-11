@@ -51,7 +51,7 @@ See `man ip` for more information on how to manipulate the state of routing, net
 
 ## Prevent waiting for interface
 
-Interfaces that are not required for booting or should not be waited for during boot and have the `optional: true` key added to them. This will prevent long delays in booting for interfaces that may not come up.
+Interfaces that are not required for booting or should not be waited on during boot should have the `optional: true` key added to them. This will prevent long delays in booting for interfaces that may not come up.
 
 ## Get the current system address
 
@@ -71,7 +71,7 @@ If the interface is not configured in a .yaml file in `/etc/netplan`, it will no
 
 ## Use pre-up, post-up, etc. hook scripts
 
-Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file. Netplan configuration does not include support for hook scripts. Instead to achieve this functionality users should add a systemd unit jobs with the appropriate 'Requires:' and 'After:' fields to run arbitrary commands once the network is up.
+Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file. Netplan configuration does not include support for hook scripts. Instead to achieve this functionality users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher) to aid in writing scripts. See `man networkd-dispatcher` for more information.
 
 The same is possible with NetworkManager by writing a script watching for the right event in `/etc/NetworkManager/dispatcher.d`. See the NetworkManager(8) manpage for details.
 

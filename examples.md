@@ -14,7 +14,7 @@ Below are a collection of example netplan configurations for common scenarios. I
 
 ## Configuration
 
-Users should save configurations under `/etc/netplan` with a .yaml extension (e.g. `/etc/netplan/config.yaml`).
+Users should save configuration files under `/etc/netplan/` with a .yaml extension (e.g. `/etc/netplan/config.yaml`).
 
 Then run `sudo netplan apply` and the configuration is parsed, written, and applied to the system. Since the file is written to disk the the configuration will persist between reboots.
 
@@ -117,7 +117,7 @@ network:
 
 ## Bridging
 
-To create a very simple bridge consisting of a single device using DHCP use:
+To create a very simple bridge consisting of a single device using DHCP write:
 
 ```yaml
 network:
@@ -210,7 +210,7 @@ network:
 
 ## Source routing
 
-To allow routing between two networks route tables can be added to particular interfaces:
+Route tables can be added to particular interfaces to allow routing between two networks:
 
 In the example below, ens3 is on the 192.168.3.0/24 network and ens5 is on the 192.168.5.0/24 network. This enables clients on either network to connect to the other and allow the response to come from the correct interface.
 
@@ -263,7 +263,7 @@ network:
 
 ## Windows DHCP Server
 
-For networks where DHCP is provided by a Windows Server using the dpch-identifier key allows for interoperability:
+For networks where DHCP is provided by a Windows Server using the dhcp-identifier key allows for interoperability:
 
 ```yaml
 network:
