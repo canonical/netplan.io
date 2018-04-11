@@ -177,7 +177,7 @@ Virtual devices
     requires setting ``addresses`` too. Gateway IPs must be in a form
     recognized by **``inet_pton``**(3).
 
-    Example for IPv4: ``gateway4: 172.16.0.1``  
+    Example for IPv4: ``gateway4: 172.16.0.1``
     Example for IPv6: ``gateway6: "2001:4::1"``
 
 ``nameservers`` (mapping)
@@ -630,14 +630,16 @@ This is a complex example which shows most available features:
           set-name: lom1
           dhcp6: true
         switchports:
-          # all cards on second PCI bus; unconfigured by themselves, will be added
-          # to br0 below (note: globbing is not supported by NetworkManager)
+          # all cards on second PCI bus; unconfigured by themselves, will be
+          # added to br0 below
+          # note: globbing is not supported by NetworkManager
           match:
             name: enp2*
           mtu: 1280
       wifis:
         all-wlans:
-          # useful on a system where you know there is only ever going to be one device
+          # useful on a system where you know there is only ever going to be
+          # one device
           match: {}
           access-points:
             "Joe's home":
@@ -651,8 +653,8 @@ This is a complex example which shows most available features:
                mode: ap
                # no WPA config implies default of open
       bridges:
-        # the key name is the name for virtual (created) interfaces; no match: and
-        # set-name: allowed
+        # the key name is the name for virtual (created) interfaces; no match:
+        # and set-name: allowed
         br0:
           # IDs of the components; switchports expands into multiple interfaces
           interfaces: [wlp1s0, switchports]
