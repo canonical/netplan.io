@@ -100,13 +100,14 @@ This shows most available features that are planned for the initial 16.10 implem
 `network:
   version: 2
 
-  # if specified globally, can only realistically have that value, as networkd cannot
-  # render wifi/3G. This would be shipped as a separate config.d/ by desktop images.
+  # if specified globally, can only realistically have that value, as
+  # networkd cannot render wifi/3G. This would be shipped as a separate
+  # config.d/ by desktop images
   # it can also be specified by-type or by-device
-  #renderer: NetworkManager
+  renderer: network-manager
   ethernets:
-    # opaque ID for physical interfaces with match rules, only referred to by
-    # other stanzas
+    # opaque ID for physical interfaces with match rules
+    # only referred to by other stanzas
     id0:
       match:
       macaddress: 00:11:22:33:44:55
@@ -117,7 +118,6 @@ This shows most available features that are planned for the initial 16.10 implem
       - 2001:1::1/64
     lom:
       # example for explicitly setting a backend (default would be networkd)
-  renderer: network-manager
       match:
         driver: ixgbe
       # you are responsible for setting tight enough match rules
@@ -125,21 +125,22 @@ This shows most available features that are planned for the initial 16.10 implem
       set-name: lom1
       dhcp6: true
     switchports:
-      # all cards on second PCI bus; unconfigured by themselves, will be added
-      # to br0 below
+      # all cards on second PCI bus
+      # unconfigured by themselves will be added to br0 below
       match:
         name: enp2*
       mtu: 1280
     wifis:
       all-wlans:
-      # useful on a system where you know there is only ever going to be one device
+      # useful on a system where you know there is
+      # only ever going to be one device
       match: {}
       access-points:
         "Joe's home":
           # mode defaults to "managed" (client), key type to wpa-psk
           password: "s3kr1t"
-      # this creates an AP on wlp1s0 using hostapd; no match rules, thus ID
-      # is the interface name
+      # this creates an AP on wlp1s0 using hostapd
+      # no match rules, thus ID is the interface name
       wlp1s0:
         access-points:
           "guest":
@@ -147,11 +148,11 @@ This shows most available features that are planned for the initial 16.10 implem
             channel: 11
             # no WPA config implies default of open
     bridges:
-      # renderer: NetworkManager
       # the key name is the name for virtual (created) interfaces;
       # no 'match' or 'set-name' attributes are allowed.
       br0:
-        # IDs of the components; switchports expands into multiple interfaces
+        # IDs of the components
+        # switchports expands into multiple interfaces
         interfaces: [wlp1s0, switchports]
         dhcp4: true
       routes:
@@ -165,39 +166,39 @@ This shows most available features that are planned for the initial 16.10 implem
 
 ## Commands
 
-      <dl>
-        <dt>`Generate`</dt>
-        <dd>
+<dl>
+  <dt>`Generate`</dt>
+  <dd>
 
-            Runs during early boot and will read config, and write files
+      Runs during early boot and will read config, and write files
 
-        </dd>
-        <dt>`Apply`</dt>
-        <dd>
+  </dd>
+  <dt>`Apply`</dt>
+  <dd>
 
-            Kicks the various backends to realize network config
+      Kicks the various backends to realize network config
 
-        </dd>
-        <dt>`List`</dt>
-        <dd>
-
-
-
-        </dd>
-        <dt>`Update`</dt>
-        <dd>
+  </dd>
+  <dt>`List`</dt>
+  <dd>
 
 
 
-        </dd>
-        <dt>`Config`</dt>
-        <dd>
-    <strong>Set</strong>
-    Capture existing config on an interface into the equivalent YAML.
-    <strong>Show</strong>
-    Merge and display all the current available configuration on the system.
-        </dd>
-      </dl>
+  </dd>
+  <dt>`Update`</dt>
+  <dd>
+
+
+
+  </dd>
+  <dt>`Config`</dt>
+  <dd>
+<strong>Set</strong>
+Capture existing config on an interface into the equivalent YAML.
+<strong>Show</strong>
+Merge and display all the current available configuration on the system.
+  </dd>
+</dl>
 
 ## Use cases
 Some of the possible ways of using netplan are captured below.
