@@ -122,6 +122,55 @@ network:
         primary: enp3s0
 ```
 
+Below is an example of a system acting as a router with various bonded interfaces and different types.
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp1s0:
+      dhcp4: no
+    enp2s0:
+      dhcp4: no
+    enp3s0:
+      dhcp4: no
+      optional: true
+    enp4s0:
+      dhcp4: no
+      optional: true
+    enp5s0:
+      dhcp4: no
+      optional: true
+    enp6s0:
+      dhcp4: no
+      optional: true
+  bonds:
+    bond-lan:
+      interfaces: [enp2s0, enp3s0]
+      addresses: [192.168.93.2/24]
+      parameters:
+        mode: 802.3ad
+        mii-monitor-interval: 1
+    bond-wan:
+      interfaces: [enp1s0, enp4s0]
+      addresses: [192.168.1.252/24]
+      gateway4: 192.168.1.1
+      nameservers:
+        search: [local]
+        addresses: [8.8.8.8, 8.8.4.4]
+      parameters:
+        mode: active-backup
+        mii-monitor-interval: 1
+        gratuitious-arp: 5
+    bond-conntrack:
+      interfaces: [enp5s0, enp6s0]
+      addresses: [192.168.254.2/24]
+      parameters:
+        mode: balance-rr
+        mii-monitor-interval: 1
+```
+
 ## Bridging
 
 To create a very simple bridge consisting of a single device using DHCP write:
