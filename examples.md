@@ -1,16 +1,23 @@
 ---
-layout: examples
+layout: default
 desc: Examples | netplan.io
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
     lastmod: 2018-04-11T17:20:30+00:00
 ---
+<div class="p-strip--light is-bordered is-shallow">
+  <div class="row">
+    <div class="col-12">
+      <h1>Netplan configuration examples</h1>
+    </div>
+  </div>
+</div>
+<div class="p-strip">
+  <div class="row">
+    <div class="col-8" markdown="1">
 
 Below are a collection of example netplan configurations for common scenarios. If you see a scenario missing or have one  to contribute, please file a bug against this documentation with the example using the links at the bottom of this page. Thank you!
-
-* TOC
-{:toc}
 
 ## Configuration
 
@@ -273,3 +280,14 @@ network:
       dhcp4: yes
       dhcp-identifier: mac
 ```
+</div>
+<div class="col-4" markdown="1">
+
+<h3 class="p-muted-heading">Table of contents</h3>
+
+* TOC
+{:toc}
+
+</div>
+</div>
+</div>

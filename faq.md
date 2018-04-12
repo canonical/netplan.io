@@ -1,14 +1,21 @@
 ---
-layout: faq
+layout: default
 desc: FAQ | netplan.io
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
     lastmod: 2018-04-11T17:20:30+00:00
 ---
-
-* TOC
-{:toc}
+<div class="p-strip--light is-bordered is-shallow">
+  <div class="row">
+    <div class="col-12">
+      <h1>Netplan frequently asked questions</h1>
+    </div>
+  </div>
+</div>
+<div class="p-strip">
+  <div class="row">
+    <div class="col-8" markdown="1">
 
 ## Why Netplan
 
@@ -30,9 +37,9 @@ Next, a user can run `sudo netplan generate` to validate the configuration is co
 
 Configuration files can exist in three different locations with the precedence from most important to least as follows:
 
-* /run/netplan/*.yaml
-* /etc/netplan/*.yaml
-* /lib/netplan/*.yaml
+* /run/netplan/\*.yaml
+* /etc/netplan/\*.yaml
+* /lib/netplan/\*.yaml
 
 Alphabetically later files, no matter what directory in, will amend keys if the key does not already exist and override previous keys if they do.
 
@@ -84,3 +91,15 @@ First, if netplan does not have the features or functionality for a particular u
 On a running system, netplan can be removed by installing ifupdown and configuring `/etc/network/interfaces` manually as users have done before.
 
 At install time, a user can opt to use ifupdown by preseeding `netcfg/do_not_use_netplan=true`. This is done by adding the preseed line to the command line when booting the installation media (i.e. at install media boot menu, press F6, type 'e', and add to the command line).
+
+</div>
+<div class="col-4" markdown="1">
+
+<h3 class="p-muted-heading">Table of contents</h3>
+
+* TOC
+{:toc}
+
+</div>
+</div>
+</div>
