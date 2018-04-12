@@ -60,7 +60,7 @@ Systems are configured during early boot with a "network renderer" which reads `
 
 ## Network Config format
 
-This is called "version 2", as current MAAS/curtin already use a (different) YAML format that is called "version 1".
+This is called "version 2", as current MAAS/curtin already use a <a class="p-link--external" href="http://curtin.readthedocs.io/en/latest/topics/networking.html">different YAML format</a> that is called "version 1".
 
 ## General structure
 
