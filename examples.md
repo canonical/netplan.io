@@ -122,7 +122,7 @@ network:
         primary: enp3s0
 ```
 
-Below is an example of a system acting as a router with various bonded interfaces and different types.
+Below is an example of a system acting as a router with various bonded interfaces and different types. Note the 'optional: true' key declarations that allow booting to occur without waiting for those interfaces to activate fully.
 
 ```yaml
 network:
