@@ -56,7 +56,6 @@ Each type block contains device definitions as a map where the keys (called
 "configuration IDs") are defined as below.
 
 ## Device configuration IDs
-
 The key names below the per-device-type definition maps (like ``ethernets:``)
 are called "ID"s. They must be unique throughout the entire set of
 configuration files. Their primary purpose is to serve as anchor names for
@@ -165,7 +164,25 @@ Virtual devices
 
 ``dhcp6`` (bool)
 
-:   Enable DHCP for IPv6. Off by default.
+:   Enable DHCP for IPv6. Off by default. This covers both stateless DHCP -
+    where the DHCP server supplies information like DNS nameservers but not the
+    IP address - and stateful DHCP, where the server provides both the address
+    and the other information.
+
+    If you are in an IPv6-only environment with completely stateless
+    autoconfiguration (SLAAC with RDNSS), this option can be set to cause the
+    interface to be brought up. (Setting accept-ra alone is not sufficient.)
+    Autoconfiguration will still honour the contents of the router advertisment
+    and only use DHCP if requested in the RA.
+
+    Note that **``rdnssd``**(8) is required to use RDNSS with networkd. No extra
+    software is required for NetworkManager.
+
+``dhcp-identifier`` (scalar)
+
+:   When set to 'mac'; pass that setting over to systemd-networkd to use the
+    device's MAC address as a unique identifier rather than a RFC4361-compliant
+    Client ID. This has no effect when NetworkManager is used as a renderer.
 
 ``accept-ra`` (bool)
 
@@ -672,6 +689,7 @@ This is a complex example which shows most available features:
 
 <!--- vim: ft=markdown
 -->
+
 </div>
 <div class="col-4" markdown="1">
 
