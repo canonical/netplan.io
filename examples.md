@@ -89,7 +89,7 @@ network:
      gateway4: 10.100.1.1
 ```
 
-Virtual addresses (e.g. eth0:0) are not supported.
+Interface aliases (e.g. eth0:0) are not supported.
 
 ## Network Manager
 
