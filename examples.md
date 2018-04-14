@@ -21,9 +21,7 @@ Below are a collection of example netplan configurations for common scenarios. I
 
 ## Configuration
 
-Users should save configuration files under `/etc/netplan/` with a .yaml extension (e.g. `/etc/netplan/config.yaml`).
-
-Then run `sudo netplan apply` and the configuration is parsed, written, and applied to the system. Since the file is written to disk the the configuration will persist between reboots.
+To configure netplan, save configuration files under `/etc/netplan/` with a `.yaml` extension (e.g. `/etc/netplan/config.yaml`), then run `sudo netplan apply`.  This command parses and applies the configuration to the system.  Configuration written to disk under `/etc/netplan/` will persist between reboots.
 
 ## DHCP and static addressing
 
