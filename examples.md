@@ -25,7 +25,7 @@ To configure netplan, save configuration files under `/etc/netplan/` with a `.ya
 
 ## DHCP and static addressing
 
-To have the interface named 'enp3s0' get assigned a DHCP address create a YAML file with the following:
+To let the interface named 'enp3s0' get an address via DHCP, create a YAML file with the following:
 
 ```yaml
 network:
