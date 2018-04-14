@@ -36,7 +36,7 @@ network:
       dhcp4: true
 ```
 
-If instead a user wishes to set a static IP address the addresses key is used to set the IP address, IPv4 or IPv6, that is desired for the interface along with the subnet prefix length (e.g. /24). The user can also provide gateway and DNS information here as well:
+To instead set a static IP address, use the addresses key, which takes a list of (IPv4 or IPv6), addresses along with the subnet prefix length (e.g. /24). Gateway and DNS information can be provided as well:
 
 ```yaml
 network:
