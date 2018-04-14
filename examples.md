@@ -54,7 +54,7 @@ network:
 
 ## Wireless interfaces
 
-Wireless devices use the 'wifis' key and are then configured similarly to other ethernet devices. The wireless access-point name and password should also be specified:
+Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access-point name and password should also be specified:
 
 ```yaml
 network:
