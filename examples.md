@@ -93,7 +93,7 @@ Interface aliases (e.g. eth0:0) are not supported.
 
 ## Network Manager
 
-If a user wishes to forgo the use of netplan and use Network Manager to configure the system then the following is used to so:
+Netplan supports both networkd and Network Manager as backends.  You can specify which network backend should be used to configure particular devices by using the `renderer` key.  You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
 
 ```yaml
 network:
