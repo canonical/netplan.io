@@ -78,11 +78,37 @@ If the interface is not configured in a .yaml file in `/etc/netplan`, it will no
 
 ## Use pre-up, post-up, etc. hook scripts
 
-Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file. Netplan configuration does not include support for hook scripts. Instead to achieve this functionality users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher) to aid in writing scripts. See `man networkd-dispatcher` for more information.
+Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file. Netplan configuration does not include support for hook scripts. Instead to achieve this functionality users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher) to aid in writing scripts. See the example below and `man networkd-dispatcher` for more information.
 
 The same is possible with NetworkManager by writing a script watching for the right event in `/etc/NetworkManager/dispatcher.d`. See the NetworkManager(8) manpage for details.
 
 This applies to Open vSwitch ifupdown declarations as well.
+
+## How to use networkd-dispatcher
+
+The following is an examples of using networkd-dispatcher to run existing ifup hooks via a script installed in `/etc/networkd-dispatcher/routable.d/50-ifup-hooks`:
+
+```shell
+#!/bin/sh
+
+for d in up post-up; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] && /bin/run-parts $hookdir
+done
+exit 0
+```
+
+Similarly, here is an example of an ifdown hook installed in `/etc/networkd-dispatcher/off.d/50-ifdown-hooks`:
+
+```shell
+#!/bin/sh
+
+for d in down post-down; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] && /bin/run-parts $hookdir
+done
+exit 0
+```
 
 ## How to go back to ifupdown
 
