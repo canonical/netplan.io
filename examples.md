@@ -103,7 +103,7 @@ network:
 
 ## Bonding
 
-Bonding is configured with a list of interfaces and by specifying the mode. Below is an example of an active-backup bond that uses DHCP to obtain an address:
+Bonding is configured by declaring a bond interface with a list of physical interfaces and a bonding mode. Below is an example of an active-backup bond that uses DHCP to obtain an address:
 
 ```yaml
 network:
@@ -171,7 +171,7 @@ network:
 
 ## Bridging
 
-To create a very simple bridge consisting of a single device using DHCP write:
+To create a very simple bridge consisting of a single device that uses DHCP, write:
 
 ```yaml
 network:
