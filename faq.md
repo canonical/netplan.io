@@ -78,11 +78,52 @@ If the interface is not configured in a .yaml file in `/etc/netplan`, it will no
 
 ## Use pre-up, post-up, etc. hook scripts
 
-Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file. Netplan configuration does not include support for hook scripts. Instead to achieve this functionality users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher) to aid in writing scripts. See `man networkd-dispatcher` for more information.
+Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file.  Netplan configuration does not currently support hook scripts in its' configuration definition.
 
-The same is possible with NetworkManager by writing a script watching for the right event in `/etc/NetworkManager/dispatcher.d`. See the NetworkManager(8) manpage for details.
+Instead to achieve this functionality with the netword renderer users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher). The package provides users and legacy packages hook points when specific network states are reached to aid in reacting to network state. Below is a table mapping networking states and hooks available:
 
-This applies to Open vSwitch ifupdown declarations as well.
+| Hook | ifupdown | networkd-dispatcher | NetworkManager |
+| ---- | -------- | ------------------- | -------------- |
+| pre-up      | if-pre-up.d    |               | pre-up   |
+| configuring |                | configuring.d |          |
+| configured  |                | configured.d  |          |
+| up          | if-up.d        | routable.d    | up       |
+| post-up     | if-post-up.d   | routable.d    |          |
+| degraded    |                | degraded.d    |          |
+| pre-down    | if-pre-down.d  |               | pre-down |
+| down        | if-down.d      | off.d         | down     |
+| post-down   | if-post-down.d | off.d         |          |
+| no-carrier  |                | nocarrier.d   |          |
+
+Note that in networkd-dispatcher, the hooks run asychronous; that is they will not block transition into another state.
+
+See the example below and `man networkd-dispatcher` for more information.
+
+## Example for an ifupdown legacy hook for post-up/post-down states
+
+The following is an example of using networkd-dispatcher to run existing ifup hooks via a script installed in `/etc/networkd-dispatcher/routable.d/50-ifup-hooks`:
+
+```shell
+#!/bin/sh
+
+for d in up post-up; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] && /bin/run-parts $hookdir
+done
+exit 0
+```
+
+Similarly, here is an example of an ifdown hook installed in `/etc/networkd-dispatcher/off.d/50-ifdown-hooks`:
+
+```shell
+#!/bin/sh
+
+for d in down post-down; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] && /bin/run-parts $hookdir
+done
+exit 0
+```
 
 ## How to go back to ifupdown
 
