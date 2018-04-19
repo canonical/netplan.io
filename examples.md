@@ -21,13 +21,11 @@ Below are a collection of example netplan configurations for common scenarios. I
 
 ## Configuration
 
-Users should save configuration files under `/etc/netplan/` with a .yaml extension (e.g. `/etc/netplan/config.yaml`).
-
-Then run `sudo netplan apply` and the configuration is parsed, written, and applied to the system. Since the file is written to disk the the configuration will persist between reboots.
+To configure netplan, save configuration files under `/etc/netplan/` with a `.yaml` extension (e.g. `/etc/netplan/config.yaml`), then run `sudo netplan apply`.  This command parses and applies the configuration to the system.  Configuration written to disk under `/etc/netplan/` will persist between reboots.
 
 ## DHCP and static addressing
 
-To have the interface named 'enp3s0' get assigned a DHCP address create a YAML file with the following:
+To let the interface named 'enp3s0' get an address via DHCP, create a YAML file with the following:
 
 ```yaml
 network:
@@ -38,7 +36,7 @@ network:
       dhcp4: true
 ```
 
-If instead a user wishes to set a static IP address the addresses key is used to set the IP address, IPv4 or IPv6, that is desired for the interface along with the subnet prefix length (e.g. /24). The user can also provide gateway and DNS information here as well:
+To instead set a static IP address, use the addresses key, which takes a list of (IPv4 or IPv6), addresses along with the subnet prefix length (e.g. /24). Gateway and DNS information can be provided as well:
 
 ```yaml
 network:
@@ -50,13 +48,13 @@ network:
         - 10.10.10.2/24
       gateway4: 10.10.10.1
       nameservers:
-          search: [mydomain,otherdomain]
+          search: [mydomain, otherdomain]
           addresses: [10.10.10.1, 1.1.1.1]
 ```
 
 ## Wireless interfaces
 
-Wireless devices use the 'wifis' key and are then configured similarly to other ethernet devices. The wireless access-point name and password should also be specified:
+Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access-point name and password should also be specified:
 
 ```yaml
 network:
@@ -91,11 +89,11 @@ network:
      gateway4: 10.100.1.1
 ```
 
-Virtual addresses (e.g. eth0:0) are not supported.
+Interface aliases (e.g. eth0:0) are not supported.
 
 ## Network Manager
 
-If a user wishes to forgo the use of netplan and use Network Manager to configure the system then the following is used to so:
+Netplan supports both networkd and Network Manager as backends.  You can specify which network backend should be used to configure particular devices by using the `renderer` key.  You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
 
 ```yaml
 network:
@@ -105,7 +103,7 @@ network:
 
 ## Bonding
 
-Bonding is configured with a list of interfaces and by specifying the mode. Below is an example of an active-backup bond that uses DHCP to obtain an address:
+Bonding is configured by declaring a bond interface with a list of physical interfaces and a bonding mode. Below is an example of an active-backup bond that uses DHCP to obtain an address:
 
 ```yaml
 network:
@@ -173,7 +171,7 @@ network:
 
 ## Bridging
 
-To create a very simple bridge consisting of a single device using DHCP write:
+To create a very simple bridge consisting of a single device that uses DHCP, write:
 
 ```yaml
 network:
