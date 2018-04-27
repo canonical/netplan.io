@@ -91,6 +91,45 @@ network:
 
 Interface aliases (e.g. eth0:0) are not supported.
 
+
+## Multiple addresses with multiple gateways
+
+Similar to the example above, interfaces with multiple addresses can be
+configured with multiple gateways.
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp3s0:
+     addresses:
+       - 9.0.0.9/24
+       - 10.0.0.10/24
+       - 11.0.0.11/24
+     #gateway4:    # unset, since we configure routes below
+     routes:
+       - to: 0.0.0.0/0
+         via: 9.0.0.1
+         metric: 100
+       - to: 0.0.0.0/0
+         via: 10.0.0.1
+         metric: 100
+       - to: 0.0.0.0/0
+         via: 11.0.0.1
+         metric: 100
+```
+
+Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure
+individual routes to 0.0.0.0/0 (everywhere) using the address of the gateway for the subnet. The `metric` value should be adjusted
+so the routing happens as expected.
+
+DHCP can be used to receive one of the IP addresses for the interface. In this case, the default route for that address will be
+automatically configured with a `metric` value of 100. As a short-hand for an entry under `routes`, `gateway4` can be set to the
+gateway address for one of the subnets. In that case, the route for that subnet can be omitted from `routes`. Its `metric` will be
+set to 100.
+
+
 ## Network Manager
 
 Netplan supports both networkd and Network Manager as backends.  You can specify which network backend should be used to configure particular devices by using the `renderer` key.  You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
