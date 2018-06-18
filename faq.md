@@ -80,7 +80,7 @@ If the interface is not configured in a .yaml file in `/etc/netplan`, it will no
 
 Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file.  Netplan configuration does not currently support hook scripts in its configuration definition.
 
-Instead to achieve this functionality with the netword renderer users can use [networkd-dispatcher](https://github.com/craftyguy/networkd-dispatcher). The package provides users and legacy packages hook points when specific network states are reached to aid in reacting to network state. Below is a table mapping networking states and hooks available:
+Instead to achieve this functionality with the netword renderer users can use [networkd-dispatcher](https://gitlab.com/craftyguy/networkd-dispatcher). The package provides users and legacy packages hook points when specific network states are reached to aid in reacting to network state. Below is a table mapping networking states and hooks available:
 
 | Hook | ifupdown | networkd-dispatcher | NetworkManager |
 | ---- | -------- | ------------------- | -------------- |
