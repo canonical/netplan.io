@@ -216,6 +216,9 @@ To create a very simple bridge consisting of a single device that uses DHCP, wri
 network:
   version: 2
   renderer: networkd
+  ethernets:
+    enp3s0:
+      dhcp4: no
   bridges:
     br0:
       dhcp4: yes
