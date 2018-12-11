@@ -9,7 +9,7 @@ sitemap:
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
     <div class="col-12">
-      <h1>Netplan reference</h1>
+      <h1 class="u-no-margin--bottom">Netplan reference</h1>
     </div>
   </div>
 </div>

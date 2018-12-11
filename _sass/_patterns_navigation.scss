@@ -1,0 +1,10 @@
+@mixin netplan-navigation {
+  .p-navigation__logo {
+    margin-right: 1.5rem;
+  }
+
+  .p-navigation__logo .p-navigation__link {
+    font-size: 1.5rem;
+    line-height: 3rem;
+  }
+}

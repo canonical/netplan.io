@@ -10,7 +10,7 @@ source: https://wiki.ubuntu.com/Netplan/Design
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
     <div class="col-12">
-      <h1>Netplan design</h1>
+      <h1 class="u-no-margin--bottom">Netplan design</h1>
     </div>
   </div>
 </div>

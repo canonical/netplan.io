@@ -9,7 +9,7 @@ sitemap:
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
     <div class="col-12">
-      <h1>Netplan frequently asked questions</h1>
+      <h1 class="u-no-margin--bottom">Netplan frequently asked questions</h1>
     </div>
   </div>
 </div>
