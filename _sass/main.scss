@@ -9,3 +9,6 @@
 
 @import 'patterns_syntax-highlight';
 @include vfio-p-syntax-highlight;
+
+@import 'patterns_navigation';
+@include netplan-navigation;
