@@ -448,6 +448,36 @@ network:
       dhcp4: yes
       dhcp-identifier: mac
 ```
+
+## Connecting an IP tunnel
+
+Tunnels allow an administrator to extend networks across the Internet by configuring two endpoints that will connect a special tunnel interface and do the routing required. Netplan supports SIT, GRE, IP-in-IP (ipip, ipip6, ip6ip6), IP6GRE, VTI and VTI6 tunnels.
+
+A common use of tunnels is to enable IPv6 connectivity on networks that only support IPv4. The example below show how such a tunnel might be configured.
+
+Here, 1.1.1.1 is the client's own IP address; 2.2.2.2 is the remote server's IPv4 address, "2001:dead:beef::2/64" is the client's IPv6 address as defined by the tunnel, and "2001:dead:beef::1" is the remote server's IPv6 address.
+
+Finally, "2001:cafe:face::1/64" is an address for the client within the routed IPv6 prefix:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses:
+        - 1.1.1.1/24
+        - "2001:cafe:face::1/64"
+      gateway4: 1.1.1.254
+  tunnels:
+    he-ipv6:
+      mode: sit
+      remote: 2.2.2.2
+      local: 1.1.1.1
+      addresses:
+        - "2001:dead:beef::2/64"
+      gateway6: "2001:dead:beef::1"
+```
+
 </div>
 <div class="col-4" markdown="1">
 
