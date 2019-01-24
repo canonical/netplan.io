@@ -74,7 +74,7 @@ network:
 
 ## Connecting to an open wireless network
 
-Netplan easily supports connecting to an open wireless network (one that is not secured by a password), only requiring that the access-point is defined:
+Netplan easily supports connecting to an open wireless network (one that is not secured by a password), only requiring that the access point is defined:
 
 ```yaml
 network:
@@ -88,7 +88,7 @@ network:
 
 ## Connecting to a WPA Personal wireless network
 
-Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access-point name and password should also be specified:
+Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access point name and password should also be specified:
 
 ```yaml
 network:
