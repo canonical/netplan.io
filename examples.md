@@ -23,7 +23,7 @@ Below are a collection of example netplan configurations for common scenarios. I
 
 To configure netplan, save configuration files under `/etc/netplan/` with a `.yaml` extension (e.g. `/etc/netplan/config.yaml`), then run `sudo netplan apply`.  This command parses and applies the configuration to the system.  Configuration written to disk under `/etc/netplan/` will persist between reboots.
 
-## DHCP and static addressing
+## Using DHCP and static addressing
 
 To let the interface named 'enp3s0' get an address via DHCP, create a YAML file with the following:
 
@@ -52,9 +52,43 @@ network:
           addresses: [10.10.10.1, 1.1.1.1]
 ```
 
-## Wireless interfaces
+## Connecting multiple interfaces with DHCP
 
-Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access-point name and password should also be specified:
+Many systems now include more than one network interface. Servers will commonly need to connect to multiple networks, and may require that traffic to the Internet goes through a specific interface despite all of them providing a valid gateway.
+
+One can achieve the exact routing desired over DHCP by specifying a metric for the routes retrieved over DHCP, which will ensure some routes are preferred over others. In this example, 'enred' is preferred over 'engreen', as it has a lower route metric:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    enred:
+      dhcp4: yes
+      dhcp4-overrides:
+        route-metric: 100
+    engreen:
+      dhcp4: yes
+      dhcp4-overrides:
+        route-metric: 200
+```
+
+## Connecting to an open wireless network
+
+Netplan easily supports connecting to an open wireless network (one that is not secured by a password), only requiring that the access point is defined:
+
+```yaml
+network:
+  version: 2
+  wifis:
+    wl0:
+      access-points:
+        opennetwork: {}
+      dhcp4: yes
+```
+
+## Connecting to a WPA Personal wireless network
+
+Wireless devices use the 'wifis' key and share the same configuration options with wired ethernet devices. The wireless access point name and password should also be specified:
 
 ```yaml
 network:
@@ -73,7 +107,52 @@ network:
           password: "**********"
 ```
 
-## Multiple addresses on an interface
+## Connecting to WPA Enterprise wireless networks
+
+It is also common to find wireless networks secured using WPA or WPA2 Enterprise, which requires additional authentication parameters.
+
+For example, if the network is secured using WPA-EAP and TTLS:
+
+```yaml
+network:
+  version: 2
+  wifis:
+    wl0:
+      access-points:
+        workplace:
+          auth:
+            key-management: eap
+            method: ttls
+            anonymous-identity: "@internal.example.com"
+            identity: "joe@internal.example.com"
+            password: "v3ryS3kr1t"
+      dhcp4: yes
+```
+
+Or, if the network is secured using WPA-EAP and TLS:
+
+```yaml
+network:
+  version: 2
+  wifis:
+    wl0:
+      access-points:
+        university:
+          auth:
+            key-management: eap
+            method: tls
+            anonymous-identity: "@cust.example.com"
+            identity: "cert-joe@cust.example.com"
+            ca-certificate: /etc/ssl/cust-cacrt.pem
+            client-certificate: /etc/ssl/cust-crt.pem
+            client-key: /etc/ssl/cust-key.pem
+            client-key-password: "d3cryptPr1v4t3K3y"
+      dhcp4: yes
+```
+
+Many different modes of encryption are supported. See the [Netplan reference](/reference) page.
+
+## Using multiple addresses on a single interface
 
 The addresses key can take a list of addresses to assign to an interface:
 
@@ -92,7 +171,7 @@ network:
 Interface aliases (e.g. eth0:0) are not supported.
 
 
-## Multiple addresses with multiple gateways
+## Using multiple addresses with multiple gateways
 
 Similar to the example above, interfaces with multiple addresses can be
 configured with multiple gateways.
@@ -130,7 +209,7 @@ gateway address for one of the subnets. In that case, the route for that subnet 
 set to 100.
 
 
-## Network Manager
+## Using Network Manager as a renderer
 
 Netplan supports both networkd and Network Manager as backends.  You can specify which network backend should be used to configure particular devices by using the `renderer` key.  You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
 
@@ -140,7 +219,7 @@ network:
   renderer: NetworkManager
 ```
 
-## Bonding
+## Configuring interface bonding
 
 Bonding is configured by declaring a bond interface with a list of physical interfaces and a bonding mode. Below is an example of an active-backup bond that uses DHCP to obtain an address:
 
@@ -208,7 +287,7 @@ network:
         mii-monitor-interval: 1
 ```
 
-## Bridging
+## Configuring network bridges
 
 To create a very simple bridge consisting of a single device that uses DHCP, write:
 
@@ -256,7 +335,7 @@ Then libvirtd would be configured to use this bridge by adding the following con
 </network>
 ```
 
-## VLANs
+## Attaching VLANs to network interfaces
 
 To configure multiple VLANs with renamed interfaces:
 
@@ -288,7 +367,7 @@ network:
         search: [ domain1.example.com, domain2.example.com ]
 ```
 
-## Directly connected gateway
+## Reaching a directly connected gateway
 
 This allows setting up a default route, or any route, using the "on-link" keyword where the gateway is an IP address that is directly connected to the network even if the address does not match the subnet configured on the interface.
 
@@ -304,7 +383,7 @@ network:
         on-link: true
 ```
 
-## Source routing
+## Configuring source routing
 
 Route tables can be added to particular interfaces to allow routing between two networks:
 
@@ -342,7 +421,7 @@ network:
           table: 102
 ```
 
-## Loopback interface
+## Configuring a loopback interface
 
 Networkd does not allow creating new loopback devices, but a user can add new addresses to the standard loopback interface, lo, in order to have it considered a valid address on the machine as well as for custom routing:
 
@@ -357,7 +436,7 @@ network:
       addresses: [ 7.7.7.7/32 ]
 ```
 
-## Windows DHCP Server
+## Integration with a Windows DHCP Server
 
 For networks where DHCP is provided by a Windows Server using the dhcp-identifier key allows for interoperability:
 
@@ -369,6 +448,36 @@ network:
       dhcp4: yes
       dhcp-identifier: mac
 ```
+
+## Connecting an IP tunnel
+
+Tunnels allow an administrator to extend networks across the Internet by configuring two endpoints that will connect a special tunnel interface and do the routing required. Netplan supports SIT, GRE, IP-in-IP (ipip, ipip6, ip6ip6), IP6GRE, VTI and VTI6 tunnels.
+
+A common use of tunnels is to enable IPv6 connectivity on networks that only support IPv4. The example below show how such a tunnel might be configured.
+
+Here, 1.1.1.1 is the client's own IP address; 2.2.2.2 is the remote server's IPv4 address, "2001:dead:beef::2/64" is the client's IPv6 address as defined by the tunnel, and "2001:dead:beef::1" is the remote server's IPv6 address.
+
+Finally, "2001:cafe:face::1/64" is an address for the client within the routed IPv6 prefix:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses:
+        - 1.1.1.1/24
+        - "2001:cafe:face::1/64"
+      gateway4: 1.1.1.254
+  tunnels:
+    he-ipv6:
+      mode: sit
+      remote: 2.2.2.2
+      local: 1.1.1.1
+      addresses:
+        - "2001:dead:beef::2/64"
+      gateway6: "2001:dead:beef::1"
+```
+
 </div>
 <div class="col-4" markdown="1">
 
