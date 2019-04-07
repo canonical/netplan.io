@@ -22,7 +22,7 @@
   },
   "homepage": "https://netplan.io",
   "devDependencies": {
-    "autoprefixer": "9.5.0",
+    "autoprefixer": "9.5.1",
     "babel-core": "6.26.3",
     "babel-preset-es2015": "6.24.1",
     "node-sass": "4.11.0",
