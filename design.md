@@ -1,6 +1,6 @@
 ---
 layout: default
-desc: Design | netplan.io
+desc: Design | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'

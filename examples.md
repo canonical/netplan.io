@@ -1,6 +1,6 @@
 ---
 layout: default
-desc: Examples | netplan.io
+desc: Examples | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'

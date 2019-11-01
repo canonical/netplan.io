@@ -1,6 +1,6 @@
 ---
 layout: default
-desc: Troubleshooting | netplan.io
+desc: Troubleshooting | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'

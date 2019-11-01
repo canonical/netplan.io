@@ -5,11 +5,14 @@
   "scripts": {
     "lint-nginx": "gixy nginx.conf",
     "lint-scss": "sass-lint _sass/**/*.scss --verbose --no-exit",
-    "test": "yarn run lint-nginx && yarn run lint-scss",
+    "build": "yarn run build-css && yarn run build-js && yarn run build-jekyll",
+    "build-jekyll": "bundle exec jekyll build",
+    "build-css": "node-sass --include-path node_modules _sass --source-map true --output-style compressed --output css && postcss --use autoprefixer --replace css/**/*.css --no-map",
+    "build-js": "mkdir -p js/build/global-nav && cp node_modules/@canonical/global-nav/dist/global-nav.js js/build/global-nav",
     "watch": "watch -p '_sass/**/*.scss' -c 'yarn run build'",
-    "build": "node-sass --include-path node_modules _sass --output-style compressed --output css && postcss --use autoprefixer --replace css/**/*.css",
     "serve": "bundle exec jekyll serve -P ${PORT} -H 0.0.0.0",
-    "clean": "rm -rf node_modules yarn-error.log css css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle"
+    "test": "yarn run lint-nginx && yarn run lint-scss",
+    "clean": "rm -rf node_modules yarn-error.log css js *.log *.sqlite _site/ build/ .jekyll-metadata .bundle"
   },
   "repository": {
     "type": "git",
@@ -22,13 +25,16 @@
   },
   "homepage": "https://netplan.io",
   "devDependencies": {
-    "autoprefixer": "9.6.1",
+    "@canonical/global-nav": "2.1.0",
+    "global-nav": "2.0.2",
+    "lazysizes": "5.1.1",
+    "autoprefixer": "9.7.1",
     "babel-core": "6.26.3",
     "babel-preset-es2015": "6.24.1",
-    "node-sass": "4.12.0",
+    "node-sass": "4.13.0",
     "postcss-cli": "6.1.3",
     "sass-lint": "1.13.1",
-    "vanilla-framework": "2.3.0",
+    "vanilla-framework": "2.4.1",
     "watch-cli": "0.2.3"
   }
 }

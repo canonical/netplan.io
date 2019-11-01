@@ -1,6 +1,6 @@
 ---
 layout: default
-desc: FAQ | netplan.io
+desc: FAQ | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
