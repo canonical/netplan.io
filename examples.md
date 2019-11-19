@@ -4,7 +4,7 @@ desc: Examples | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
-    lastmod: 2018-04-11T17:20:30+00:00
+    lastmod: 2019-11-19T13:09:27+00:00
 ---
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
