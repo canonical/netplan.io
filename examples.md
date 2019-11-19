@@ -383,6 +383,22 @@ network:
         on-link: true
 ```
 
+For IPv6 the config would be very similar, with the notable difference being an additional scope: link host route to the router's address required:
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
+    routes:
+      - to: "2001:cafe:face::1/128"
+        scope: link
+      - to: "::/0"
+        via: "2001:cafe:face::1"
+        on-link: true
+```
+
 ## Configuring source routing
 
 Route tables can be added to particular interfaces to allow routing between two networks:
