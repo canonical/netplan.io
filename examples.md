@@ -4,7 +4,7 @@ desc: Examples | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
-    lastmod: 2018-04-11T17:20:30+00:00
+    lastmod: 2019-11-19T13:09:27+00:00
 ---
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
@@ -380,6 +380,22 @@ network:
     routes:
       - to: 0.0.0.0/0
         via: 9.9.9.9
+        on-link: true
+```
+
+For IPv6 the config would be very similar, with the notable difference being an additional scope: link host route to the router's address required:
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
+    routes:
+      - to: "2001:cafe:face::1/128"
+        scope: link
+      - to: "::/0"
+        via: "2001:cafe:face::1"
         on-link: true
 ```
 
