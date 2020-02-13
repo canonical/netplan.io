@@ -129,7 +129,7 @@ exit 0
 
 First, if netplan does not have the features or functionality for a particular use-case we would really like to know about it. Please help us and the community by filing a [bug against netplan](https://bugs.launchpad.net/netplan/+filebug) on Launchpad.
 
-On a running system, netplan can be removed by installing ifupdown and configuring `/etc/network/interfaces` manually as users have done before.
+On a running system, netplan can be removed by installing ifupdown, configuring `/etc/network/interfaces` manually as users have done before and finally removing the netplan.io package altogether. To apply the new setup without rebooting, users can restart the affected interfaces (i.e. using the `ifdown`/`ifup` commands) and then stop/disable the `systemd-networkd` and `systemd-networkd.socket` units respectively.
 
 At install time, a user can opt to use ifupdown by preseeding `netcfg/do_not_use_netplan=true`. This is done by adding the preseed line to the command line when booting the installation media (i.e. at install media boot menu, press F6, type 'e', and add to the command line).
 
