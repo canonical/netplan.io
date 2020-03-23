@@ -5,8 +5,8 @@
 
 // Import Vanilla
 @import "vanilla-framework/scss/build";
-
 @import "patterns_syntax-highlight";
+
 @include vfio-p-syntax-highlight;
 
 // Custom styles
