@@ -4,7 +4,7 @@ desc: Examples | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
-    lastmod: 2019-11-19T13:09:27+00:00
+    lastmod: 2020-04-29T12:19:10+00:00
 ---
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
@@ -493,6 +493,27 @@ network:
         - "2001:dead:beef::2/64"
       gateway6: "2001:dead:beef::1"
 ```
+
+## Configuring SR-IOV Virtual Functions
+
+For SR-IOV network cards, it is possible to dynamically allocate Virtual Function interfaces for every configured Physical Function. In netplan, a VF is defined by having a link: property pointing to the parent PF.
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    eno1:
+      mtu: 9000
+    enp1s16f1:
+      link: eno1
+      addresses : [ "10.15.98.25/24" ]
+    vf1:
+      match:
+        name: enp1s16f[2-3]
+      link: eno1
+      addresses : [ "10.15.99.25/24" ]
+```
+
 
 </div>
 <div class="col-4" markdown="1">
