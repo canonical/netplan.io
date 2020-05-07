@@ -25,18 +25,18 @@
   },
   "homepage": "https://netplan.io",
   "devDependencies": {
-    "@canonical/global-nav": "2.1.0",
-    "autoprefixer": "9.7.1",
+    "@canonical/global-nav": "2.4.1",
+    "autoprefixer": "9.7.6",
     "babel-core": "6.26.3",
     "babel-preset-es2015": "6.24.1",
     "global-nav": "2.0.2",
-    "lazysizes": "5.1.1",
-    "node-sass": "4.13.0",
-    "postcss-cli": "6.1.3",
-    "stylelint": "13.2.1",
+    "lazysizes": "5.2.0",
+    "node-sass": "4.14.1",
+    "postcss-cli": "7.1.1",
+    "stylelint": "13.3.3",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.0.0",
-    "vanilla-framework": "2.4.1",
+    "vanilla-framework": "2.10.1",
     "watch-cli": "0.2.3"
   }
 }
