@@ -606,13 +606,9 @@ Example:
      VFs as are defined in the netplan configuration. This should be used for special
      cases only.
 
-     **Requires feature: sriov**
-
 ## Properties for device type ``modems:``
 GSM/CDMA modem configuration is only supported for the ``NetworkManager``
 backend. ``systemd-networkd`` does not support modems.
-
-**Requires feature: modems**
 
 ``apn`` (scalar)
 
