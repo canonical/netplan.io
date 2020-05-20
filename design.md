@@ -245,10 +245,6 @@ lxd, libvirt, and others might include network config by shipping a /{etc,lib}/n
 
 Alice is done with the usb0 device that was added and now wants to purge the configuration from the system.
 
-### Show current config
-
-Configuration is a merge of all `/etc/netplan/\*.yaml`. The `netplan config show` command will read the current on-disk configuration and merge any configs in `/etc/netplan/\*.yaml` merge them and produce a YAML formatted output to stdout.
-
 </div>
 <div class="col-4" markdown="1">
 
