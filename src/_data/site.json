@@ -1,0 +1,9 @@
+{
+  "email": "webteam@canonical.com",
+  "description": "Backend-agnostic network configuration in YAML",
+  "baseurl": "https://netplan.io/",
+  "navigation": {
+    "text": "Home",
+    "url": "/"
+  }
+}
