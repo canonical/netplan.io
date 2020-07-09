@@ -3,27 +3,18 @@
   "description": "Codebase for https://netplan.io",
   "main": "_site/index.html",
   "scripts": {
-<<<<<<< Updated upstream
-    "start": "yarn run build && yarn run serve",
-    "lint-nginx": "gixy nginx.conf",
-    "lint-scss": "stylelint _sass/**/*.scss",
-    "build": "yarn run build-css && yarn run build-js && yarn run build-jekyll",
-    "build-jekyll": "bundle exec jekyll build",
-    "build-css": "node-sass --include-path node_modules _sass --source-map true --output-style compressed --output css && postcss --use autoprefixer --replace css/**/*.css --no-map",
-=======
     "start": "yarn run build && concurrently --raw 'yarn run watch-css' 'yarn run watch-js' 'yarn run serve'",
     "lint-nginx": "gixy nginx.conf",
-    "lint-scss": "sass-lint _sass/**/*.scss --verbose --no-exit",
+    "lint-scss": "stylelint _sass/**/*.scss",
     "build": "yarn run build-css && yarn run build-js && yarn run build-site",
-    "build-site": "eleventy --formats=html,css,js --input=src --output=_site",
-    "build-css": "node-sass --include-path node_modules src/_sass --source-map true --output-style compressed --output src/css && postcss --use autoprefixer --replace css/**/*.css --no-map",
->>>>>>> Stashed changes
-    "build-js": "mkdir -p js/build/global-nav && cp node_modules/@canonical/global-nav/dist/global-nav.js js/build/global-nav",
+    "build-site": "eleventy --formats=html,css,js,xml,md --input=src --output=_site",
+    "build-css": "node-sass --include-path node_modules src/_sass --source-map true --output-style compressed --output src/css && postcss --use autoprefixer --replace 'src/css/**/*.css'",
+    "build-js": "mkdir -p src/js/build && cp node_modules/@canonical/global-nav/dist/global-nav.js src/js/build",
     "watch-css": "watch -p 'src/sass/**/*.scss' -c 'yarn run build-css'",
     "watch-js": "watch -p 'node_modules/@canonical/global-nav/dist/global-nav.js' -c 'yarn run build-js'",
-    "serve": "eleventy --formats=html,scss,css,js --input=src --output=_site --watch --serve --port $PORT",
+    "serve": "eleventy --formats=html,scss,css,js,xml,md --input=src --output=_site --watch --serve --port $PORT",
     "test": "yarn run lint-nginx && yarn run lint-scss",
-    "clean": "rm -rf node_modules yarn-error.log css js *.log *.sqlite _site/ build/ .bundle"
+    "clean": "rm -rf node_modules yarn-error.log css js *.log *.sqlite _site/ build/"
   },
   "repository": {
     "type": "git",
@@ -35,19 +26,13 @@
     "url": "https://github.com/ubuntudesign/netplan.io/issues"
   },
   "homepage": "https://netplan.io",
-  "devDependencies": {
-<<<<<<< Updated upstream
+  "dependencies": {
+    "@11ty/eleventy": "0.10.0",
     "@canonical/global-nav": "2.4.1",
     "autoprefixer": "9.8.4",
-=======
-    "@11ty/eleventy": "0.10.0",
-    "@canonical/global-nav": "2.1.0",
-    "lazysizes": "5.1.1",
-    "autoprefixer": "9.7.1",
->>>>>>> Stashed changes
+    "concurrently": "5.2.0",
     "babel-core": "6.26.3",
     "babel-preset-es2015": "6.24.1",
-    "global-nav": "2.0.2",
     "lazysizes": "5.2.2",
     "node-sass": "4.14.1",
     "postcss-cli": "7.1.1",
