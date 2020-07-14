@@ -127,8 +127,7 @@ page for more information on how to debug these issues.
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
-- TOC
-  {:toc}
+[[toc]]
 
 </div>
 </div>

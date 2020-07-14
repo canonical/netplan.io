@@ -1193,8 +1193,7 @@ This is a complex example which shows most available features:
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
-* TOC
-{:toc}
+[[toc]]
 
 </div>
 </div>

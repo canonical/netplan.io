@@ -250,8 +250,7 @@ Alice is done with the usb0 device that was added and now wants to purge the con
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
-* TOC
-{:toc}
+[[toc]]
 
 </div>
 </div>

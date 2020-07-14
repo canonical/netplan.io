@@ -148,8 +148,8 @@ Finally, if there is a bug use the links at the bottom of the page to report a b
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
-* TOC
-{:toc}
+ 
+[[toc]]
 
 </div>
 </div>
