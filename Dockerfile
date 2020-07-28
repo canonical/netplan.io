@@ -5,6 +5,7 @@
 FROM node:14-slim AS yarn-dependencies
 WORKDIR /srv
 ADD package.json .
+ADD yarn.lock .
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
 
 # Build stage: Run "yarn run build-js"
@@ -18,7 +19,7 @@ RUN yarn run build-js
 # ===
 FROM yarn-dependencies AS build-css
 WORKDIR /srv
-COPY src/_sass src/_sass
+COPY src/sass src/sass
 RUN yarn run build-css
 
 # Build stage: Run "yarn run build-site"
