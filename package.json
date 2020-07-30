@@ -3,7 +3,7 @@
   "description": "Codebase for https://netplan.io",
   "main": "_site/index.html",
   "scripts": {
-    "start": "yarn run build && concurrently --raw 'yarn run watch-css' 'yarn run watch-js' 'yarn run serve'",
+    "start": "yarn run build && concurrently --kill-others --raw 'yarn run watch-css' 'yarn run watch-js' 'yarn run serve'",
     "lint-nginx": "gixy nginx.conf",
     "lint-scss": "stylelint src/sass/**/*.scss",
     "build": "yarn run build-css && yarn run build-js && yarn run build-site",

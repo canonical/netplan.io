@@ -27,6 +27,7 @@ RUN yarn run build-css
 FROM yarn-dependencies AS build-site
 WORKDIR /srv
 COPY src/ src/
+COPY .eleventy.js .
 COPY --from=build-css /srv/src/css src/css
 COPY --from=build-js /srv/src/js src/js
 RUN yarn run build-site
@@ -43,7 +44,6 @@ WORKDIR /srv
 RUN apt-get update && apt-get install --no-install-recommends --yes nginx
 
 # Import code, build assets and mirror list
-RUN rm -rf package.json yarn.lock .babelrc webpack.config.js nginx.conf
 COPY --from=build-site srv/_site .
 
 ARG BUILD_ID
