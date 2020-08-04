@@ -520,8 +520,7 @@ network:
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
-* TOC
-{:toc}
+[[toc]]
 
 </div>
 </div>

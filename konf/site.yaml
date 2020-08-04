@@ -4,8 +4,6 @@ image: prod-comms.docker-registry.canonical.com/netplan.io
 
 useProxy: false
 
-readinessPath: /
-
 # Overrides for production
 production:
   replicas: 5
