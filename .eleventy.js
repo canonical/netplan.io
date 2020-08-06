@@ -2,16 +2,20 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.setUseGitIgnore(false);
   // TOC generator
   let markdownIt = require("markdown-it");
-  let markdownItToc = require("markdown-it-table-of-contents");
+  let markdownItToc = require("markdown-it-toc-done-right");
   let markdownAnchor = require("markdown-it-anchor");
+  let definitionLists = require('markdown-it-deflist')
   let tocOptions = {
-    includeLevel: [1,2,3,4]
+    level: [1,2,3,4],
+    listType: "ul",
+    listClass: "markdown-list"
   }
   let options = {
     html: true,
     breaks: true,
-    linkify: true
+    xhtmlOut: true,
+    typographer: true,
   };
-  let markdownLib = markdownIt(options).use(markdownItToc, tocOptions).use(markdownAnchor);
+  let markdownLib = markdownIt(options).use(markdownItToc, tocOptions).use(markdownAnchor).use(definitionLists);
   eleventyConfig.setLibrary("md", markdownLib);
 };
