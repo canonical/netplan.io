@@ -4,7 +4,7 @@ desc: Reference | Netplan
 sitemap:
     priority: 1.0
     changefreq: 'monthly'
-    lastmod: 2020-05-14T07:59:11+00:00
+    lastmod: 2020-09-04T10:40:11+00:00
 ---
 <div class="p-strip--light is-bordered is-shallow">
   <div class="row">
@@ -62,8 +62,8 @@ configuration files. Their primary purpose is to serve as anchor names for
 composite devices, for example to enumerate the members of a bridge that is
 currently being defined.
 
-If an interface is defined with an ID in a configuration file; it will be
-brought up by the applicable renderer. To not have netplan touch an interface
+(Since 0.97) If an interface is defined with an ID in a configuration file; it will
+be brought up by the applicable renderer. To not have netplan touch an interface
 at all, it should be completely omitted from the netplan configuration files.
 
 There are two physically/structurally different classes of device definitions,
@@ -108,8 +108,8 @@ Virtual devices
      :   Current interface name. Globs are supported, and the primary use case
          for matching on names, as selecting one fixed name can be more easily
          achieved with having no ``match:`` at all and just using the ID (see
-         above). Note that currently only networkd supports globbing,
-         NetworkManager does not.
+         above).
+         (``NetworkManager``: as of v1.14.0)
 
      ``macaddress`` (scalar)
      :   Device's MAC address in the form "XX:XX:XX:XX:XX:XX". Globs are not
@@ -152,10 +152,80 @@ Virtual devices
 
 :    Enable wake on LAN. Off by default.
 
-``emit-lldp`` (bool)
+``emit-lldp`` (bool) – since **0.99**
 
 :    (networkd backend only) Whether to emit LLDP packets. Off by default.
 
+``openvswitch`` (mapping) – since **0.100**
+
+:    This provides additional configuration for the network device for openvswitch.
+     If openvswitch is not available on the system, netplan treats the presence of
+     openvswitch configuration as an error.
+
+     Any supported network device that is declared with the ``openvswitch`` mapping
+     (or any bond/bridge that includes an interface with an openvswitch configuration)
+     will be created in openvswitch instead of the defined renderer.
+     In the case of a ``vlan`` definition declared the same way, netplan will create
+     a fake VLAN bridge in openvswitch with the requested vlan properties.
+
+     ``external-ids`` (mapping) – since **0.100**
+     :   Passed-through directly to OpenVSwitch
+
+     ``other-config`` (mapping) – since **0.100**
+     :   Passed-through directly to OpenVSwitch
+
+     ``lacp`` (scalar) – since **0.100**
+     :   Valid for bond interfaces. Accepts ``active``, ``passive`` or ``off`` (the default).
+
+     ``fail-mode`` (scalar) – since **0.100**
+     :   Valid for bridge interfaces. Accepts ``secure`` or ``standalone`` (the default).
+
+     ``mcast-snooping`` (bool) – since **0.100**
+     :   Valid for bridge interfaces. False by default.
+
+     ``protocols`` (sequence of scalars) – since **0.100**
+     :   Valid for bridge interfaces or the network section. List of protocols to be used when
+         negotiating a connection with the controller. Accepts ``OpenFlow10``, ``OpenFlow11``,
+         ``OpenFlow12``, ``OpenFlow13``, ``OpenFlow14``, ``OpenFlow15`` and ``OpenFlow16``.
+
+     ``rstp`` (bool) – since **0.100**
+     :   Valid for bridge interfaces. False by default.
+
+     ``controller`` (mapping) – since **0.100**
+     :   Valid for bridge interfaces. Specify an external OpenFlow controller.
+
+          ``addresses`` (sequence of scalars)
+          :   Set the list of addresses to use for the controller targets. The
+              syntax of these addresses is as defined in ovs-vsctl(8). Example:
+              addresses: ``[tcp:127.0.0.1:6653, "ssl:[fe80::1234%eth0]:6653"]``
+
+          ``connection-mode`` (scalar)
+          :   Set the connection mode for the controller. Supported options are
+              ``in-band`` and ``out-of-band``. The default is ``in-band``.
+
+     ``ports`` (sequence of sequence of scalars) – since **0.100**
+     :   OpenvSwitch patch ports. Each port is declared as a pair of names
+         which can be referenced as interfaces in dependent virtual devices
+         (bonds, bridges).
+
+         Example:
+
+             openvswitch:
+               ports:
+                 - [patch0-1, patch1-0]
+
+     ``ssl`` (mapping) – since **0.100**
+     :   Valid for global ``openvswitch`` settings. Options for configuring SSL
+         server endpoint for the switch.
+
+          ``ca-cert`` (scalar)
+          :   Path to a file containing the CA certificate to be used.
+
+          ``certificate`` (scalar)
+          :   Path to a file containing the server certificate.
+
+          ``private-key`` (scalar)
+          :   Path to a file containing the private key for the server.
 
 ## Common properties for all device types
 
@@ -166,10 +236,10 @@ Virtual devices
     in ``network:``, for a device type (in e. g. ``ethernets:``) or
     for a particular device definition. Default is ``networkd``.
 
-    The ``renderer`` property has one additional acceptable value for vlan objects
-    (i. e. defined in ``vlans:``): ``sriov``. If a vlan is defined with the ``sriov``
-    renderer for an SR-IOV Virtual Function interface, this causes netplan to set
-    up a hardware VLAN filter for it. There can be only one defined per VF.
+    (Since 0.99) The ``renderer`` property has one additional acceptable value for vlan
+    objects (i. e. defined in ``vlans:``): ``sriov``. If a vlan is defined with the
+    ``sriov`` renderer for an SR-IOV Virtual Function interface, this causes netplan to
+    set up a hardware VLAN filter for it. There can be only one defined per VF.
 
 ``dhcp4`` (bool)
 
@@ -191,7 +261,7 @@ Virtual devices
     Note that **``rdnssd``**(8) is required to use RDNSS with networkd. No extra
     software is required for NetworkManager.
 
-``ipv6-mtu`` (scalar)
+``ipv6-mtu`` (scalar) – since **0.98**
 :   Set the IPv6 MTU (only supported with `networkd` backend). Note
     that needing to set this is an unusual requirement.
 
@@ -250,7 +320,7 @@ Virtual devices
     When enabled, accept Router Advertisements. When disabled, do not respond to
     Router Advertisements.  If unset use the host kernel default setting.
 
-``addresses`` (sequence of scalars)
+``addresses`` (sequence of scalars and mappings)
 
 :   Add static addresses to the interface in addition to the ones received
     through DHCP or RA. Each sequence entry is in CIDR notation, i. e. of the
@@ -261,13 +331,41 @@ Virtual devices
     configured and DHCP is disabled, the interface may still be brought online,
     but will not be addressable from the network.
 
+    In addition to the addresses themselves one can specify configuration
+    parameters as mappings. Current supported options are:
+
+    ``lifetime`` (scalar) – since **0.100**
+    :    Default: ``forever``. This can be ``forever`` or ``0`` and corresponds
+         to the ``PreferredLifetime`` option in ``systemd-networkd``'s Address
+         section. Currently supported on the ``networkd`` backend only.
+
+    ``label`` (scalar) – since **0.100**
+    :    An IP address label, equivalent to the ``ip address label``
+         command. Currently supported on the ``networkd`` backend only.
+
     Example: ``addresses: [192.168.14.2/24, "2001:1::1/64"]``
 
-``ipv6-address-generation`` (scalar)
+    Example:
+
+        ethernets:
+          eth0:
+            addresses:
+              - 10.0.0.15/24:
+                  lifetime: 0
+                  label: "maas"
+              - "2001:1::1/64"
+
+``ipv6-address-generation`` (scalar) – since **0.99**
 
 :   Configure method for creating the address for use with RFC4862 IPv6
     Stateless Address Autoconfiguration (only supported with `NetworkManager`
     backend). Possible values are ``eui64`` or ``stable-privacy``.
+
+``ipv6-address-token`` (scalar) – since **0.100**
+
+:   Define an IPv6 address token for creating a static interface identifier for
+    IPv6 Stateless Address Autoconfiguration. This is mutually exclusive with
+    ``ipv6-address-generation``.
 
 ``gateway4``, ``gateway6`` (scalar)
 
@@ -352,11 +450,11 @@ similar to ``gateway*``, and ``search:`` is a list of search domains.
             dhcp6: true
             optional-addresses: [ ipv4-ll, dhcp6 ]
 
-``routes`` (mapping)
+``routes`` (sequence of mappings)
 
 :   Configure static routing for the device; see the ``Routing`` section below.
 
-``routing-policy`` (mapping)
+``routing-policy`` (sequence of mappings)
 
 :   Configure policy routing for the device; see the ``Routing`` section below.
 
@@ -430,11 +528,11 @@ client processes as specified in the netplan YAML.
           on a preferred interface. Available for both the ``networkd`` and
           ``NetworkManager`` backends.
 
-     ``use-domains`` (scalar)
-     :    Takes a boolean, or the special value "route". When true, the domain 
+     ``use-domains`` (scalar) – since **0.98**
+     :    Takes a boolean, or the special value "route". When true, the domain
           name received from the DHCP server will be used as DNS search domain
           over this link, similar to the effect of the Domains= setting. If set
-          to "route", the domain name received from the DHCP server will be 
+          to "route", the domain name received from the DHCP server will be
           used for routing DNS queries only, but not for searching, similar to
           the effect of the Domains= setting when the argument is prefixed with
           "~".
@@ -459,6 +557,7 @@ These options are available for all types of interfaces.
 
      ``from`` (scalar)
      :    Set a source IP address for traffic going through the route.
+          (``NetworkManager``: as of v1.8.0)
 
      ``to`` (scalar)
      :    Destination address for the route.
@@ -469,6 +568,7 @@ These options are available for all types of interfaces.
      ``on-link`` (bool)
      :    When set to "true", specifies that the route is directly connected
           to the interface.
+          (``NetworkManager``: as of v1.12.0 for IPv4 and v1.18.0 for IPv6)
 
      ``metric`` (scalar)
      :    The relative priority of the route. Must be a positive integer value.
@@ -479,7 +579,8 @@ These options are available for all types of interfaces.
 
      ``scope`` (scalar)
      :    The route scope, how wide-ranging it is to the network. Possible
-          values are "global", "link", or "host".
+          values are "global", "link", or "host". ``NetworkManager`` does
+          not support setting a scope.
 
      ``table`` (scalar)
      :    The table number to use for the route. In some scenarios, it may be
@@ -488,6 +589,7 @@ These options are available for all types of interfaces.
           parameter. Allowed values are positive integers starting from 1.
           Some values are already in use to refer to specific routing tables:
           see ``/etc/iproute2/rt_tables``.
+          (``NetworkManager``: as of v1.10.0)
 
 ``routing-policy`` (mapping)
 
@@ -576,7 +678,7 @@ interfaces, as well as individual wifi networks, by means of the ``auth`` block.
      :    Password to use to decrypt the private key specified in
           ``client-key`` if it is encrypted.
 
-     ``phase2-auth`` (scalar)
+     ``phase2-auth`` (scalar) – since **0.99**
      :    Phase 2 authentication mechanism.
 
 
@@ -584,7 +686,7 @@ interfaces, as well as individual wifi networks, by means of the ``auth`` block.
 Ethernet device definitions, beyond common ones described above, also support
 some additional properties that can be used for SR-IOV devices.
 
-``link`` (scalar)
+``link`` (scalar) – since **0.99**
 
 :    (SR-IOV devices only) The ``link`` property declares the device as a
      Virtual Function of the selected Physical Function device, as identified
@@ -597,7 +699,7 @@ Example:
       enp1s16f1:
         link: enp1
 
-``virtual-function-count`` (scalar)
+``virtual-function-count`` (scalar) – since **0.99**
 
 :    (SR-IOV devices only) In certain special cases VFs might need to be
      configured outside of netplan. For such configurations ``virtual-function-count``
@@ -606,60 +708,64 @@ Example:
      VFs as are defined in the netplan configuration. This should be used for special
      cases only.
 
+     **Requires feature: sriov**
+
 ## Properties for device type ``modems:``
 GSM/CDMA modem configuration is only supported for the ``NetworkManager``
 backend. ``systemd-networkd`` does not support modems.
 
-``apn`` (scalar)
+**Requires feature: modems**
+
+``apn`` (scalar) – since **0.99**
 
 :    Set the carrier APN (Access Point Name). This can be omitted if
      ``auto-config`` is enabled.
 
-``auto-config`` (bool)
+``auto-config`` (bool) – since **0.99**
 
 :    Specify whether to try and autoconfigure the modem by doing a lookup of
      the carrier against the Mobile Broadband Provider database. This may not
      work for all carriers.
 
-``device-id`` (scalar)
+``device-id`` (scalar) – since **0.99**
 
 :    Specify the device ID (as given by the WWAN management service) of the
      modem to match. This can be found using ``mmcli``.
 
-``network-id`` (scalar)
+``network-id`` (scalar) – since **0.99**
 
 :    Specify the Network ID (GSM LAI format). If this is specified, the device
      will not roam networks.
 
-``number`` (scalar)
+``number`` (scalar) – since **0.99**
 
 :    The number to dial to establish the connection to the mobile broadband
      network. (Deprecated for GSM)
 
-``password`` (scalar)
+``password`` (scalar) – since **0.99**
 
 :    Specify the password used to authenticate with the carrier network. This
      can be omitted if ``auto-config`` is enabled.
 
-``pin`` (scalar)
+``pin`` (scalar) – since **0.99**
 
 :    Specify the SIM PIN to allow it to operate if a PIN is set.
 
-``sim-id`` (scalar)
+``sim-id`` (scalar) – since **0.99**
 
 :    Specify the SIM unique identifier (as given by the WWAN management service)
      which this connection applies to. If given, the connection will apply to
      any device also allowed by ``device-id`` which contains a SIM card matching
      the given identifier.
 
-``sim-operator-id`` (scalar)
+``sim-operator-id`` (scalar) – since **0.99**
 
 :    Specify the MCC/MNC string (such as "310260" or "21601") which identifies
      the carrier that this connection should apply to. If given, the connection
      will apply to any device also allowed by ``device-id`` and ``sim-id``
      which contains a SIM card provisioned by the given operator.
 
-``username`` (scalar)
+``username`` (scalar) – since **0.99**
 
 :    Specify the username used to authentiate with the carrier network. This
      can be omitted if ``auto-config`` is enabled.
@@ -694,27 +800,27 @@ wpasupplicant installed if you let the ``networkd`` renderer handle wifi.
           and ``adhoc`` (peer to peer networks without a central access point).
           ``ap`` is only supported with NetworkManager.
 
-     ``bssid`` (scalar)
+     ``bssid`` (scalar) – since **0.99**
      :    If specified, directs the device to only associate with the given
           access point.
 
-     ``band`` (scalar)
+     ``band`` (scalar) – since **0.99**
      :    Possible bands are ``5GHz`` (for 5GHz 802.11a) and ``2.4GHz``
           (for 2.4GHz 802.11), do not restrict the 802.11 frequency band of the
           network if unset (the default).
 
-     ``channel`` (scalar)
+     ``channel`` (scalar) – since **0.99**
      :    Wireless channel to use for the Wi-Fi connection. Because channel
           numbers overlap between bands, this property takes effect only if
           the ``band`` property is also set.
 
-     ``hidden`` (bool)
+     ``hidden`` (bool) – since **0.100**
      :    Set to ``true`` to change the SSID scan technique for connecting to 
           hidden WiFi networks. Note this may have slower performance compared
           to ``false`` (the default) when connecting to publicly broadcast
           SSIDs.
 
-``wakeonwlan`` (sequence of scalars)
+``wakeonwlan`` (sequence of scalars) – since **0.99**
 
 :    This enables WakeOnWLan on supported devices. Not all drivers support all
      options. May be any combination of ``any``, ``disconnect``, ``magic_pkt``,
@@ -826,6 +932,8 @@ wpasupplicant installed if you let the ``networkd`` renderer handle wifi.
           ``balance-rr`` (round robin). Possible values are ``balance-rr``,
           ``active-backup``, ``balance-xor``, ``broadcast``, ``802.3ad``,
           ``balance-tlb``, and ``balance-alb``.
+          For OpenVSwitch ``active-backup`` and the additional modes
+          ``balance-tcp`` and ``balance-slb`` are supported.
 
      ``lacp-rate`` (scalar)
      :    Set the rate at which LACPDUs are transmitted. This is only useful
@@ -966,8 +1074,9 @@ more general information about tunnels.
 ``mode`` (scalar)
 
 :   Defines the tunnel mode. Valid options are ``sit``, ``gre``, ``ip6gre``,
-    ``ipip``, ``ipip6``, ``ip6ip6``, ``vti``, and ``vti6``. Additionally,
-    the ``networkd`` backend also supports ``gretap`` and ``ip6gretap`` modes.
+    ``ipip``, ``ipip6``, ``ip6ip6``, ``vti``, ``vti6`` and ``wireguard``.
+    Additionally, the ``networkd`` backend also supports ``gretap`` and
+    ``ip6gretap`` modes.
     In addition, the ``NetworkManager`` backend supports ``isatap`` tunnels.
 
 ``local`` (scalar)
@@ -981,20 +1090,31 @@ more general information about tunnels.
 ``key``  (scalar or mapping)
 
 :   Define keys to use for the tunnel. The key can be a number or a dotted
-    quad (an IPv4 address). It is used for identification of IP transforms.
-    This is only required for ``vti`` and ``vti6`` when using the networkd
-    backend, and for ``gre`` or ``ip6gre`` tunnels when using the
-    NetworkManager backend.
+    quad (an IPv4 address). For ``wireguard`` it can be a base64-encoded
+    private key or (as of ``networkd`` v242+) an absolute path to a file,
+    containing the private key (since 0.100).
+    It is used for identification of IP transforms. This is only required
+    for ``vti`` and ``vti6`` when using the networkd backend, and for
+    ``gre`` or ``ip6gre`` tunnels when using the NetworkManager backend.
 
     This field may be used as a scalar (meaning that a single key is
-    specified and to be used for both input and output key), or as a mapping,
-    where you can then further specify ``input`` and ``output``.
+    specified and to be used for input, output and private key), or as a
+    mapping, where you can further specify ``input``/``output``/``private``.
 
     ``input`` (scalar)
     :    The input key for the tunnel
 
     ``output`` (scalar)
     :    The output key for the tunnel
+
+    ``private`` (scalar) – since **0.100**
+    :    A base64-encoded private key required for Wireguard tunnels. When the
+         ``systemd-networkd`` backend (v242+) is used, this can also be an
+         absolute path to a file containing the private key.
+
+``keys`` (scalar or mapping)
+
+:   Alternate name for the ``key`` field. See above.
 
 Examples:
 
@@ -1014,10 +1134,91 @@ Examples:
         remote: ...
         key: 59568549
 
-``keys`` (scalar or mapping)
+    tunnels:
+      wg0:
+        mode: wireguard
+        addresses: [...]
+        peers:
+          - keys:
+              public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+              shared: /path/to/shared.key
+            ...
+        key: mNb7OIIXTdgW4khM7OFlzJ+UPs7lmcWHV7xjPgakMkQ=
 
-:   Alternate name for the ``key`` field. See above.
+    tunnels:
+      wg0:
+        mode: wireguard
+        addresses: [...]
+        peers:
+          - keys:
+              public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+            ...
+        keys:
+          private: /path/to/priv.key
 
+
+Wireguard specific keys:
+
+    ``mark`` (scalar) – since **0.100**
+    :   Firewall mark for outgoing WireGuard packets from this interface,
+        optional.
+
+    ``port`` (scalar) – since **0.100**
+    :   UDP port to listen at or ``auto``. Optional, defaults to ``auto``.
+
+    ``peers`` (sequence of mappings) – since **0.100**
+    :   A list of peers, each having keys documented below.
+
+    Example:
+
+    tunnels:
+        wg0:
+            mode: wireguard
+            key: /path/to/private.key
+            mark: 42
+            port: 5182
+            peers:
+                - keys:
+                      public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+                  allowed-ips: [0.0.0.0/0, "2001:fe:ad:de:ad:be:ef:1/24"]
+                  keepalive: 23
+                  endpoint: 1.2.3.4:5
+                - keys:
+                      public: M9nt4YujIOmNrRmpIRTmYSfMdrpvE7u6WkG8FY8WjG4=
+                      shared: /some/shared.key
+                  allowed-ips: [10.10.10.20/24]
+                  keepalive: 22
+                  endpoint: 5.4.3.2:1
+
+    ``endpoint`` (scalar) – since **0.100**
+    :   Remote endpoint IPv4/IPv6 address or a hostname, followed by a colon
+        and a port number.
+
+    ``allowed-ips`` (sequence of scalars) – since **0.100**
+    :    A list of IP (v4 or v6) addresses with CIDR masks from which this peer
+         is allowed to send incoming traffic and to which outgoing traffic for
+         this peer is directed. The catch-all 0.0.0.0/0 may be specified for
+         matching all IPv4 addresses, and ::/0 may be specified for matching
+         all IPv6 addresses.
+
+    ``keepalive`` (scalar) – since **0.100**
+    :    An interval in seconds, between 1 and 65535 inclusive, of how often to
+         send an authenticated empty packet to the peer for the purpose of
+         keeping a stateful firewall or NAT mapping valid persistently. Optional.
+
+    ``keys`` (mapping) – since **0.100**
+    :    Define keys to use for the Wireguard peers.
+
+         This field can be used as a mapping, where you can further specify the
+         ``public`` and ``shared`` keys.
+
+         ``public`` (scalar) – since **0.100**
+         :    A base64-encoded public key, requried for Wireguard peers.
+
+         ``shared`` (scalar) – since **0.100**
+         :    A base64-encoded preshared key. Optional for Wireguard peers.
+              When the ``systemd-networkd`` backend (v242+) is used, this can
+              also be an absolute path to a file containing the preshared key.
 
 ## Properties for device type ``vlans:``
 
@@ -1052,24 +1253,24 @@ backends may require to record some of their own parameters in netplan,
 especially if the netplan definitions are generated automatically by the
 consumer of that backend. Currently, this is only used with ``NetworkManager``.
 
-``networkmanager`` (mapping)
+``networkmanager`` (mapping) – since **0.99**
 
 :    Keeps the NetworkManager-specific configuration parameters used by the
      daemon to recognize connections.
 
-     ``name`` (scalar)
+     ``name`` (scalar) – since **0.99**
      :    Set the display name for the connection.
 
-     ``uuid`` (scalar)
+     ``uuid`` (scalar) – since **0.99**
      :    Defines the UUID (unique identifier) for this connection, as
           generated by NetworkManager itself.
 
-     ``stable-id`` (scalar)
+     ``stable-id`` (scalar) – since **0.99**
      :    Defines the stable ID (a different form of a connection name) used
           by NetworkManager in case the name of the connection might otherwise
           change, such as when sharing connections between users.
 
-     ``device`` (scalar)
+     ``device`` (scalar) – since **0.99**
      :    Defines the interface name for which this connection applies.
 
 
@@ -1157,7 +1358,6 @@ This is a complex example which shows most available features:
         switchports:
           # all cards on second PCI bus unconfigured by
           # themselves, will be added to br0 below
-          # note: globbing is not supported by NetworkManager
           match:
             name: enp2*
           mtu: 1280
