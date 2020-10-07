@@ -5,8 +5,11 @@
 
 // Import Vanilla
 @import "vanilla-framework/scss/build";
-@import "patterns_syntax-highlight";
 
+// import cookie policy
+@import "@canonical/cookie-policy/build/css/cookie-policy";
+
+@import "patterns_syntax-highlight";
 @include vfio-p-syntax-highlight;
 
 // Custom styles
