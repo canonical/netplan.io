@@ -62,5 +62,4 @@ env[23]/
 # Project-specific ignores
 js/app.js.map
 css
-js/build
-src/js/global-nav.js
+src/js/build

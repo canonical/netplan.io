@@ -10,6 +10,10 @@
       {{ content }}
     {% include footer.html %}
     <script src="/js/build/global-nav.js"></script>
-    <script>canonicalGlobalNav.createNav({maxWidth:"72rem"});</script>
+    <script src="/js/build/cookie-policy.js"></script>
+    <script>
+      cpNs.cookiePolicy();
+      canonicalGlobalNav.createNav({maxWidth:"72rem"});
+    </script>
   </body>
 </html>
