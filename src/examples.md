@@ -48,8 +48,8 @@ network:
                 - 10.10.10.2/24
             gateway4: 10.10.10.1
             nameservers:
-                    search: [mydomain, otherdomain]
-                    addresses: [10.10.10.1, 1.1.1.1]
+                search: [mydomain, otherdomain]
+                addresses: [10.10.10.1, 1.1.1.1]
 ```
 
 ## Connecting multiple interfaces with DHCP
@@ -433,8 +433,8 @@ network:
                  via: 192.168.5.1
                  table: 102
             routing-policy:
-                - from: 192.168.5.0/24
-                    table: 102
+            - from: 192.168.5.0/24
+                table: 102
 ```
 
 ## Configuring a loopback interface
