@@ -17,11 +17,11 @@ sitemap:
   <div class="row">
     <div class="col-8" markdown="1">
 
-Below are a collection of example netplan configurations for common scenarios. If you see a scenario missing or have one  to contribute, please file a bug against this documentation with the example using the links at the bottom of this page. Thank you!
+Below are a collection of example netplan configurations for common scenarios. If you see a scenario missing or have one to contribute, please file a bug against this documentation with the example using the links at the bottom of this page. Thank you!
 
 ## Configuration
 
-To configure netplan, save configuration files under `/etc/netplan/` with a `.yaml` extension (e.g. `/etc/netplan/config.yaml`), then run `sudo netplan apply`.  This command parses and applies the configuration to the system.  Configuration written to disk under `/etc/netplan/` will persist between reboots.
+To configure netplan, save configuration files under `/etc/netplan/` with a `.yaml` extension (e.g. `/etc/netplan/config.yaml`), then run `sudo netplan apply`. This command parses and applies the configuration to the system. Configuration written to disk under `/etc/netplan/` will persist between reboots.
 
 ## Using DHCP and static addressing
 
@@ -29,27 +29,27 @@ To let the interface named 'enp3s0' get an address via DHCP, create a YAML file 
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp3s0:
-      dhcp4: true
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp3s0:
+            dhcp4: true
 ```
 
 To instead set a static IP address, use the addresses key, which takes a list of (IPv4 or IPv6), addresses along with the subnet prefix length (e.g. /24). Gateway and DNS information can be provided as well:
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp3s0:
-      addresses:
-        - 10.10.10.2/24
-      gateway4: 10.10.10.1
-      nameservers:
-          search: [mydomain, otherdomain]
-          addresses: [10.10.10.1, 1.1.1.1]
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp3s0:
+            addresses:
+                - 10.10.10.2/24
+            gateway4: 10.10.10.1
+            nameservers:
+                    search: [mydomain, otherdomain]
+                    addresses: [10.10.10.1, 1.1.1.1]
 ```
 
 ## Connecting multiple interfaces with DHCP
@@ -60,16 +60,16 @@ One can achieve the exact routing desired over DHCP by specifying a metric for t
 
 ```yaml
 network:
-  version: 2
-  ethernets:
-    enred:
-      dhcp4: yes
-      dhcp4-overrides:
-        route-metric: 100
-    engreen:
-      dhcp4: yes
-      dhcp4-overrides:
-        route-metric: 200
+    version: 2
+    ethernets:
+        enred:
+            dhcp4: yes
+            dhcp4-overrides:
+                route-metric: 100
+        engreen:
+            dhcp4: yes
+            dhcp4-overrides:
+                route-metric: 200
 ```
 
 ## Connecting to an open wireless network
@@ -78,12 +78,12 @@ Netplan easily supports connecting to an open wireless network (one that is not 
 
 ```yaml
 network:
-  version: 2
-  wifis:
-    wl0:
-      access-points:
-        opennetwork: {}
-      dhcp4: yes
+    version: 2
+    wifis:
+        wl0:
+            access-points:
+                opennetwork: {}
+            dhcp4: yes
 ```
 
 ## Connecting to a WPA Personal wireless network
@@ -92,19 +92,19 @@ Wireless devices use the 'wifis' key and share the same configuration options wi
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  wifis:
-    wlp2s0b1:
-      dhcp4: no
-      dhcp6: no
-      addresses: [192.168.0.21/24]
-      gateway4: 192.168.0.1
-      nameservers:
-        addresses: [192.168.0.1, 8.8.8.8]
-      access-points:
-        "network_ssid_name":
-          password: "**********"
+    version: 2
+    renderer: networkd
+    wifis:
+        wlp2s0b1:
+            dhcp4: no
+            dhcp6: no
+            addresses: [192.168.0.21/24]
+            gateway4: 192.168.0.1
+            nameservers:
+                addresses: [192.168.0.1, 8.8.8.8]
+            access-points:
+                "network_ssid_name":
+                    password: "**********"
 ```
 
 ## Connecting to WPA Enterprise wireless networks
@@ -115,39 +115,39 @@ For example, if the network is secured using WPA-EAP and TTLS:
 
 ```yaml
 network:
-  version: 2
-  wifis:
-    wl0:
-      access-points:
-        workplace:
-          auth:
-            key-management: eap
-            method: ttls
-            anonymous-identity: "@internal.example.com"
-            identity: "joe@internal.example.com"
-            password: "v3ryS3kr1t"
-      dhcp4: yes
+    version: 2
+    wifis:
+        wl0:
+            access-points:
+                workplace:
+                    auth:
+                        key-management: eap
+                        method: ttls
+                        anonymous-identity: "@internal.example.com"
+                        identity: "joe@internal.example.com"
+                        password: "v3ryS3kr1t"
+            dhcp4: yes
 ```
 
 Or, if the network is secured using WPA-EAP and TLS:
 
 ```yaml
 network:
-  version: 2
-  wifis:
-    wl0:
-      access-points:
-        university:
-          auth:
-            key-management: eap
-            method: tls
-            anonymous-identity: "@cust.example.com"
-            identity: "cert-joe@cust.example.com"
-            ca-certificate: /etc/ssl/cust-cacrt.pem
-            client-certificate: /etc/ssl/cust-crt.pem
-            client-key: /etc/ssl/cust-key.pem
-            client-key-password: "d3cryptPr1v4t3K3y"
-      dhcp4: yes
+    version: 2
+    wifis:
+        wl0:
+            access-points:
+                university:
+                    auth:
+                        key-management: eap
+                        method: tls
+                        anonymous-identity: "@cust.example.com"
+                        identity: "cert-joe@cust.example.com"
+                        ca-certificate: /etc/ssl/cust-cacrt.pem
+                        client-certificate: /etc/ssl/cust-crt.pem
+                        client-key: /etc/ssl/cust-key.pem
+                        client-key-password: "d3cryptPr1v4t3K3y"
+            dhcp4: yes
 ```
 
 Many different modes of encryption are supported. See the [Netplan reference](/reference) page.
@@ -158,14 +158,14 @@ The addresses key can take a list of addresses to assign to an interface:
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp3s0:
-     addresses:
-       - 10.100.1.38/24
-       - 10.100.1.39/24
-     gateway4: 10.100.1.1
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp3s0:
+         addresses:
+             - 10.100.1.38/24
+             - 10.100.1.39/24
+         gateway4: 10.100.1.1
 ```
 
 Interface aliases (e.g. eth0:0) are not supported.
@@ -178,25 +178,25 @@ configured with multiple gateways.
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp3s0:
-     addresses:
-       - 9.0.0.9/24
-       - 10.0.0.10/24
-       - 11.0.0.11/24
-     #gateway4:    # unset, since we configure routes below
-     routes:
-       - to: 0.0.0.0/0
-         via: 9.0.0.1
-         metric: 100
-       - to: 0.0.0.0/0
-         via: 10.0.0.1
-         metric: 100
-       - to: 0.0.0.0/0
-         via: 11.0.0.1
-         metric: 100
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp3s0:
+         addresses:
+             - 9.0.0.9/24
+             - 10.0.0.10/24
+             - 11.0.0.11/24
+         #gateway4:  # unset, since we configure routes below
+         routes:
+             - to: 0.0.0.0/0
+                 via: 9.0.0.1
+                 metric: 100
+             - to: 0.0.0.0/0
+                 via: 10.0.0.1
+                 metric: 100
+             - to: 0.0.0.0/0
+                 via: 11.0.0.1
+                 metric: 100
 ```
 
 Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure
@@ -211,12 +211,12 @@ set to 100.
 
 ## Using Network Manager as a renderer
 
-Netplan supports both networkd and Network Manager as backends.  You can specify which network backend should be used to configure particular devices by using the `renderer` key.  You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
+Netplan supports both networkd and Network Manager as backends.    You can specify which network backend should be used to configure particular devices by using the `renderer` key. You can also delegate all configuration of the network to Network Manager itself by specifying only the `renderer` key:
 
 ```yaml
 network:
-  version: 2
-  renderer: NetworkManager
+    version: 2
+    renderer: NetworkManager
 ```
 
 ## Configuring interface bonding
@@ -225,66 +225,66 @@ Bonding is configured by declaring a bond interface with a list of physical inte
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  bonds:
-    bond0:
-      dhcp4: yes
-      interfaces:
-        - enp3s0
-        - enp4s0
-      parameters:
-        mode: active-backup
-        primary: enp3s0
+    version: 2
+    renderer: networkd
+    bonds:
+        bond0:
+            dhcp4: yes
+            interfaces:
+                - enp3s0
+                - enp4s0
+            parameters:
+                mode: active-backup
+                primary: enp3s0
 ```
 
 Below is an example of a system acting as a router with various bonded interfaces and different types. Note the 'optional: true' key declarations that allow booting to occur without waiting for those interfaces to activate fully.
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp1s0:
-      dhcp4: no
-    enp2s0:
-      dhcp4: no
-    enp3s0:
-      dhcp4: no
-      optional: true
-    enp4s0:
-      dhcp4: no
-      optional: true
-    enp5s0:
-      dhcp4: no
-      optional: true
-    enp6s0:
-      dhcp4: no
-      optional: true
-  bonds:
-    bond-lan:
-      interfaces: [enp2s0, enp3s0]
-      addresses: [192.168.93.2/24]
-      parameters:
-        mode: 802.3ad
-        mii-monitor-interval: 1
-    bond-wan:
-      interfaces: [enp1s0, enp4s0]
-      addresses: [192.168.1.252/24]
-      gateway4: 192.168.1.1
-      nameservers:
-        search: [local]
-        addresses: [8.8.8.8, 8.8.4.4]
-      parameters:
-        mode: active-backup
-        mii-monitor-interval: 1
-        gratuitious-arp: 5
-    bond-conntrack:
-      interfaces: [enp5s0, enp6s0]
-      addresses: [192.168.254.2/24]
-      parameters:
-        mode: balance-rr
-        mii-monitor-interval: 1
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp1s0:
+            dhcp4: no
+        enp2s0:
+            dhcp4: no
+        enp3s0:
+            dhcp4: no
+            optional: true
+        enp4s0:
+            dhcp4: no
+            optional: true
+        enp5s0:
+            dhcp4: no
+            optional: true
+        enp6s0:
+            dhcp4: no
+            optional: true
+    bonds:
+        bond-lan:
+            interfaces: [enp2s0, enp3s0]
+            addresses: [192.168.93.2/24]
+            parameters:
+                mode: 802.3ad
+                mii-monitor-interval: 1
+        bond-wan:
+            interfaces: [enp1s0, enp4s0]
+            addresses: [192.168.1.252/24]
+            gateway4: 192.168.1.1
+            nameservers:
+                search: [local]
+                addresses: [8.8.8.8, 8.8.4.4]
+            parameters:
+                mode: active-backup
+                mii-monitor-interval: 1
+                gratuitious-arp: 5
+        bond-conntrack:
+            interfaces: [enp5s0, enp6s0]
+            addresses: [192.168.254.2/24]
+            parameters:
+                mode: balance-rr
+                mii-monitor-interval: 1
 ```
 
 ## Configuring network bridges
@@ -293,45 +293,45 @@ To create a very simple bridge consisting of a single device that uses DHCP, wri
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp3s0:
-      dhcp4: no
-  bridges:
-    br0:
-      dhcp4: yes
-      interfaces:
-        - enp3s0
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp3s0:
+            dhcp4: no
+    bridges:
+        br0:
+            dhcp4: yes
+            interfaces:
+                - enp3s0
 ```
 
 A more complex example, to get libvirtd to use a specific bridge with a tagged vlan, while continuing to provide an untagged interface as well would involve:
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    enp0s25:
-      dhcp4: true
-  bridges:
-    br0:
-      addresses: [ 10.3.99.25/24 ]
-      interfaces: [ vlan15 ]
-  vlans:
-    vlan15:
-      accept-ra: no
-      id: 15
-      link: enp0s25
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp0s25:
+            dhcp4: true
+    bridges:
+        br0:
+            addresses: [ 10.3.99.25/24 ]
+            interfaces: [ vlan15 ]
+    vlans:
+        vlan15:
+            accept-ra: no
+            id: 15
+            link: enp0s25
 ```
 
 Then libvirtd would be configured to use this bridge by adding the following content to a new XML file under `/etc/libvirtd/qemu/networks/`. The name of the bridge in the <bridge> tag as well as in <name> need to match the name of the bridge device configured using netplan:
 
 ```xml
 <network>
-  <name>br0</name>
-  <bridge name='br0'/>
-  <forward mode="bridge"/>
+    <name>br0</name>
+    <bridge name='br0'/>
+    <forward mode="bridge"/>
 </network>
 ```
 
@@ -341,30 +341,30 @@ To configure multiple VLANs with renamed interfaces:
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    mainif:
-      match:
-        macaddress: "de:ad:be:ef:ca:fe"
-      set-name: mainif
-      addresses: [ "10.3.0.5/23" ]
-      gateway4: 10.3.0.1
-      nameservers:
-        addresses: [ "8.8.8.8", "8.8.4.4" ]
-        search: [ example.com ]
-  vlans:
-    vlan15:
-      id: 15
-      link: mainif
-      addresses: [ "10.3.99.5/24" ]
-    vlan10:
-      id: 10
-      link: mainif
-      addresses: [ "10.3.98.5/24" ]
-      nameservers:
-        addresses: [ "127.0.0.1" ]
-        search: [ domain1.example.com, domain2.example.com ]
+    version: 2
+    renderer: networkd
+    ethernets:
+        mainif:
+            match:
+                macaddress: "de:ad:be:ef:ca:fe"
+            set-name: mainif
+            addresses: [ "10.3.0.5/23" ]
+            gateway4: 10.3.0.1
+            nameservers:
+                addresses: [ "8.8.8.8", "8.8.4.4" ]
+                search: [ example.com ]
+    vlans:
+        vlan15:
+            id: 15
+            link: mainif
+            addresses: [ "10.3.99.5/24" ]
+        vlan10:
+            id: 10
+            link: mainif
+            addresses: [ "10.3.98.5/24" ]
+            nameservers:
+                addresses: [ "127.0.0.1" ]
+                search: [ domain1.example.com, domain2.example.com ]
 ```
 
 ## Reaching a directly connected gateway
@@ -373,30 +373,30 @@ This allows setting up a default route, or any route, using the "on-link" keywor
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    addresses: [ "10.10.10.1/24" ]
-    routes:
-      - to: 0.0.0.0/0
-        via: 9.9.9.9
-        on-link: true
+    version: 2
+    renderer: networkd
+    ethernets:
+        addresses: [ "10.10.10.1/24" ]
+        routes:
+            - to: 0.0.0.0/0
+                via: 9.9.9.9
+                on-link: true
 ```
 
 For IPv6 the config would be very similar, with the notable difference being an additional scope: link host route to the router's address required:
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
-    routes:
-      - to: "2001:cafe:face::1/128"
-        scope: link
-      - to: "::/0"
-        via: "2001:cafe:face::1"
-        on-link: true
+    version: 2
+    renderer: networkd
+    ethernets:
+        addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
+        routes:
+            - to: "2001:cafe:face::1/128"
+                scope: link
+            - to: "::/0"
+                via: "2001:cafe:face::1"
+                on-link: true
 ```
 
 ## Configuring source routing
@@ -409,32 +409,32 @@ Furthermore, the default route is still assigned to ens5 allowing any other traf
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    ens3:
-      addresses:
-       - 192.168.3.30/24
-      dhcp4: no
-      routes:
-       - to: 192.168.3.0/24
-         via: 192.168.3.1
-         table: 101
-      routing-policy:
-       - from: 192.168.3.0/24
-         table: 101
-    ens5:
-      addresses:
-       - 192.168.5.24/24
-      dhcp4: no
-      gateway4: 192.168.5.1
-      routes:
-       - to: 192.168.5.0/24
-         via: 192.168.5.1
-         table: 102
-      routing-policy:
-        - from: 192.168.5.0/24
-          table: 102
+    version: 2
+    renderer: networkd
+    ethernets:
+        ens3:
+            addresses:
+             - 192.168.3.30/24
+            dhcp4: no
+            routes:
+             - to: 192.168.3.0/24
+                 via: 192.168.3.1
+                 table: 101
+            routing-policy:
+             - from: 192.168.3.0/24
+                 table: 101
+        ens5:
+            addresses:
+             - 192.168.5.24/24
+            dhcp4: no
+            gateway4: 192.168.5.1
+            routes:
+             - to: 192.168.5.0/24
+                 via: 192.168.5.1
+                 table: 102
+            routing-policy:
+                - from: 192.168.5.0/24
+                    table: 102
 ```
 
 ## Configuring a loopback interface
@@ -443,13 +443,13 @@ Networkd does not allow creating new loopback devices, but a user can add new ad
 
 ```yaml
 network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    lo:
-      match:
-        name: lo
-      addresses: [ 7.7.7.7/32 ]
+    version: 2
+    renderer: networkd
+    ethernets:
+        lo:
+            match:
+                name: lo
+            addresses: [ 7.7.7.7/32 ]
 ```
 
 ## Integration with a Windows DHCP Server
@@ -458,11 +458,11 @@ For networks where DHCP is provided by a Windows Server using the dhcp-identifie
 
 ```yaml
 network:
-  version: 2
-  ethernets:
-    enp3s0:
-      dhcp4: yes
-      dhcp-identifier: mac
+    version: 2
+    ethernets:
+        enp3s0:
+            dhcp4: yes
+            dhcp-identifier: mac
 ```
 
 ## Connecting an IP tunnel
@@ -477,21 +477,21 @@ Finally, "2001:cafe:face::1/64" is an address for the client within the routed I
 
 ```yaml
 network:
-  version: 2
-  ethernets:
-    eth0:
-      addresses:
-        - 1.1.1.1/24
-        - "2001:cafe:face::1/64"
-      gateway4: 1.1.1.254
-  tunnels:
-    he-ipv6:
-      mode: sit
-      remote: 2.2.2.2
-      local: 1.1.1.1
-      addresses:
-        - "2001:dead:beef::2/64"
-      gateway6: "2001:dead:beef::1"
+    version: 2
+    ethernets:
+        eth0:
+            addresses:
+                - 1.1.1.1/24
+                - "2001:cafe:face::1/64"
+            gateway4: 1.1.1.254
+    tunnels:
+        he-ipv6:
+            mode: sit
+            remote: 2.2.2.2
+            local: 1.1.1.1
+            addresses:
+                - "2001:dead:beef::2/64"
+            gateway6: "2001:dead:beef::1"
 ```
 
 ## Configuring SR-IOV Virtual Functions
@@ -500,24 +500,23 @@ For SR-IOV network cards, it is possible to dynamically allocate Virtual Functio
 
 ```yaml
 network:
-  version: 2
-  ethernets:
-    eno1:
-      mtu: 9000
-    enp1s16f1:
-      link: eno1
-      addresses : [ "10.15.98.25/24" ]
-    vf1:
-      match:
-        name: enp1s16f[2-3]
-      link: eno1
-      addresses : [ "10.15.99.25/24" ]
+    version: 2
+    ethernets:
+        eno1:
+            mtu: 9000
+        enp1s16f1:
+            link: eno1
+            addresses : [ "10.15.98.25/24" ]
+        vf1:
+            match:
+                name: enp1s16f[2-3]
+            link: eno1
+            addresses : [ "10.15.99.25/24" ]
 ```
 
 
 </div>
 <div class="col-4" markdown="1">
-
 <h3 class="p-muted-heading">Table of contents</h3>
 
 [[toc]]
