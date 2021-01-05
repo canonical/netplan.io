@@ -294,9 +294,9 @@ Virtual devices
 
 ``critical`` (bool)
 
-:   (networkd backend only) Designate the connection as "critical to the
-    system", meaning that special care will be taken by systemd-networkd to
-    not release the assigned IP when the daemon is restarted.
+:   Designate the connection as "critical to the system", meaning that special
+    care will be taken by to not release the assigned IP when the daemon is
+    restarted. (not recognized by NetworkManager)
 
 ``dhcp-identifier`` (scalar)
 
@@ -592,6 +592,10 @@ These options are available for all types of interfaces.
           Some values are already in use to refer to specific routing tables:
           see ``/etc/iproute2/rt_tables``.
           (``NetworkManager``: as of v1.10.0)
+
+    ``mtu`` (scalar) – since **0.101**
+     :    The MTU to be used for the route, in bytes. Must be a positive integer
+          value.
 
 ``routing-policy`` (mapping)
 
@@ -1222,7 +1226,7 @@ Example:
     ``public`` and ``shared`` keys.
 
     ``public`` (scalar) – since **0.100**
-    :    A base64-encoded public key, requried for Wireguard peers.
+    :    A base64-encoded public key, required for Wireguard peers.
 
     ``shared`` (scalar) – since **0.100**
     :    A base64-encoded preshared key. Optional for Wireguard peers.
