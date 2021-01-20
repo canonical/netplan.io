@@ -552,7 +552,8 @@ These options are available for all types of interfaces.
 ``routes`` (mapping)
 
 :    The ``routes`` block defines standard static routes for an interface.
-     At least ``to`` and ``via`` must be specified.
+     At least ``to`` and ``via`` must be specified (except for routes with
+     ``scope: link``, where only ``to`` is required).
 
      For ``from``, ``to``, and ``via``, both IPv4 and IPv6 addresses are
      recognized, and must be in the form ``addr/prefixlen`` or ``addr``.
