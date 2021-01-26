@@ -41,7 +41,7 @@
     "markdown-it-anchor": "7.0.0",
     "markdown-it-deflist": "2.1.0",
     "markdown-it-toc-done-right": "4.2.0",
-    "node-sass": "4.14.1",
+    "node-sass": "5.0.0",
     "postcss": "8.2.4",
     "postcss-cli": "8.3.1",
     "stylelint": "13.9.0",
