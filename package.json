@@ -8,7 +8,7 @@
     "lint-scss": "stylelint src/sass/**/*.scss",
     "build": "yarn run build-css && yarn run build-js && yarn run build-site",
     "build-site": "eleventy --formats=html,css,js,xml,md --input=src --output=_site",
-    "build-css": "node-sass --include-path node_modules src/sass --source-map true --output-style compressed --output src/css && postcss --use autoprefixer --replace 'src/css/**/*.css'",
+    "build-css": "sass src/sass/main.scss src/css/main.css --load-path=node_modules --style=compressed && postcss --no-map --use autoprefixer --replace 'src/css/**/*.css'",
     "build-js": "yarn run copy-cookie-policy && yarn run copy-global-nav",
     "copy-cookie-policy": "mkdir -p src/js/build && cp node_modules/@canonical/cookie-policy/build/js/cookie-policy.js src/js/build",
     "copy-global-nav": "mkdir -p src/js/build && cp node_modules/@canonical/global-nav/dist/global-nav.js src/js/build",
@@ -16,7 +16,7 @@
     "watch-js": "watch -p 'node_modules/@canonical/global-nav/dist/global-nav.js' -c 'yarn run build-js'",
     "serve": "eleventy --formats=html,scss,css,js,xml,md --input=src --output=_site --watch --serve --port $PORT",
     "test": "yarn run lint-nginx && yarn run lint-scss",
-    "clean": "rm -rf node_modules yarn-error.log css js *.log *.sqlite _site/ build/"
+    "clean": "rm -rf node_modules yarn-error.log src/css src/js *.log *.sqlite _site/ build/"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
     "markdown-it-anchor": "7.0.0",
     "markdown-it-deflist": "2.1.0",
     "markdown-it-toc-done-right": "4.2.0",
-    "node-sass": "5.0.0",
+    "sass": "1.27.0",
     "postcss": "8.2.4",
     "postcss-cli": "8.3.1",
     "stylelint": "13.9.0",
