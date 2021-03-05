@@ -167,36 +167,37 @@ This shows most available features that are planned for the initial 16.10 implem
 ## Commands
 
 <dl>
-  <dt>`Generate`</dt>
+  <dt>netplan generate</dt>
   <dd>
-
-      Runs during early boot and will read config, and write files
-
+      Use <code>/etc/netplan</code> to generate the required configuration for the renderers.
   </dd>
-  <dt>`Apply`</dt>
+  <dt>netplan apply</dt>
   <dd>
-
-      Kicks the various backends to realize network config
-
+      Apply all configuration for the renderers, restarting them as necessary.
   </dd>
-  <dt>`List`</dt>
+  <dt>netplan try</dt>
   <dd>
-
-
-
+      Apply configuration and wait for user confirmation; will roll back if network is broken or no confirmation is given.
   </dd>
-  <dt>`Update`</dt>
+  <dt>netplan get</dt>
   <dd>
-
-
-
+      Merge and display all the current available configuration on the system.
   </dd>
-  <dt>`Config`</dt>
+  <dt>netplan set</dt>
   <dd>
-<strong>Set</strong>
-Capture existing config on an interface into the equivalent YAML.
-<strong>Show</strong>
-Merge and display all the current available configuration on the system.
+      Add new setting by specifying a dotted <code>key=value</code> pair like <code>ethernets.eth0.dhcp4=true</code>.
+  </dd>
+  <dt>netplan info</dt>
+  <dd>
+      Show available feature flags of the currently installed version as YAML.
+  </dd>
+  <dt>netplan ip</dt>
+  <dd>
+      Retrieve IP information from the system.
+  </dd>
+  <dt>netplan help</dt>
+  <dd>
+      Show the help message.
   </dd>
 </dl>
 
