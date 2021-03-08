@@ -96,8 +96,8 @@ These are fully under the control of the config file(s) and the network stack. I
 
 This shows most available features that are planned for the initial 16.10 implementation:
 
-```
-`network:
+```yaml
+network:
   version: 2
 
   # if specified globally, can only realistically have that value, as
@@ -207,8 +207,8 @@ Some of the possible ways of using netplan are captured below.
 ### Discovery (Subiquity)
 Cathy boots the latest Ubuntu Server Image on her Intel NUC via USB key. The NUC has both a wired ethernet port and a wireless NIC builtin and has added a third USB-NIC as well, though it's not currently connected. During the installation, the installer presents Cathy with the 3 interfaces. Cathy selects the wired ethernet device; it was the only one with an IP configured via DHCP. After the installation is complete Cathy reboots her NUC and finds the following in `/etc/netplan/01-install.yaml:`
 
-```
-`network:
+```yaml
+network:
   version: 2
   ethernets:
     # configured by subiquity
