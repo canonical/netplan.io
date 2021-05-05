@@ -199,14 +199,9 @@ network:
                  metric: 100
 ```
 
-Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure
-individual routes to 0.0.0.0/0 (everywhere) using the address of the gateway for the subnet. The `metric` value should be adjusted
-so the routing happens as expected.
+Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure individual routes to 0.0.0.0/0 (everywhere) using the address of the gateway for the subnet. The `metric` value should be adjusted so the routing happens as expected.
 
-DHCP can be used to receive one of the IP addresses for the interface. In this case, the default route for that address will be
-automatically configured with a `metric` value of 100. As a short-hand for an entry under `routes`, `gateway4` can be set to the
-gateway address for one of the subnets. In that case, the route for that subnet can be omitted from `routes`. Its `metric` will be
-set to 100.
+DHCP can be used to receive one of the IP addresses for the interface. In this case, the default route for that address will be automatically configured with a `metric` value of 100. As a short-hand for an entry under `routes`, `gateway4` can be set to the gateway address for one of the subnets. In that case, the route for that subnet can be omitted from `routes`. Its `metric` will be set to 100.
 
 
 ## Using Network Manager as a renderer
