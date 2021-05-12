@@ -42,7 +42,7 @@
     "markdown-it-deflist": "2.1.0",
     "markdown-it-toc-done-right": "4.2.0",
     "sass": "1.27.0",
-    "postcss": "8.2.4",
+    "postcss": "8.2.10",
     "postcss-cli": "8.3.1",
     "stylelint": "13.9.0",
     "stylelint-config-standard": "20.0.0",
