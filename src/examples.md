@@ -371,11 +371,12 @@ network:
     version: 2
     renderer: networkd
     ethernets:
-        addresses: [ "10.10.10.1/24" ]
-        routes:
-            - to: 0.0.0.0/0
-                via: 9.9.9.9
-                on-link: true
+        ens3:
+            addresses: [ "10.10.10.1/24" ]
+            routes:
+             - to: 0.0.0.0/0
+               via: 9.9.9.9
+               on-link: true
 ```
 
 For IPv6 the config would be very similar, with the notable difference being an additional scope: link host route to the router's address required:
@@ -385,13 +386,14 @@ network:
     version: 2
     renderer: networkd
     ethernets:
-        addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
-        routes:
-            - to: "2001:cafe:face::1/128"
-                scope: link
-            - to: "::/0"
-                via: "2001:cafe:face::1"
-                on-link: true
+        ens3:
+            addresses: [ "2001:cafe:face:beef::dead:dead/64" ]
+            routes:
+             - to: "2001:cafe:face::1/128"
+               scope: link
+             - to: "::/0"
+               via: "2001:cafe:face::1"
+               on-link: true
 ```
 
 ## Configuring source routing
