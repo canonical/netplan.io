@@ -19,7 +19,7 @@ sitemap:
 
 ## Why Netplan
 
-Using netplan gives a central location to describe simple to complex networking configurations that function from Desktop to Server and from Cloud to IoT. Specifically, for systems with networkd, this relieves the user from having to configure up to three different files per device or configuration.
+Using netplan gives a central location to describe simple-to-complex networking configurations that function from desktop to server and from cloud to IoT devices. Specifically, for systems with networkd, this relieves the user from having to configure up to three different files per device or configuration.
 
 ## Apply a configuration
 
@@ -82,18 +82,18 @@ Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, 
 
 Instead to achieve this functionality with the networkd renderer users can use [networkd-dispatcher](https://gitlab.com/craftyguy/networkd-dispatcher). The package provides users and legacy packages hook points when specific network states are reached to aid in reacting to network state. Below is a table mapping networking states and hooks available:
 
-| Hook | ifupdown | networkd-dispatcher | NetworkManager |
-| ---- | -------- | ------------------- | -------------- |
-| pre-up      | if-pre-up.d    |               | pre-up   |
-| configuring |                | configuring.d |          |
-| configured  |                | configured.d  |          |
-| up          | if-up.d        | routable.d    | up       |
-| post-up     | if-post-up.d   | routable.d    |          |
-| degraded    |                | degraded.d    |          |
-| pre-down    | if-pre-down.d  |               | pre-down |
-| down        | if-down.d      | off.d         | down     |
-| post-down   | if-post-down.d | off.d         |          |
-| no-carrier  |                | nocarrier.d   |          |
+| Hook        | ifupdown       | networkd-dispatcher | NetworkManager |
+| ----------- | -------------- | ------------------- | -------------- |
+| pre-up      | if-pre-up.d    |                     | pre-up         |
+| configuring |                | configuring.d       |                |
+| configured  |                | configured.d        |                |
+| up          | if-up.d        | routable.d          | up             |
+| post-up     | if-post-up.d   | routable.d          |                |
+| degraded    |                | degraded.d          |                |
+| pre-down    | if-pre-down.d  |                     | pre-down       |
+| down        | if-down.d      | off.d               | down           |
+| post-down   | if-post-down.d | off.d               |                |
+| no-carrier  |                | nocarrier.d         |                |
 
 Note that in networkd-dispatcher, the hooks run asychronous; that is they will not block transition into another state.
 
@@ -148,7 +148,7 @@ Finally, if there is a bug use the links at the bottom of the page to report a b
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
- 
+
 [[toc]]
 
 </div>
