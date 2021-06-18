@@ -137,7 +137,7 @@ At install time, a user can opt to use ifupdown by preseeding `netcfg/do_not_use
 
 When debugging Netplan first verify the YAML used to setup the configuration. Review and collect all *.yaml files under `/lib/netplan/`, `/etc/netplan/`, and `/run/netplan/`. Ensure that the files are indeed accurately describing the expected configuration (e.g. correct adapter name, correct subnets, valid YAML).
 
-Next, searching or asking a question on [Ask Ubuntu](https://askubuntu.com/questions/tagged/netplan) for a variety of community support, ask on the networking sub-forum of the [Ubuntu Forums](https://ubuntuforums.org/forumdisplay.php?f=336), or stop by the #netplan IRC channel on Freenode to ask questions.
+Next, searching or asking a question on [Ask Ubuntu](https://askubuntu.com/questions/tagged/netplan) for a variety of community support, ask on the networking sub-forum of the [Ubuntu Forums](https://ubuntuforums.org/forumdisplay.php?f=336), or stop by the #netplan IRC channel on [Libera Chat](https://libera.chat) to ask questions.
 
 Also available are a couple Ubuntu wiki pages that provide [general Network help](https://help.ubuntu.com/community/NetworkDevices) and a page on how to capture [Network Manager logs](https://wiki.ubuntu.com/DebuggingNetworkManager) to aid in filing a bug.
 
