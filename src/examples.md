@@ -189,14 +189,14 @@ network:
          #gateway4:  # unset, since we configure routes below
          routes:
              - to: 0.0.0.0/0
-                 via: 9.0.0.1
-                 metric: 100
+               via: 9.0.0.1
+               metric: 100
              - to: 0.0.0.0/0
-                 via: 10.0.0.1
-                 metric: 100
+               via: 10.0.0.1
+               metric: 100
              - to: 0.0.0.0/0
-                 via: 11.0.0.1
-                 metric: 100
+               via: 11.0.0.1
+               metric: 100
 ```
 
 Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure individual routes to 0.0.0.0/0 (everywhere) using the address of the gateway for the subnet. The `metric` value should be adjusted so the routing happens as expected.
@@ -415,11 +415,11 @@ network:
             dhcp4: no
             routes:
              - to: 192.168.3.0/24
-                 via: 192.168.3.1
-                 table: 101
+               via: 192.168.3.1
+               table: 101
             routing-policy:
              - from: 192.168.3.0/24
-                 table: 101
+               table: 101
         ens5:
             addresses:
              - 192.168.5.24/24
@@ -427,11 +427,11 @@ network:
             gateway4: 192.168.5.1
             routes:
              - to: 192.168.5.0/24
-                 via: 192.168.5.1
-                 table: 102
+               via: 192.168.5.1
+               table: 102
             routing-policy:
-            - from: 192.168.5.0/24
-                table: 102
+             - from: 192.168.5.0/24
+               table: 102
 ```
 
 ## Configuring a loopback interface
