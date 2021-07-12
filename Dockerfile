@@ -2,7 +2,7 @@
 
 # Build stage: Install yarn dependencies
 # ===
-FROM node:14-slim AS yarn-dependencies
+FROM node:14 AS yarn-dependencies
 WORKDIR /srv
 ADD package.json .
 ADD yarn.lock .
