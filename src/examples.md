@@ -36,7 +36,7 @@ network:
             dhcp4: true
 ```
 
-To instead set a static IP address, use the addresses key, which takes a list of (IPv4 or IPv6), addresses along with the subnet prefix length (e.g. /24). Gateway and DNS information can be provided as well:
+To instead set a static IP address, use the addresses key, which takes a list of (IPv4 or IPv6), addresses along with the subnet prefix length (e.g. /24). DNS information can be provided as well, and the gateway can be defined via a default route:
 
 ```yaml
 network:
@@ -46,10 +46,12 @@ network:
         enp3s0:
             addresses:
                 - 10.10.10.2/24
-            gateway4: 10.10.10.1
             nameservers:
                 search: [mydomain, otherdomain]
                 addresses: [10.10.10.1, 1.1.1.1]
+            routes:
+                - to: default
+                  via: 10.10.10.1
 ```
 
 ## Connecting multiple interfaces with DHCP
@@ -99,12 +101,14 @@ network:
             dhcp4: no
             dhcp6: no
             addresses: [192.168.0.21/24]
-            gateway4: 192.168.0.1
             nameservers:
                 addresses: [192.168.0.1, 8.8.8.8]
             access-points:
                 "network_ssid_name":
                     password: "**********"
+            routes:
+                - to: default
+                  via: 192.168.0.1
 ```
 
 ## Connecting to WPA Enterprise wireless networks
@@ -165,7 +169,9 @@ network:
          addresses:
              - 10.100.1.38/24
              - 10.100.1.39/24
-         gateway4: 10.100.1.1
+         routes:
+             - to: default
+               via: 10.100.1.1
 ```
 
 Interface aliases (e.g. eth0:0) are not supported.
@@ -183,26 +189,20 @@ network:
     ethernets:
         enp3s0:
          addresses:
-             - 9.0.0.9/24
-             - 10.0.0.10/24
-             - 11.0.0.11/24
-         #gateway4:  # unset, since we configure routes below
-         routes:
-             - to: 0.0.0.0/0
-               via: 9.0.0.1
-               metric: 100
-             - to: 0.0.0.0/0
-               via: 10.0.0.1
-               metric: 100
-             - to: 0.0.0.0/0
-               via: 11.0.0.1
-               metric: 100
+            - 10.0.0.10/24
+            - 11.0.0.11/24
+            routes:
+            - to: default
+              via: 10.0.0.1
+              metric: 200
+            - to: default
+              via: 11.0.0.1
+              metric: 300
 ```
 
-Given that there are multiple addresses, each with their own gateway, we do not specify `gateway4` here, and instead configure individual routes to 0.0.0.0/0 (everywhere) using the address of the gateway for the subnet. The `metric` value should be adjusted so the routing happens as expected.
+We configure individual routes to default (or 0.0.0.0/0) using the address of the gateway for the subnet. The `metric` value should be adjusted so the routing happens as expected.
 
-DHCP can be used to receive one of the IP addresses for the interface. In this case, the default route for that address will be automatically configured with a `metric` value of 100. As a short-hand for an entry under `routes`, `gateway4` can be set to the gateway address for one of the subnets. In that case, the route for that subnet can be omitted from `routes`. Its `metric` will be set to 100.
-
+DHCP can be used to receive one of the IP addresses for the interface. In this case, the default route for that address will be automatically configured with a `metric` value of 100.
 
 ## Using Network Manager as a renderer
 
@@ -266,7 +266,6 @@ network:
         bond-wan:
             interfaces: [enp1s0, enp4s0]
             addresses: [192.168.1.252/24]
-            gateway4: 192.168.1.1
             nameservers:
                 search: [local]
                 addresses: [8.8.8.8, 8.8.4.4]
@@ -274,6 +273,9 @@ network:
                 mode: active-backup
                 mii-monitor-interval: 1
                 gratuitious-arp: 5
+            routes:
+                - to: default
+                  via: 192.168.1.1
         bond-conntrack:
             interfaces: [enp5s0, enp6s0]
             addresses: [192.168.254.2/24]
@@ -344,10 +346,12 @@ network:
                 macaddress: "de:ad:be:ef:ca:fe"
             set-name: mainif
             addresses: [ "10.3.0.5/23" ]
-            gateway4: 10.3.0.1
             nameservers:
                 addresses: [ "8.8.8.8", "8.8.4.4" ]
                 search: [ example.com ]
+            routes:
+        - to: default
+          via: 10.3.0.1
     vlans:
         vlan15:
             id: 15
@@ -374,7 +378,7 @@ network:
         ens3:
             addresses: [ "10.10.10.1/24" ]
             routes:
-             - to: 0.0.0.0/0
+             - to: default # or 0.0.0.0/0
                via: 9.9.9.9
                on-link: true
 ```
@@ -391,7 +395,7 @@ network:
             routes:
              - to: "2001:cafe:face::1/128"
                scope: link
-             - to: "::/0"
+             - to: default # or "::/0"
                via: "2001:cafe:face::1"
                on-link: true
 ```
@@ -424,8 +428,9 @@ network:
             addresses:
              - 192.168.5.24/24
             dhcp4: no
-            gateway4: 192.168.5.1
             routes:
+             - to: default
+               via: 192.168.5.1
              - to: 192.168.5.0/24
                via: 192.168.5.1
                table: 102
@@ -480,7 +485,9 @@ network:
             addresses:
                 - 1.1.1.1/24
                 - "2001:cafe:face::1/64"
-            gateway4: 1.1.1.254
+            routes:
+                - to: default
+                  via: 1.1.1.254
     tunnels:
         he-ipv6:
             mode: sit
@@ -488,7 +495,9 @@ network:
             local: 1.1.1.1
             addresses:
                 - "2001:dead:beef::2/64"
-            gateway6: "2001:dead:beef::1"
+            routes:
+                - to: default
+                  via: "2001:dead:beef::1"
 ```
 
 ## Configuring SR-IOV Virtual Functions
