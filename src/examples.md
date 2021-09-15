@@ -350,8 +350,8 @@ network:
                 addresses: [ "8.8.8.8", "8.8.4.4" ]
                 search: [ example.com ]
             routes:
-        - to: default
-          via: 10.3.0.1
+                - to: default
+                  via: 10.3.0.1
     vlans:
         vlan15:
             id: 15
