@@ -1,5 +1,5 @@
 # netplan.io
-[![CircleCI build status](https://circleci.com/gh/canonical-web-and-design/netplan.io.svg?style=shield)](https://circleci.com/gh/canonical-web-and-design/netplan.io) [![Code coverage](https://codecov.io/gh/canonical-web-and-design/netplan.io/branch/master/graph/badge.svg)](https://codecov.io/gh/canonical-web-and-design/netplan.io)
+[![CircleCI build status](https://circleci.com/gh/canonical-web-and-design/netplan.io.svg?style=shield)](https://circleci.com/gh/canonical-web-and-design/netplan.io) [![Code coverage](https://codecov.io/gh/canonical-web-and-design/netplan.io/branch/main/graph/badge.svg)](https://codecov.io/gh/canonical-web-and-design/netplan.io)
 
 This is the repo for the Netplan site
 
