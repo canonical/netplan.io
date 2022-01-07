@@ -48,6 +48,6 @@
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
     "vanilla-framework": "2.37.1",
-    "watch-cli": "0.2.3"
+    "watch-cli-only": "0.2.4"
   }
 }
