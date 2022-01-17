@@ -26,7 +26,7 @@
     padding: 0;
 
     .p-navigation__banner {
-      padding: 0 $sph-inner--large;
+      padding: 0 ($sph--large + $sph--small);
 
       .p-navigation__logo {
         font-weight: 400;
@@ -43,8 +43,8 @@
 
     .p-navigation__link a {
       height: 100%;
-      padding-left: $sph-inner--large;
-      padding-right: $sph-inner--large;
+      padding-left: ($sph--large + $sph--small);
+      padding-right: ($sph--large + $sph--small);
     }
 
     .p-navigation__link:hover {
