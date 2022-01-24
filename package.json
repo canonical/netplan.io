@@ -30,8 +30,8 @@
   "homepage": "https://netplan.io",
   "dependencies": {
     "@11ty/eleventy": "0.12.1",
-    "@canonical/global-nav": "2.5.0",
-    "@canonical/cookie-policy": "3.3.0",
+    "@canonical/global-nav": "2.6.0",
+    "@canonical/cookie-policy": "3.4.0",
     "autoprefixer": "10.4.1",
     "babel-core": "6.26.3",
     "babel-preset-es2015": "6.24.1",
