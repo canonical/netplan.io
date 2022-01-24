@@ -1474,7 +1474,7 @@ This is a complex example which shows most available features:
 -->
 
 </div>
-<div class="col-4 col-medium-2" markdown="1">
+<div class="col-4 col-medium-2 u-hide--small" markdown="1">
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
