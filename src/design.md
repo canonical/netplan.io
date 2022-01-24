@@ -247,7 +247,7 @@ lxd, libvirt, and others might include network config by shipping a /{etc,lib}/n
 Alice is done with the usb0 device that was added and now wants to purge the configuration from the system.
 
 </div>
-<div class="col-4 col-medium-2" markdown="1">
+<div class="col-4 col-medium-2 u-hide--small" markdown="1">
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
