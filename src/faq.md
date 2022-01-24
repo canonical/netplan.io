@@ -15,7 +15,7 @@ sitemap:
 </div>
 <div class="p-strip">
   <div class="row">
-    <div class="col-8" markdown="1">
+    <div class="col-8 col-medium-4" markdown="1">
 
 ## Why Netplan
 
@@ -144,7 +144,7 @@ Also available are a couple Ubuntu wiki pages that provide [general Network help
 Finally, if there is a bug use the links at the bottom of the page to report a bug with Netplan.
 
 </div>
-<div class="col-4" markdown="1">
+<div class="col-4 col-medium-2" markdown="1">
 
 <h3 class="p-muted-heading">Table of contents</h3>
 
