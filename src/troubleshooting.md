@@ -16,7 +16,7 @@ sitemap:
 </div>
 <div class="p-strip">
   <div class="row">
-    <div class="col-8 col-medium-4" markdown="1">
+    <div class="col-8" markdown="1">
 
 ## Troubleshooting networking issues
 
@@ -123,7 +123,7 @@ the Ubuntu [_DebuggingNetworkManager_](https://wiki.ubuntu.com/DebuggingNetworkM
 page for more information on how to debug these issues.
 
 </div>
-<div class="col-4 col-medium-2" markdown="1">
+<div class="col-4" markdown="1">
 
 <h3 class="p-muted-heading">Table of contents</h3>
 

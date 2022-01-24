@@ -15,7 +15,7 @@ sitemap:
 </div>
 <div class="p-strip">
   <div class="row">
-    <div class="col-8 col-medium-4" markdown="1">
+    <div class="col-8" markdown="1">
 
 Below are a collection of example netplan configurations for common scenarios. If you see a scenario missing or have one to contribute, please file a bug against this documentation with the example using the links at the bottom of this page. Thank you!
 
@@ -522,7 +522,7 @@ network:
 
 
 </div>
-<div class="col-4 col-medium-2 u-hide--small" markdown="1">
+<div class="col-4 u-hide--small" markdown="1">
 <h3 class="p-muted-heading">Table of contents</h3>
 
 [[toc]]

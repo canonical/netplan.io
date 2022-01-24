@@ -17,14 +17,14 @@ source: https://wiki.ubuntu.com/Netplan/Design
 
 <div class="p-strip">
   <div class="row">
-    <div class="col-8 col-medium-4" markdown="1">
+    <div class="col-8" markdown="1">
 
 There are central network config files for Snappy, Server, Client, MAAS, cloud-init in `/etc/netplan/*.yaml`. All installers only generate such a file, no /etc/network/interfaces any more. There is also a netplan command line tool to drive some operations.
 
 Systems are configured during early boot with a "network renderer" which reads `/etc/netplan/*.yaml` and writes configuration to /run to hand off control of devices to the specified networking daemon.
 
-- Wifi and WWAN get managed by <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>
-- Any other configured devices get handled by networkd by default, unless explicitly marked as managed by a specific manager (<a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>)
+- Wifi and WWAN get managed by <a class="p-link--external" href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>
+- Any other configured devices get handled by networkd by default, unless explicitly marked as managed by a specific manager (<a class="p-link--external" href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a>)
 - Devices that are not covered by the network config do not get touched at all.
 
 
@@ -33,7 +33,7 @@ Systems are configured during early boot with a "network renderer" which reads `
 - Usable in initramfs (few dependencies and fast)
 - No persistent generated config, only original YAML config
 - Default policy applies with no config file present
-- Parser supports multiple config files to allow applications (libvirt, lxd) to package up expected network config (virbr0, lxdbr0), or to change the global default policy to use <a href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a> for everything.
+- Parser supports multiple config files to allow applications (libvirt, lxd) to package up expected network config (virbr0, lxdbr0), or to change the global default policy to use <a class="p-link--external" href="https://wiki.ubuntu.com/NetworkManager">NetworkManager</a> for everything.
 - Retains the flexibility to change backends/policy later or adjust to "apt purge network-manager" as generated configuration is ephemeral
 
 ## Requirements
@@ -60,7 +60,7 @@ Systems are configured during early boot with a "network renderer" which reads `
 
 ## Network Config format
 
-This is called "version 2", as current MAAS/curtin already use a <a href="http://curtin.readthedocs.io/en/latest/topics/networking.html">different YAML format</a> that is called "version 1".
+This is called "version 2", as current MAAS/curtin already use a <a class="p-link--external" href="http://curtin.readthedocs.io/en/latest/topics/networking.html">different YAML format</a> that is called "version 1".
 
 ## General structure
 
@@ -247,7 +247,7 @@ lxd, libvirt, and others might include network config by shipping a /{etc,lib}/n
 Alice is done with the usb0 device that was added and now wants to purge the configuration from the system.
 
 </div>
-<div class="col-4 col-medium-2" markdown="1">
+<div class="col-4" markdown="1">
 
 <h3 class="p-muted-heading">Table of contents</h3>
 

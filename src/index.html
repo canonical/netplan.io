@@ -9,14 +9,14 @@ sitemap:
 
 <div id="main-content" class="p-strip is-bordered is-deep">
   <div class="row">
-    <div class="col-8 col-medium-4">
+    <div class="col-8">
       <h1>Netplan</h1>
-      <p class="p-heading--4">
+      <p class="p-heading--four">
         The network configuration abstraction renderer
       </p>
       <p>Netplan is a utility for easily configuring networking on a linux system. You simply create a YAML description of the required network interfaces and what each should be configured to do. From this description Netplan will generate all the necessary configuration for your chosen renderer tool.</p>
     </div>
-    <div class="col-4 col-medium-2 u-align--center u-hidden--small">
+    <div class="col-4 u-align--center u-hidden--small">
       <img src="https://assets.ubuntu.com/v1/0fbee9c4-pictogram_internet01.svg?w=200" width="200" alt="" />
     </div>
   </div>
@@ -24,20 +24,20 @@ sitemap:
 
 <div id="how-does-it-work" class="p-strip--light is-bordered is-deep">
   <div class="row u-vertically-center">
-    <div class="col-8 col-medium-4">
+    <div class="col-8">
       <h2>How does it work?</h2>
       <p>Netplan reads network configuration from <code>/etc/netplan/*.yaml</code> which are written by administrators, installers, cloud image instantiations, or other OS deployments. During early boot, Netplan generates backend specific configuration files in <code>/run</code> to hand off control of devices to a particular networking daemon.</p>
       <p>Netplan currently works with these supported renderers</p>
       <ul class="p-list">
         <li class="p-list__item is-ticked">
-          <a href="https://help.ubuntu.com/community/NetworkManager">NetworkManager</a>
+          <a href="https://help.ubuntu.com/community/NetworkManager" class="p-link--external">NetworkManager</a>
         </li>
         <li class="p-list__item is-ticked">
-          <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html">Systemd-networkd</a>
+          <a href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html" class="p-link--external">Systemd-networkd</a>
         </li>
       </ul>
     </div>
-    <div class="col-4 col-medium-2 u-align--center u-hidden--small">
+    <div class="col-4 u-align--center u-hidden--small">
       <img src="https://assets.ubuntu.com/v1/a1a80854-netplan_design_overview.svg" width="300" alt="" />
     </div>
   </div>
@@ -50,7 +50,7 @@ sitemap:
     </div>
   </div>
   <div class="row">
-    <div class="col-6 col-medium-3">
+    <div class="col-6">
       <h3>Configuration</h3>
       <p>Obviously, without configuration, netplan will not do anything. The most useful configuration snippet (to bring up things via dhcp) is as follows:</p>
       <pre><code>network:
@@ -59,7 +59,7 @@ sitemap:
       <p>This will make NetworkManager manage all devices (and by default, any ethernet device will come up with DHCP once carrier is detected).</p>
       <p>Using networkd as a renderer does not let devices automatically come up using DHCP; each interface needs to be specified in a file in <code>/etc/netplan</code> for its configuration to be written and for it to be used in networkd.</p>
     </div>
-    <div class="col-6 col-medium-3">
+    <div class="col-6">
       <h3>Commands</h3>
       <p>Netplan uses a set of subcommands to drive its behavior:</p>
       <ul>
