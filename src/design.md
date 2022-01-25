@@ -110,26 +110,26 @@ network:
     # only referred to by other stanzas
     id0:
       match:
-      macaddress: 00:11:22:33:44:55
-    wakeonlan: true
-    dhcp4: true
-    addresses:
-      - 192.168.14.2/24
-      - 2001:1::1/64
-    lom:
-      # example for explicitly setting a backend (default would be networkd)
-      match:
-        driver: ixgbe
-      # you are responsible for setting tight enough match rules
-      # that only match one device if you use set-name
-      set-name: lom1
-      dhcp6: true
-    switchports:
-      # all cards on second PCI bus
-      # unconfigured by themselves will be added to br0 below
-      match:
-        name: enp2*
-      mtu: 1280
+        macaddress: 00:11:22:33:44:55
+      wakeonlan: true
+      dhcp4: true
+      addresses:
+        - 192.168.14.2/24
+        - 2001:1::1/64
+      lom:
+        # example for explicitly setting a backend (default would be networkd)
+        match:
+          driver: ixgbe
+        # you are responsible for setting tight enough match rules
+        # that only match one device if you use set-name
+        set-name: lom1
+        dhcp6: true
+      switchports:
+        # all cards on second PCI bus
+        # unconfigured by themselves will be added to br0 below
+        match:
+          name: enp2*
+        mtu: 1280
     wifis:
       all-wlans:
       # useful on a system where you know there is
