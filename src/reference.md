@@ -115,10 +115,10 @@ Virtual devices
      :   Device's MAC address in the form "XX:XX:XX:XX:XX:XX". Globs are not
          allowed.
 
-     ``driver`` (scalar)
+     ``driver`` (scalar or sequence of scalars) – sequence since **0.104**
      :   Kernel driver name, corresponding to the ``DRIVER`` udev property.
-         Globs are supported. Matching on driver is *only* supported with
-         networkd.
+         A sequence of globs is supported, any of which must match.
+         Matching on driver is *only* supported with networkd.
 
      Examples:
 
@@ -137,6 +137,12 @@ Virtual devices
             match:
               driver: ixgbe
               name: en*s0
+
+     - first card with a driver matching ``bcmgenet`` or ``smsc*``:
+
+            match:
+              driver: ["bcmgenet", "smsc*"]
+              name: en*
 
 ``set-name`` (scalar)
 
@@ -159,6 +165,48 @@ Virtual devices
 ``emit-lldp`` (bool) – since **0.99**
 
 :    (networkd backend only) Whether to emit LLDP packets. Off by default.
+
+``receive-checksum-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the hardware offload for
+     checksumming of ingress network packets is enabled. When unset,
+     the kernel's default will be used.
+
+``transmit-checksum-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the hardware offload for
+     checksumming of egress network packets is enabled. When unset,
+     the kernel's default will be used.
+
+``tcp-segmentation-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the TCP Segmentation
+     Offload (TSO) is enabled. When unset, the kernel's default will
+     be used.
+
+``tcp6-segmentation-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the TCP6 Segmentation
+     Offload (tx-tcp6-segmentation) is enabled. When unset, the
+     kernel's default will be used.
+
+``generic-segmentation-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the Generic Segmentation
+     Offload (GSO) is enabled. When unset, the kernel's default will
+     be used.
+
+``generic-receive-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the Generic Receive
+     Offload (GRO) is enabled. When unset, the kernel's default will
+     be used.
+
+``large-receive-offload`` (bool) – since **0.104**
+
+:    (networkd backend only) If set to true, the Generic Receive
+     Offload (GRO) is enabled. When unset, the kernel's default will
+     be used.
 
 ``openvswitch`` (mapping) – since **0.100**
 
@@ -295,6 +343,11 @@ Virtual devices
     Example to enable only IPv4 link-local: ``link-local: [ ipv4 ]``
     Example to enable all link-local addresses: ``link-local: [ ipv4, ipv6 ]``
     Example to disable all link-local addresses: ``link-local: [ ]``
+
+``ignore-carrier`` (bool) – since **0.104**
+
+:   (networkd backend only) Allow the specified interface to be configured even
+    if it has no carrier.
 
 ``critical`` (bool)
 
@@ -604,7 +657,11 @@ eth1:
 ``routes`` (mapping)
 
 :    The ``routes`` block defines standard static routes for an interface.
-     At least ``to`` and ``via`` must be specified.
+     At least ``to`` must be specified. If type is ``local`` or ``nat`` a
+     default scope of ``host`` is assumed.
+     If type is ``unicast`` and no gateway (``via``) is given or type is
+     ``broadcast``, ``multicast`` or ``anycast`` a default scope of ``link``
+     is assumend. Otherwise, a ``global`` scope is the default setting.
 
      For ``from``, ``to``, and ``via``, both IPv4 and IPv6 addresses are
      recognized, and must be in the form ``addr/prefixlen`` or ``addr``.
@@ -628,13 +685,13 @@ eth1:
      :    The relative priority of the route. Must be a positive integer value.
 
      ``type`` (scalar)
-     :    The type of route. Valid options are "unicast" (default),
-          "unreachable", "blackhole" or "prohibit".
+     :    The type of route. Valid options are "unicast" (default), "anycast",
+          "blackhole", "broadcast", "local", "multicast", "nat", "prohibit",
+          "throw", "unreachable" or "xresolve".
 
      ``scope`` (scalar)
      :    The route scope, how wide-ranging it is to the network. Possible
-          values are "global", "link", or "host". ``NetworkManager`` does
-          not support setting a scope.
+          values are "global", "link", or "host".
 
      ``table`` (scalar)
      :    The table number to use for the route. In some scenarios, it may be
@@ -775,6 +832,23 @@ Example:
      cases only.
 
      **Requires feature: sriov**
+
+``embedded-switch-mode`` (scalar) – since **0.104**
+
+:    (SR-IOV devices only) Change the operational mode of the embedded switch
+     of a supported SmartNIC PCI device (e.g. Mellanox ConnectX-5). Possible
+     values are ``switchdev`` or ``legacy``, if unspecified the vendor's
+     default configuration is used.
+
+     **Requires feature: eswitch-mode**
+
+``delay-virtual-functions-rebind`` (bool) – since **0.104**
+
+:    (SR-IOV devices only) Delay rebinding of SR-IOV virtual functions to its
+     driver after changing the embedded-switch-mode setting to a later stage.
+     Can be enabled when bonding/VF LAG is in use. Defaults to ``false``.
+
+     **Requires feature: eswitch-mode**
 
 ## Properties for device type ``modems:``
 GSM/CDMA modem configuration is only supported for the ``NetworkManager``
@@ -1178,7 +1252,7 @@ more general information about tunnels.
     :    The output key for the tunnel
 
     ``private`` (scalar) – since **0.100**
-    :    A base64-encoded private key required for Wireguard tunnels. When the
+    :    A base64-encoded private key required for WireGuard tunnels. When the
          ``systemd-networkd`` backend (v242+) is used, this can also be an
          absolute path to a file containing the private key.
 
@@ -1227,7 +1301,7 @@ Examples:
           private: /path/to/priv.key
 
 
-Wireguard specific keys:
+WireGuard specific keys:
 
 ``mark`` (scalar) – since **0.100**
 
@@ -1284,16 +1358,16 @@ Example:
 
 ``keys`` (mapping) – since **0.100**
 
-:   Define keys to use for the Wireguard peers.
+:   Define keys to use for the WireGuard peers.
 
     This field can be used as a mapping, where you can further specify the
     ``public`` and ``shared`` keys.
 
     ``public`` (scalar) – since **0.100**
-    :    A base64-encoded public key, required for Wireguard peers.
+    :    A base64-encoded public key, required for WireGuard peers.
 
     ``shared`` (scalar) – since **0.100**
-    :    A base64-encoded preshared key. Optional for Wireguard peers.
+    :    A base64-encoded preshared key. Optional for WireGuard peers.
          When the ``systemd-networkd`` backend (v242+) is used, this can
          also be an absolute path to a file containing the preshared key.
 
