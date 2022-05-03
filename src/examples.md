@@ -449,9 +449,7 @@ network:
     renderer: networkd
     ethernets:
         lo:
-            match:
-                name: lo
-            addresses: [ 7.7.7.7/32 ]
+            addresses: [ "127.0.0.1/8", "::1/128", "7.7.7.7/32" ]
 ```
 
 ## Integration with a Windows DHCP Server
