@@ -1,12 +1,10 @@
----
-layout: default
-desc: Netplan | Backend-agnostic network configuration in YAML
-sitemap:
-    priority: 1.0
-    changefreq: 'monthly'
-    lastmod: 2017-01-13T17:20:30+00:00
----
+{% extends 'base_layout.html' %}
 
+{% block title %}Netplan{% endblock %}
+
+{% block meta_description %}Backend-agnostic network configuration in YAML.{% endblock %}
+
+{% block content %}
 <div id="main-content" class="p-strip is-bordered is-deep">
   <div class="row">
     <div class="col-8 col-medium-4">
@@ -70,3 +68,4 @@ sitemap:
     </div>
   </div>
 </div>
+{% endblock content %}

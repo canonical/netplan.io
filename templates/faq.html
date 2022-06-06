@@ -1,0 +1,182 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}Netplan{% endblock %}
+
+{% block meta_description %}FAQ{% endblock %}
+
+{% block content %}
+<div class="p-strip--light is-bordered is-shallow">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="u-no-margin--bottom">Netplan frequently asked questions</h1>
+    </div>
+  </div>
+</div>
+<div class="p-strip">
+  <div class="row">
+    <div class="col-8 col-medium-4">
+
+      <h2 id="why-netplan">Why Netplan</h2>
+      <p>Using netplan gives a central location to describe simple-to-complex networking configurations that function from desktop to server and from cloud to IoT devices. Specifically, for systems with networkd, this relieves the user from having to configure up to three different files per device or configuration.</p>
+      <h2 id="apply-a-configuration">Apply a configuration</h2>
+      <p>Users should save configurations under <code>/etc/netplan</code> with a .yaml extension (e.g. <code>/etc/netplan/config.yaml</code>).</p>
+      <p>Then run <code>sudo netplan apply</code> and the configuration is parsed, written, and applied to the system. Since the file is written to disk the the configuration will persist between reboots.</p>
+      <h2 id="test-a-configuration">Test a configuration</h2>
+      <p>If a user wishes to verify that a configuration file is valid it is recommended to first pass the configuration through a YAML syntax validator. This is done to validate the syntactic validity of the file.</p>
+      <p>Next, a user can run <code>sudo netplan generate</code> to validate the configuration is correctly parsed by netplan and written to disk. However, be warned that once generated the new configuration is written to disk the configuration is activated on next boot. Therefore, backing up a current working configuration is highly recommended.</p>
+      <h2 id="hierarchy-of-configuration-files">Hierarchy of configuration files</h2>
+      <p>Configuration files can exist in three different locations with the precedence from most important to least as follows:</p>
+      <ul>
+      <li>/run/netplan/*.yaml</li>
+      <li>/etc/netplan/*.yaml</li>
+      <li>/lib/netplan/*.yaml</li>
+      </ul>
+      <p>Alphabetically later files, no matter what directory in, will amend keys if the key does not already exist and override previous keys if they do.</p>
+      <h2 id="bring-interfaces-up-or-down">Bring interfaces up or down</h2>
+      <p>Previously users were used to using the <code>ifconfig</code> command. Users should now familiarize themselves with the more powerful <code>ip</code> command. Manually modifying network devices is now accomplished via the ip command.</p>
+      <p>As an example to bring up an interface and bring it back down:</p>
+<pre><code>ip link set enp3s0 up
+ip link set enp3s0 down
+</code></pre>
+      <p>See <code>man ip</code> for more information on how to manipulate the state of routing, network devices, interfaces and tunnels.</p>
+      <h2 id="prevent-waiting-for-interface">Prevent waiting for interface</h2>
+      <p>Interfaces that are not required for booting or should not be waited on during boot should have the <code>optional: true</code> key added to them. This will prevent long delays in booting for interfaces that may not come up.</p>
+      <h2 id="get-the-current-system-address">Get the current system address</h2>
+      <p>Netplan is only meant to translate configuration into the appropriate files for the backend specified. It does not display IP information by itself, since it does not manage those by itself.</p>
+      <p>To get the most accurate state of the IP addresses for the system using the <code>ip addr</code> command.</p>
+      <h2 id="find-the-current-dns-servers">Find the current DNS servers</h2>
+      <p>To determine the current DNS servers used by the system run <code>systemd-resolve --status</code> and look for the &#39;DNS Servers:&#39; entry to see what DNS server is used.</p>
+      <h2 id="deconfigure-an-interface">Deconfigure an interface</h2>
+      <p>To deconfigure an interface, remove the configuration for the device from the netplan .yaml file and run <code>sudo netplan apply</code>.</p>
+      <p>If the interface is not configured in a .yaml file in <code>/etc/netplan</code>, it will not be configured at boot. To remove addresses manually, a user can run <code>ip address del &lt;address&gt; dev &lt;interface&gt;</code>.</p>
+      <h2 id="use-pre-up-post-up-etc-hook-scripts">Use pre-up, post-up, etc. hook scripts</h2>
+      <p>Users of ifupdown may be familiar with using hook scripts (e.g pre-up, post-up, etc.) in their interfaces file.  Netplan configuration does not currently support hook scripts in its configuration definition.</p>
+      <p>Instead to achieve this functionality with the networkd renderer users can use <a href="https://gitlab.com/craftyguy/networkd-dispatcher">networkd-dispatcher</a>. The package provides users and legacy packages hook points when specific network states are reached to aid in reacting to network state. Below is a table mapping networking states and hooks available:</p>
+      <table>
+      <thead>
+      <tr>
+      <th>Hook</th>
+      <th>ifupdown</th>
+      <th>networkd-dispatcher</th>
+      <th>NetworkManager</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>pre-up</td>
+      <td>if-pre-up.d</td>
+      <td></td>
+      <td>pre-up</td>
+      </tr>
+      <tr>
+      <td>configuring</td>
+      <td></td>
+      <td>configuring.d</td>
+      <td></td>
+      </tr>
+      <tr>
+      <td>configured</td>
+      <td></td>
+      <td>configured.d</td>
+      <td></td>
+      </tr>
+      <tr>
+      <td>up</td>
+      <td>if-up.d</td>
+      <td>routable.d</td>
+      <td>up</td>
+      </tr>
+      <tr>
+      <td>post-up</td>
+      <td>if-post-up.d</td>
+      <td>routable.d</td>
+      <td></td>
+      </tr>
+      <tr>
+      <td>degraded</td>
+      <td></td>
+      <td>degraded.d</td>
+      <td></td>
+      </tr>
+      <tr>
+      <td>pre-down</td>
+      <td>if-pre-down.d</td>
+      <td></td>
+      <td>pre-down</td>
+      </tr>
+      <tr>
+      <td>down</td>
+      <td>if-down.d</td>
+      <td>off.d</td>
+      <td>down</td>
+      </tr>
+      <tr>
+      <td>post-down</td>
+      <td>if-post-down.d</td>
+      <td>off.d</td>
+      <td></td>
+      </tr>
+      <tr>
+      <td>no-carrier</td>
+      <td></td>
+      <td>nocarrier.d</td>
+      </tr>
+      </tbody>
+      </table>
+      <p>Note that in networkd-dispatcher, the hooks run asychronous; that is they will not block transition into another state.</p>
+      <p>See the example below and <code>man networkd-dispatcher</code> for more information.</p>
+      <h2 id="example-for-an-ifupdown-legacy-hook-for-post-up-post-down-states">Example for an ifupdown legacy hook for post-up/post-down states</h2>
+      <p>The following is an example of using networkd-dispatcher to run existing ifup hooks via a script installed in <code>/etc/networkd-dispatcher/routable.d/50-ifup-hooks</code>:</p>
+<pre><code>#!/bin/sh
+for d in up post-up; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] &amp;&amp; /bin/run-parts $hookdir
+done
+exit 0
+</code></pre>
+      <p>Similarly, here is an example of an ifdown hook installed in <code>/etc/networkd-dispatcher/off.d/50-ifdown-hooks</code>:</p>
+<pre><code>#!/bin/sh
+for d in down post-down; do
+    hookdir=/etc/network/if-${d}.d
+    [ -e $hookdir ] &amp;&amp; /bin/run-parts $hookdir
+done
+exit 0
+</code></pre>
+      <h2 id="how-to-go-back-to-ifupdown">How to go back to ifupdown</h2>
+      <p>First, if netplan does not have the features or functionality for a particular use-case we would really like to know about it. Please help us and the community by filing a <a href="https://bugs.launchpad.net/netplan/+filebug">bug against netplan</a> on Launchpad.</p>
+      <p>On a running system, netplan can be removed by installing ifupdown, configuring <code>/etc/network/interfaces</code> manually as users have done before and finally removing the netplan.io package altogether. To apply the new setup without rebooting, users can restart the affected interfaces (i.e. using the <code>ifdown</code>/<code>ifup</code> commands) and then stop/disable the <code>systemd-networkd</code> and <code>systemd-networkd.socket</code> units respectively.</p>
+      <p>At install time, a user can opt to use ifupdown by preseeding <code>netcfg/do_not_use_netplan=true</code>. This is done by adding the preseed line to the command line when booting the installation media (i.e. at install media boot menu, press F6, type &#39;e&#39;, and add to the command line).</p>
+      <h2 id="something-went-wrong-what-do-i-do">Something went wrong, what do I do</h2>
+      <p>When debugging Netplan first verify the YAML used to setup the configuration. Review and collect all *.yaml files under <code>/lib/netplan/</code>, <code>/etc/netplan/</code>, and <code>/run/netplan/</code>. Ensure that the files are indeed accurately describing the expected configuration (e.g. correct adapter name, correct subnets, valid YAML).</p>
+      <p>Next, searching or asking a question on <a href="https://askubuntu.com/questions/tagged/netplan">Ask Ubuntu</a> for a variety of community support, ask on the networking sub-forum of the <a href="https://ubuntuforums.org/forumdisplay.php?f=336">Ubuntu Forums</a>, or stop by the #netplan IRC channel on <a href="https://libera.chat">Libera Chat</a> to ask questions.</p>
+      <p>Also available are a couple Ubuntu wiki pages that provide <a href="https://help.ubuntu.com/community/NetworkDevices">general Network help</a> and a page on how to capture <a href="https://wiki.ubuntu.com/DebuggingNetworkManager">Network Manager logs</a> to aid in filing a bug.</p>
+      <p>Finally, if there is a bug use the links at the bottom of the page to report a bug with Netplan.</p>
+      
+</div>
+  <div class="col-4 col-medium-2 u-hide--small">
+    <aside class="p-table-of-contents ">
+      <div class="p-table-of-contents__section">
+        <h4 class="p-table-of-contents__header">Table of contents</h4>
+        <nav class="p-table-of-contents__nav" aria-label="Table of contents">
+          <ul class="p-list">
+            <li><a class="p-table-of-contents__link" href="#why-netplan">Why Netplan</a></li>
+            <li><a class="p-table-of-contents__link" href="#apply-a-configuration">Apply a configuration</a></li>
+            <li><a class="p-table-of-contents__link" href="#test-a-configuration">Test a configuration</a></li>
+            <li><a class="p-table-of-contents__link" href="#hierarchy-of-configuration-files">Hierarchy of configuration files</a></li>
+            <li><a class="p-table-of-contents__link" href="#bring-interfaces-up-or-down">Bring interfaces up or down</a></li>
+            <li><a class="p-table-of-contents__link" href="#prevent-waiting-for-interface">Prevent waiting for interface</a></li>
+            <li><a class="p-table-of-contents__link" href="#get-the-current-system-address">Get the current system address</a></li>
+            <li><a class="p-table-of-contents__link" href="#find-the-current-dns-servers">Find the current DNS servers</a></li>
+            <li><a class="p-table-of-contents__link" href="#deconfigure-an-interface">Deconfigure an interface</a></li>
+            <li><a class="p-table-of-contents__link" href="#use-pre-up%2C-post-up%2C-etc.-hook-scripts">Use pre-up, post-up, etc. hook scripts</a></li>
+            <li><a class="p-table-of-contents__link" href="#example-for-an-ifupdown-legacy-hook-for-post-up%2Fpost-down-states">Example for an ifupdown legacy hook for post-up/post-down states</a></li>
+            <li><a class="p-table-of-contents__link" href="#how-to-go-back-to-ifupdown">How to go back to ifupdown</a></li>
+            <li><a class="p-table-of-contents__link" href="#something-went-wrong%2C-what-do-i-do">Something went wrong, what do I do</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+  </div>
+</div>
+</div>
+{% endblock content %}

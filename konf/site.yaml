@@ -2,8 +2,6 @@ domain: netplan.io
 
 image: prod-comms.docker-registry.canonical.com/netplan.io
 
-useProxy: false
-
 # Overrides for production
 production:
   replicas: 5

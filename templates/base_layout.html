@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <title>
+    {% block title %}Mir Server{% endblock %}
+  </title>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/cb22ba5d-favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png" sizes="32x32" />
+  <title>{% if title %}{{ title }}{% else %}Netplan | Backend-agnostic network configuration in YAML{% endif %}</title>
+
+  <meta name="description" content="{% block meta_description %}Netplan is a YAML network configuration abstraction for various backends. It allows for easily configuring networks by writing a YAML description of the configuration and translates it to the format for the chosen backend, avoiding you the need to learn multiple config syntaxes.{% endblock %}">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/static/css/main.css">
+
+  <meta name="copydoc" content="{% block meta_copydoc %}{% endblock %}">
+
+  {% if self.title() %}
+  <meta name="twitter:title" content="{{ self.title() }} | Netplan">
+  <meta property="og:title" content="{{ self.title() }} | Netplan">
+  {% endif %}
+
+  {% if self.meta_description() %}
+  <meta name="twitter:description" content="{{ self.meta_description() }}">
+  <meta property="og:description" content="{{ self.meta_description() }}">
+  {% endif %}
+
+  {% block head_extra %}{% endblock %}
+  <script src="/static/js/build/global-nav.js"></script>
+  <script src="/static/js/build/cookie-policy.js"></script>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M95NRRR"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {% include "header.html" %}
+    {% block content %}
+      {{ content | safe }}
+    {% endblock content %}
+    {% include "footer.html" %}
+    <script>
+      if (typeof cpNs !== "undefined") {
+        cpNs.cookiePolicy();
+      }
+      if (typeof canonicalGlobalNav !== "undefined") {
+        canonicalGlobalNav.createNav({maxWidth:"72rem"});
+      }
+    </script>
+  </body>
+</html>

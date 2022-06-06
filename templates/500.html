@@ -1,12 +1,8 @@
----
-layout: default
-desc: Internal server error - Netplan.io
-permalink: 500.html
-sitemap:
-    priority: 0.1
-    changefreq: 'monthly'
-    lastmod: 2017-08-02T17:20:30+00:00
----
+{% extends 'base_layout.html' %}
+
+{% block title %}500: Server error{% endblock %}
+
+{% block meta_description %}Something&rsquo;s gone wrong.{% endblock %}
 
 <div class="p-strip--light is-deep u-no-padding--bottom">
   <div class="row u-equal-height">
