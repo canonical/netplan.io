@@ -47,7 +47,7 @@
     "stylelint": "13.13.1",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
-    "vanilla-framework": "3.4.0",
+    "vanilla-framework": "3.5.0",
     "watch-cli-only": "0.2.4"
   }
 }
