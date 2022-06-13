@@ -1,0 +1,25 @@
+<header id="navigation" class="p-navigation">
+  <div class="p-navigation__row">
+    <div class="p-navigation__banner">
+      <div class="p-navigation__logo u-vertically-center">
+        <a class="p-navigation__item" href="/" style="color:white;">
+          Netplan
+        </a>
+      </div>
+      <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
+      <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
+    </div>
+    <nav class="p-navigation__nav">
+      <span class="u-off-screen">
+        <a href="#main-content">Jump to main content</a>
+      </span>
+      <ul class="p-navigation__items">
+        <li class="p-navigation__item{% if request.url == '/reference/' %} is-selected{% endif %}"><a href="/reference" class="p-navigation__link">Reference</a></li>
+        <li class="p-navigation__item{% if request.url == '/design/' %} is-selected{% endif %}"><a href="/design" class="p-navigation__link">Design</a></li>
+        <li class="p-navigation__item{% if request.url == '/examples/' %} is-selected{% endif %}"><a href="/examples" class="p-navigation__link">Examples</a></li>
+        <li class="p-navigation__item{% if request.url == '/faq/' %} is-selected{% endif %}"><a href="/faq" class="p-navigation__link">FAQ</a></li>
+        <li class="p-navigation__item{% if request.url == '/troubleshooting/' %} is-selected{% endif %}"><a href="/troubleshooting" class="p-navigation__link">Troubleshooting</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
