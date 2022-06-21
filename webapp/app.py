@@ -1,6 +1,8 @@
+import talisker
+from canonicalwebteam.discourse import DiscourseAPI, Docs, DocParser
 from canonicalwebteam.flask_base.app import FlaskBase
-from flask import render_template, make_response
 from canonicalwebteam.templatefinder import TemplateFinder
+from flask import render_template, make_response
 from datetime import datetime
 
 
@@ -13,6 +15,23 @@ app = FlaskBase(
     template_404="404.html",
     template_500="500.html",
 )
+
+
+# Discourse docs
+session = talisker.requests.get_session()
+
+discourse_docs = Docs(
+    parser=DocParser(
+        api=DiscourseAPI(
+            base_url="https://discourse.ubuntu.com/", session=session
+        ),
+        index_topic_id=29004,
+        url_prefix="/docs",
+    ),
+    document_template="docs/document.html",
+    url_prefix="/docs",
+)
+discourse_docs.init_app(app)
 
 
 @app.route("/sitemap.xml")
