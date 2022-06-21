@@ -18,14 +18,6 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(self.client.get("/").status_code, 200)
 
-    def test_reference(self):
-        """
-        When given the ubuntu-frame URL,
-        we should return a 200 status code
-        """
-
-        self.assertEqual(self.client.get("/reference").status_code, 200)
-
     def test_not_found(self):
         """
         When given a non-existent URL,

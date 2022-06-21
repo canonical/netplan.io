@@ -1,11 +1,9 @@
-import flask
-import requests
 import talisker
-from canonicalwebteam.discourse import ( DiscourseAPI, Docs, DocParser )
+from canonicalwebteam.discourse import DiscourseAPI, Docs, DocParser
 from canonicalwebteam.flask_base.app import FlaskBase
 from canonicalwebteam.search import build_search_view
 from canonicalwebteam.templatefinder import TemplateFinder
-from flask import render_template, make_response, request
+from flask import render_template, make_response
 from datetime import datetime
 
 
