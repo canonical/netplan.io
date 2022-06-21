@@ -1,7 +1,6 @@
-import talisker
+import talisker.requests
 from canonicalwebteam.discourse import DiscourseAPI, Docs, DocParser
 from canonicalwebteam.flask_base.app import FlaskBase
-from canonicalwebteam.search import build_search_view
 from canonicalwebteam.templatefinder import TemplateFinder
 from flask import render_template, make_response
 from datetime import datetime
@@ -33,16 +32,6 @@ discourse_docs = Docs(
     url_prefix="/docs",
 )
 discourse_docs.init_app(app)
-
-app.add_url_rule(
-    "/docs/search",
-    "docs-search",
-    build_search_view(
-        session=session,
-        site="netplan.io/docs",
-        template_path="docs/search.html",
-    ),
-)
 
 
 @app.route("/sitemap.xml")
