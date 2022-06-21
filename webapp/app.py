@@ -1,6 +1,11 @@
+import flask
+import requests
+import talisker
+from canonicalwebteam.discourse import ( DiscourseAPI, Docs, DocParser )
 from canonicalwebteam.flask_base.app import FlaskBase
-from flask import render_template, make_response
+from canonicalwebteam.search import build_search_view
 from canonicalwebteam.templatefinder import TemplateFinder
+from flask import render_template, make_response, request
 from datetime import datetime
 
 
@@ -12,6 +17,33 @@ app = FlaskBase(
     static_folder="../static",
     template_404="404.html",
     template_500="500.html",
+)
+
+
+# Discourse docs
+session = talisker.requests.get_session()
+
+discourse_docs = Docs(
+    parser=DocParser(
+        api=DiscourseAPI(
+            base_url="https://discourse.ubuntu.com/", session=session
+        ),
+        index_topic_id=29004,
+        url_prefix="/docs",
+    ),
+    document_template="docs/document.html",
+    url_prefix="/docs",
+)
+discourse_docs.init_app(app)
+
+app.add_url_rule(
+    "/docs/search",
+    "docs-search",
+    build_search_view(
+        session=session,
+        site="netplan.io/docs",
+        template_path="docs/search.html",
+    ),
 )
 
 
