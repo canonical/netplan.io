@@ -147,14 +147,16 @@
   ethernets:
     enp3s0:
       addresses:
-          - 10.100.1.38/24
-          - 10.100.1.39/24
+          - 10.100.1.37/24
+          - 10.100.1.38/24:
+              label: enp3s0:0
+          - 10.100.1.39/24:
+              label: enp3s0:some-label
       routes:
           - to: default
             via: 10.100.1.1
 </pre>
 
-      <p>Interface aliases (e.g. eth0:0) are not supported.</p>
       <h2 id="using-multiple-addresses-with-multiple-gateways">Using multiple addresses with multiple gateways</h2>
       <p>Similar to the example above, interfaces with multiple addresses can be
       configured with multiple gateways.</p>
