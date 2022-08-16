@@ -1,0 +1,24 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+{% block meta_description %}{{ description }}{% endblock meta_description %}
+
+{% block content %}
+<div class="p-strip--light is-bordered is-shallow">
+    <div class="u-fixed-width">
+        <h1 class="u-no-margin--bottom">{{ title }}</h1>
+    </div>
+</div>
+<div class="p-strip">
+    <div class="row">
+        <div class="col-8">
+            {{ content | safe }}
+        </div>
+        {% if toc %}
+        <div class="col-4 u-hide--small">
+            {{ toc | safe }}
+        </div>
+        {% endif %}
+  </div>
+</div>
+{% endblock content %}
