@@ -11,14 +11,37 @@
 </div>
 <div class="p-strip">
     <div class="row">
-        <div class="col-8">
+        <div id="content" class="col-8">
             {{ content | safe }}
         </div>
-        {% if toc %}
-        <div class="col-4 u-hide--small">
-            {{ toc | safe }}
+        <div class="col-4">
+            <aside class="p-table-of-contents">
+                <div class="p-table-of-contents__section">
+                    <h3 class="p-table-of-contents__header">Table of contents</h3>
+                    <nav class="p-table-of-contents__nav" id="toc"></nav>
+                </div>
+            </aside>
         </div>
-        {% endif %}
   </div>
 </div>
+<script>
+    const toc = document.querySelector('#toc');
+    const docContent = document.querySelector('#content')
+    if (toc) {
+        const titles = docContent.querySelectorAll('h1, h2, h3');
+        let tocList = '<ul class="p-list">';
+        titles.forEach((title) => {
+        let depth = 0;
+        if (title.localName === 'h3') {
+            depth = 1;
+        }
+        tocList += `<li>
+            <a href="#${title.id}" class="p-table-of-contents__link" style="margin-left: ${depth}rem;">
+                ${title.innerText}
+            </a>
+            </li>`;
+        });
+        toc.innerHTML = tocList;
+    }
+</script>
 {% endblock content %}

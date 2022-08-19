@@ -3,8 +3,6 @@ wrapper_template: "markdown.html"
 context:
   title: Netplan
   description: Reference
-markdown_includes:
-  toc: "reference-toc.html"
 ---
 
 ## Introduction
