@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <title>
-    {% block title %}Netplan{% endblock %}
+    {% block title %}{{ title }}{% endblock %}
   </title>
 
   <meta charset="utf-8">
@@ -32,14 +32,39 @@
   <script src="{{ versioned_static('js/build/cookie-policy.js') }}"></script>
 
   <body>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M95NRRR"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     {% include "header.html" %}
-    {% block content %}
-      {{ content | safe }}
-    {% endblock content %}
+    <div class="p-strip--light is-bordered is-shallow">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="u-no-margin--bottom">{{ title }}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="p-strip">
+      <div class="row">
+        <div class="col-8 col-medium-4" markdown="1">
+          {% block content %}
+            {{ content | safe }}
+          {% endblock content %}
+          <div class="p-top">
+            <a href="#" class="p-top__link">Back to top</a>
+          </div>
+        </div>
+        <div class="col-4 col-medium-2 u-hide--small">
+          <aside class="p-table-of-contents">
+            <div class="p-table-of-contents__section">
+              <h3 class="p-table-of-contents__header">Table of contents</h3>
+              <nav class="p-table-of-contents__nav" id="toc"></nav>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
     {% include "footer.html" %}
     <script>
       if (typeof cpNs !== "undefined") {
@@ -49,5 +74,26 @@
         canonicalGlobalNav.createNav({maxWidth:"72rem"});
       }
     </script>
+    <script>
+      const toc = document.querySelector('#toc');
+      const markdownContent = document.querySelector('[markdown="1"]');
+      if (toc) {
+        const titles = markdownContent.querySelectorAll('h1, h2, h3');
+        let tocList = '<ul class="p-list">';
+        titles.forEach((title) => {
+          let depth = 0;
+          if (title.localName === 'h3') {
+            depth = 1;
+          }
+          tocList += `<li>
+              <a href="#${title.id}" class="p-table-of-contents__link" style="margin-left: ${depth}rem;">
+                ${title.innerText}
+              </a>
+            </li>`;
+        });
+        toc.innerHTML = tocList;
+      }
+    </script>
+
   </body>
 </html>
