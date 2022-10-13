@@ -57,73 +57,40 @@ ip link set enp3s0 down
       <tr>
       <th>Hook</th>
       <th>ifupdown</th>
-      <th>networkd-dispatcher</th>
       <th>NetworkManager</th>
+      <th>networkd-dispatcher</th>
       </tr>
       </thead>
       <tbody>
       <tr>
       <td>pre-up</td>
       <td>if-pre-up.d</td>
-      <td></td>
-      <td>pre-up</td>
-      </tr>
-      <tr>
-      <td>configuring</td>
-      <td></td>
-      <td>configuring.d</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td>configured</td>
-      <td></td>
-      <td>configured.d</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td>up</td>
-      <td>if-up.d</td>
-      <td>routable.d</td>
-      <td>up</td>
+      <td>pre-up.d</td>
+      <td>no-carrier.d *<br/>dormant.d *<br/>carrier.d *<br/><strong>configuring.d *</strong></td>
       </tr>
       <tr>
       <td>post-up</td>
-      <td>if-post-up.d</td>
-      <td>routable.d</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td>degraded</td>
-      <td></td>
-      <td>degraded.d</td>
-      <td></td>
+      <td>if-up.d</td>
+      <td>up.d</td>
+      <td>degraded.d *<br/><strong>routable.d *</strong><br/>configured.d *</td>
       </tr>
       <tr>
       <td>pre-down</td>
-      <td>if-pre-down.d</td>
-      <td></td>
-      <td>pre-down</td>
-      </tr>
-      <tr>
-      <td>down</td>
       <td>if-down.d</td>
-      <td>off.d</td>
-      <td>down</td>
+      <td>pre-down.d</td>
+      <td>N/A **</td>
       </tr>
       <tr>
       <td>post-down</td>
       <td>if-post-down.d</td>
-      <td>off.d</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td>no-carrier</td>
-      <td></td>
-      <td>nocarrier.d</td>
+      <td>down.d</td>
+      <td>off.d *</td>
       </tr>
       </tbody>
       </table>
-      <p>Note that in networkd-dispatcher, the hooks run asychronous; that is they will not block transition into another state.</p>
+      <p>Note that systemd-networkd is tracking the “pre-up” and “post-up” states in finer granularity. It is recommended to make use of the “configuring.d” and “routable.d” hooks accordingly. A detailed definition of the other operational/setup states can be found at <a href="http://manpages.ubuntu.com/manpages/en/man1/networkctl.1.html">networkctl(1)</a>.</p>
+      <p>* In networkd-dispatcher, the hooks run asychronous; that is they will not block transition into another state.</p>
+      <p>** systemd-networkd does not keep an internal state, but uses the kernel’s internal netlink state. Therefore, it cannot know about a “pre-down” state, once netlink reports an interface to be down (i.e. “ip link set eth0 down”) the interface is considered off and the off.d hooks are triggered. There is not other information or D-Bus property available, other than the netlink state.</p>
       <p>See the example below and <code>man networkd-dispatcher</code> for more information.</p>
       <h2 id="example-for-an-ifupdown-legacy-hook-for-post-up-post-down-states">Example for an ifupdown legacy hook for post-up/post-down states</h2>
       <p>The following is an example of using networkd-dispatcher to run existing ifup hooks via a script installed in <code>/etc/networkd-dispatcher/routable.d/50-ifup-hooks</code>:</p>
