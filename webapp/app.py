@@ -35,12 +35,17 @@ def sitemap_links():
 
 @app.route("/reference")
 def reference():
-    return redirect("https://netplan.readthedocs.io/en/latest/netplan-yaml.html", code=302)
+    return redirect(
+        "https://netplan.readthedocs.io" "/en/latest/netplan-yaml.html",
+        code=302,
+    )
 
 
 @app.route("/examples")
 def examples():
-    return redirect("https://netplan.readthedocs.io/en/latest/examples.html", code=302)
+    return redirect(
+        "https://netplan.readthedocs.io" "/en/latest/examples.html", code=302
+    )
 
 
 @app.context_processor
