@@ -1,5 +1,5 @@
 {
-  "extends": "stylelint-config-standard",
+  "extends": "stylelint-config-standard-scss",
   "plugins": [
     "stylelint-order"
   ],
@@ -15,8 +15,10 @@
         "function",
         "if",
         "warn",
-        "return"
+        "return",
+        "postcss-html",
+        "no-invalid-position-at-import-rule"
         ]
-    } ],
+    }]
   }
 }
