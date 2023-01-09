@@ -1,5 +1,5 @@
 from canonicalwebteam.flask_base.app import FlaskBase
-from flask import render_template, make_response
+from flask import render_template, make_response, redirect
 from canonicalwebteam.templatefinder import TemplateFinder
 from datetime import datetime
 
@@ -31,6 +31,21 @@ def sitemap_links():
     response.headers["Content-Type"] = "application/xml"
 
     return response
+
+
+@app.route("/reference")
+def reference():
+    return redirect(
+        "https://netplan.readthedocs.io" "/en/latest/netplan-yaml.html",
+        code=302,
+    )
+
+
+@app.route("/examples")
+def examples():
+    return redirect(
+        "https://netplan.readthedocs.io" "/en/latest/examples.html", code=302
+    )
 
 
 @app.context_processor

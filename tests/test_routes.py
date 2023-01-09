@@ -18,13 +18,22 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(self.client.get("/").status_code, 200)
 
-    def test_reference(self):
+    def test_ubuntu_frame(self):
         """
         When given the ubuntu-frame URL,
         we should return a 200 status code
         """
 
-        self.assertEqual(self.client.get("/reference").status_code, 200)
+        self.assertEqual(self.client.get("/design").status_code, 200)
+
+    def test_redirect(self):
+        """
+        When given a legacy URL,
+        we should return a 302 status code
+        """
+
+        self.assertEqual(self.client.get("/reference").status_code, 302)
+        self.assertEqual(self.client.get("/examples").status_code, 302)
 
     def test_not_found(self):
         """
