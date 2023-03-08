@@ -33,7 +33,7 @@
   "homepage": "https://netplan.io",
   "dependencies": {
     "@canonical/cookie-policy": "3.4.0",
-    "@canonical/global-nav": "3.2.4",
+    "@canonical/global-nav": "3.2.3",
     "vanilla-framework": "3.12.1"
   },
   "devDependencies": {
