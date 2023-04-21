@@ -45,7 +45,7 @@ ip link set enp3s0 down
       <p>Netplan is only meant to translate configuration into the appropriate files for the backend specified. It does not display IP information by itself, since it does not manage those by itself.</p>
       <p>To get the most accurate state of the IP addresses for the system using the <code>ip addr</code> command.</p>
       <h2 id="find-the-current-dns-servers">Find the current DNS servers</h2>
-      <p>To determine the current DNS servers used by the system run <code>systemd-resolve --status</code> and look for the &#39;DNS Servers:&#39; entry to see what DNS server is used.</p>
+      <p>To determine the current DNS servers used by the system run <code>systemd-resolve --status</code> (or <code>resolvectl</code> in 18.04 and higher) and look for the &#39;DNS Servers:&#39; entry to see what DNS server is used.</p>
       <h2 id="deconfigure-an-interface">Deconfigure an interface</h2>
       <p>To deconfigure an interface, remove the configuration for the device from the netplan .yaml file and run <code>sudo netplan apply</code>.</p>
       <p>If the interface is not configured in a .yaml file in <code>/etc/netplan</code>, it will not be configured at boot. To remove addresses manually, a user can run <code>ip address del &lt;address&gt; dev &lt;interface&gt;</code>.</p>
