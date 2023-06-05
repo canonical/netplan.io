@@ -44,7 +44,7 @@ def reference():
 @app.route("/examples")
 def examples():
     return redirect(
-        "https://netplan.readthedocs.io" "/en/latest/examples", code=302
+        "https://github.com" "/canonical/netplan/tree/main/examples", code=302
     )
 
 
