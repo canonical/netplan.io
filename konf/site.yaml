@@ -1,6 +1,6 @@
 domain: netplan.io
 
-image: prod-comms.docker-registry.canonical.com/netplan.io
+image: prod-comms.ps5.docker-registry.canonical.com/netplan.io
 
 # Overrides for production
 production:
