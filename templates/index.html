@@ -50,12 +50,12 @@
   <div class="row">
     <div class="col-6 col-medium-3">
       <h3>Configuration</h3>
-      <p>Obviously, without configuration, netplan will not do anything. The most useful configuration snippet (to bring up things via dhcp) is as follows:</p>
+      <p>Without configuration, Netplan will not do anything. The simplest configuration snippet (to bring up things via DHCP on workstations) is as follows:</p>
       <pre><code>network:
   version: 2
   renderer: NetworkManager</code></pre>
-      <p>This will make NetworkManager manage all devices (and by default, any ethernet device will come up with DHCP once carrier is detected).</p>
-      <p>Using networkd as a renderer does not let devices automatically come up using DHCP; each interface needs to be specified in a file in <code>/etc/netplan</code> for its configuration to be written and for it to be used in networkd.</p>
+      <p>This will make Netplan hand over control to NetworkManager, which will manage all devices in its default way (i.e. any ethernet device will come up with DHCP once carrier is detected).</p>
+      <p>When individual interface configurations are given, it will not let devices automatically come up using DHCP, but each interface needs to be specified in a file in /etc/netplan/ with its explicit YAML settings for the networkd or NetworkManager backend renderers.</p>
     </div>
     <div class="col-6 col-medium-3">
       <h3>Commands</h3>
