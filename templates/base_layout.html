@@ -3,15 +3,31 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/16c27f81-COF%20favicon-16x16.png" sizes="16x16" />
-  <link rel="icon" type="image/png" href="https://assets.ubuntu.com/v1/be7e4cc6-COF-favicon-32x32.png" sizes="32x32" />
+  <link rel="apple-touch-icon"
+  sizes="180x180"
+  href="https://assets.ubuntu.com/v1/f38b9c7e-COF%20apple-touch-icon.png" />
+<link rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="https://assets.ubuntu.com/v1/be7e4cc6-COF-favicon-32x32.png" />
+<link rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="https://assets.ubuntu.com/v1/16c27f81-COF%20favicon-16x16.png" />
+<link rel="manifest"
+  href="{{ versioned_static("files/site.webmanifest") }}" />
+<!-- Serving favicon for search engines locally -->
+<link rel="icon"
+  type="image/png"
+  sizes="48x48"
+  href="{{ versioned_static("favicons/COF-favicon-48x48.png") }}" />
   <title>{% if title %}{{ title }}{% else %}Canonical Netplan{% endif %}</title>
 
   <meta name="description" content="{% block meta_description %}Netplan is a YAML network configuration abstraction for various backends. It allows for easily configuring networks by writing a YAML description of the configuration and translates it to the format for the chosen backend, avoiding you the need to learn multiple config syntaxes.{% endblock %}">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="{{ versioned_static('css/main.css') }}">
 
-  <meta name="copydoc" content="{% block meta_copydoc %}{% endblock %}">
+  <meta name="copydoc" content="{% block meta_copydoc %}{% endblock %}versioned_static">
 
   {% if self.title() %}
   <meta name="twitter:title" content="{{ self.title() }} | Canonical Netplan">
