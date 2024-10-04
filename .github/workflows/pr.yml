@@ -3,9 +3,9 @@ on: pull_request
 
 jobs:
   run-image:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build image
         run: DOCKER_BUILDKIT=1 docker build --tag netplan-io .
@@ -17,10 +17,10 @@ jobs:
           curl --head --fail --retry-delay 5 --retry 10 --retry-connrefused http://localhost
 
   run-dotrun:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install dotrun
         run: sudo pip3 install dotrun requests==2.31.0 
@@ -41,10 +41,10 @@ jobs:
           dotrun & curl --head --fail --retry-delay 1 --retry 30 --retry-connrefused http://localhost:8024
 
   lint-scss:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -53,10 +53,10 @@ jobs:
         run: yarn lint-scss
 
   lint-python:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install node dependencies
         run: yarn install --immutable
@@ -69,10 +69,10 @@ jobs:
         run: yarn lint-python
 
   test-python:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install requirements
         run: |
@@ -93,11 +93,11 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -cF python
 
   inclusive-naming-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: woke
         uses: canonical-web-and-design/inclusive-naming@main
