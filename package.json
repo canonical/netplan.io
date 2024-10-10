@@ -34,7 +34,7 @@
   "dependencies": {
     "@canonical/cookie-policy": "3.6.4",
     "@canonical/global-nav": "3.2.4",
-    "vanilla-framework": "3.14.0"
+    "vanilla-framework": "4.17.1"
   },
   "devDependencies": {
     "autoprefixer": "10.4.1",
