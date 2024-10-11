@@ -42,7 +42,11 @@
   {% block head_extra %}{% endblock %}
   <script src="{{ versioned_static('js/build/global-nav.js') }}"></script>
   <script src="{{ versioned_static('js/build/cookie-policy.js') }}"></script>
-
+  <script>
+    if (typeof cpNs !== "undefined") {
+      cpNs.cookiePolicy();
+    }
+  </script>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M95NRRR"
@@ -54,9 +58,6 @@
     {% endblock content %}
     {% include "footer.html" %}
     <script>
-      if (typeof cpNs !== "undefined") {
-        cpNs.cookiePolicy();
-      }
       if (typeof canonicalGlobalNav !== "undefined") {
         canonicalGlobalNav.createNav({breakpoint: 940});
       }
