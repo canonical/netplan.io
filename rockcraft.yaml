@@ -41,10 +41,6 @@ parts:  # you need to uncomment this line to add or update any part.
     after:
       - build-ui
     prime:
-      # by default, only the files in app/, templates/, static/, migrate, migrate.sh,
-      # migrate.py and app.py are copied into the image. You can modify the list
-      # below to override the default list and include or exclude specific
-      # files/directories in your project.
       # note: prefix each entry with "flask/app/" followed by the local path.
       - flask/app/.env
       - flask/app/app.py
