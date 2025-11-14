@@ -1,0 +1,53 @@
+# See https://documentation.ubuntu.com/rockcraft/en/1.15.0/reference/extensions/flask-framework
+# For questions or help, visit https://matrix.to/#/#12-factor-charms:ubuntu.com
+
+name: netplan-io
+# see https://documentation.ubuntu.com/rockcraft/en/1.15.0/explanation/bases/
+# for more information about bases and using 'bare' bases for chiselled rocks
+base: ubuntu@22.04 # the base environment for this Flask application
+version: "0.3" # just for humans. Semantic versioning is recommended
+summary: Netplan website https://netplan.io # 79 char long summary
+description: |
+  The documentation website for Netplan, a Linux network configuration utility that allows users to easily configure networking using YAML files, which are then translated into backend-specific configurations for NetworkManager or systemd-networkd. The site provides comprehensive guides, FAQs, troubleshooting resources, and design documentation for managing network interfaces on Ubuntu and other Linux systems.
+# the platforms this rock should be built on and run on.
+# you can check your architecture with `dpkg --print-architecture`
+platforms:
+  amd64:
+
+# to ensure the flask-framework extension works properly, your Flask application
+# should have an `app.py` file with an `app` object as the WSGI entrypoint.
+# a `requirements.txt` file with at least the flask package should also exist.
+# see https://documentation.ubuntu.com/rockcraft/en/1.15.0/reference/extensions/flask-framework
+# for more information.
+extensions:
+  - flask-framework
+# uncomment the sections you need and adjust according to your requirements.
+parts:  # you need to uncomment this line to add or update any part.
+  build-ui:
+    plugin: nil
+    source: .
+    source-type: local
+    build-snaps:
+      - node/22/stable
+    override-build: |
+      set -eux
+      npm install -g yarn
+      yarn install
+      yarn run build
+      mkdir -p "$CRAFT_PART_INSTALL/flask/app"
+      cp -r static "$CRAFT_PART_INSTALL/flask/app/"
+
+  flask-framework/install-app:
+    after:
+      - build-ui
+    prime:
+      # by default, only the files in app/, templates/, static/, migrate, migrate.sh,
+      # migrate.py and app.py are copied into the image. You can modify the list
+      # below to override the default list and include or exclude specific
+      # files/directories in your project.
+      # note: prefix each entry with "flask/app/" followed by the local path.
+      - flask/app/.env
+      - flask/app/app.py
+      - flask/app/webapp
+      - flask/app/templates
+      - flask/app/static

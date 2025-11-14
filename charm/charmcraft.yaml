@@ -1,0 +1,30 @@
+# This file configures Charmcraft.
+# See https://juju.is/docs/sdk/charmcraft-config for guidance.
+
+name: netplan-io-charm
+
+type: charm
+
+bases:
+  - build-on:
+    - name: ubuntu
+      channel: "22.04"
+    run-on:
+    - name: ubuntu
+      channel: "22.04"
+
+summary: Netplan website https://netplan.io
+
+# (Required)
+description: |
+  The documentation website for Netplan, a Linux network configuration utility that allows users to easily configure networking using YAML files, which are then translated into backend-specific configurations for NetworkManager or systemd-networkd. The site provides comprehensive guides, FAQs, troubleshooting resources, and design documentation for managing network interfaces on Ubuntu and other Linux systems.
+
+extensions:
+  - flask-framework
+
+# config:
+#   options:
+#     secret-key:
+#       type: string
+#       description: "The secret key used by the Flask application."
+#       default: "local_development_fake_key"
