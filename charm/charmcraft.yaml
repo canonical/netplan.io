@@ -1,7 +1,7 @@
 # This file configures Charmcraft.
 # See https://juju.is/docs/sdk/charmcraft-config for guidance.
 
-name: netplan-io-charm
+name: netplan-io
 
 type: charm
 
