@@ -114,9 +114,16 @@ jobs:
       - name: Deploy Application to staging
         run: |
           export JUJU_MODEL=admin/stg-staging-netplan-io
-          juju refresh netplan-io --path ./netplan-io_ubuntu-22.04-amd64.charm --resource flask-app-image=${{ needs.publish-image.outputs.image_url }}
+          if juju status --relations | grep -q "^netplan-io"; then
+            echo "Application 'netplan-io' exists. Running juju refresh..."
+            juju refresh netplan-io --path ./*.charm --resource flask-app-image=${{ needs.publish-image.outputs.image_url }}
+          else
+            echo "Application 'netplan-io' not found. Running juju deploy..."
+            juju deploy ./*.charm netplan-io --resource flask-app-image=${{ needs.publish-image.outputs.image_url }}
+          fi
           juju wait-for application netplan-io --query='name=="netplan-io" && (status=="active" || status=="idle")'
 
+# ./netplan-io_ubuntu-22.04-amd64.charm
   # deploy-production:
   #   runs-on: [self-hosted, self-hosted-linux-amd64-jammy-private-endpoint-medium]
   #   needs: [pack-charm, publish-image]
