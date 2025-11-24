@@ -15,7 +15,6 @@ bases:
 
 summary: Netplan website https://netplan.io
 
-# (Required)
 description: |
   The documentation website for Netplan, a Linux network configuration utility that allows users to easily configure networking using YAML files, which are then translated into backend-specific configurations for NetworkManager or systemd-networkd. The site provides comprehensive guides, FAQs, troubleshooting resources, and design documentation for managing network interfaces on Ubuntu and other Linux systems.
 
