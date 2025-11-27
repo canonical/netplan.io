@@ -4,10 +4,9 @@ image: prod-comms.ps5.docker-registry.canonical.com/netplan.io
 
 env:
   - name: COOKIE_SERVICE_API_KEY
-    valueFrom:
-      secretKeyRef:
-        key: cookies-api-key
-        name: cookies-canonical-com-credentials
+    secretKeyRef:
+      key: cookies-api-key
+      name: cookies-canonical-com-credentials
 
 # Overrides for production
 production:
