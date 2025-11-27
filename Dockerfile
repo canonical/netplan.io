@@ -43,7 +43,7 @@ COPY --from=python-dependencies /root/.local/bin /root/.local/bin
 
 # Import code, build assets
 COPY . .
-RUN rm -rf package.json yarn.lock .babelrc webpack.config.js requirements.txt
+RUN rm -rf package.json yarn.lock .babelrc webpack.config.js requirements.txt static/css static/js
 COPY --from=build-css /srv/static/css static/css
 COPY --from=build-js /srv/static/js static/js
 
