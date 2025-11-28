@@ -7,7 +7,7 @@ env:
     secretKeyRef:
       key: cookies-api-key
       name: cookies-canonical-com-credentials
-  
+
   - name: SECRET_KEY
     secretKeyRef:
       key: secret-key
