@@ -47,6 +47,16 @@ RUN rm -rf package.json yarn.lock .babelrc webpack.config.js requirements.txt
 COPY --from=build-css /srv/static/css static/css
 COPY --from=build-js /srv/static/js static/js
 
+# Add logging to show what versioned_static generates
+RUN echo "=== Testing versioned_static URL generation ===" && \
+    echo "import sys; sys.path.insert(0, '/srv')" > /tmp/test_static.py && \
+    echo "from webapp.app import app" >> /tmp/test_static.py && \
+    echo "with app.app_context():" >> /tmp/test_static.py && \
+    echo "    from flask import render_template_string" >> /tmp/test_static.py && \
+    echo "    result = render_template_string(\"{{ versioned_static('css/main.css') }}\")" >> /tmp/test_static.py && \
+    echo "    print(f'versioned_static result: {result}')" >> /tmp/test_static.py && \
+    SECRET_KEY=test COOKIE_SERVICE_API_KEY=test python3 /tmp/test_static.py || echo "Could not test versioned_static"
+
 # Set build ID
 ARG BUILD_ID
 ENV TALISKER_REVISION_ID "${BUILD_ID}"

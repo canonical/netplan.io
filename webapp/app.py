@@ -12,6 +12,7 @@ app = FlaskBase(
     "netplan.io",
     template_folder="../templates",
     static_folder="../static",
+    static_url_path="/static",
     template_404="404.html",
     template_500="500.html",
 )
