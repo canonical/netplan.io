@@ -16,15 +16,6 @@ production:
       rewrite ^ https://netplan.io$request_uri? permanent;
     }
     more_set_headers "Link: <https://assets.ubuntu.com>; rel=preconnect; crossorigin, <https://assets.ubuntu.com>; rel=preconnect";
-  nginxServerSnippet: |
-    # Serve static files directly from the container filesystem
-    # This prevents the static directory from being proxied to Flask
-    location /static/ {
-      alias /srv/static/;
-      expires 1y;
-      add_header Cache-Control "public, immutable";
-      try_files $uri =404;
-    }
 
 # Overrides for staging
 staging:
@@ -32,12 +23,3 @@ staging:
   nginxConfigurationSnippet: |
     more_set_headers "X-Robots-Tag: noindex";
     more_set_headers "Link: <https://assets.ubuntu.com>; rel=preconnect; crossorigin, <https://assets.ubuntu.com>; rel=preconnect";
-  nginxServerSnippet: |
-    # Serve static files directly from the container filesystem
-    # This prevents the static directory from being proxied to Flask
-    location /static/ {
-      alias /srv/static/;
-      expires 1y;
-      add_header Cache-Control "public, immutable";
-      try_files $uri =404;
-    }
