@@ -1,5 +1,5 @@
 setuptools==65.0.0
-canonicalwebteam.flask-base==2.1.0
+canonicalwebteam.flask-base==2.5.0
 canonicalwebteam.templatefinder==1.0.0
 canonicalwebteam.cookie-service==1.0.0
 vcrpy-unittest==0.1.7
