@@ -1,4 +1,7 @@
-canonicalwebteam.flask-base==1.1.0
+
+canonicalwebteam.flask-base==2.1.0
 canonicalwebteam.templatefinder==1.0.0
-canonicalwebteam.versioned-static==1.0.2
+canonicalwebteam.cookie-service==1.0.0
 vcrpy-unittest==0.1.7
+Flask-Caching==2.1.0
+blinker>=1.6.2
