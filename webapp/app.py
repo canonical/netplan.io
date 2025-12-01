@@ -45,55 +45,9 @@ cookie_service = CookieConsent().init_app(
     get_cache_func=get_cache,
     set_cache_func=set_cache,
     start_health_check=True,
-    auto_register_hooks=False,
+    auto_register_hooks=True,
 )
 
-@app.before_request
-def my_before_request():
-    """
-    Before request hook that checks for user session
-    and redirects to cookie service if needed.
-    """
-    # Check health, set flag, and stop processing if service is down
-    # Uses flask.g so it resets on every request
-    if cookie_service.client.is_service_up():
-        g.cookies_service_up = True
-    else:
-        return None
-
-    # Check if we have already redirected to create session
-    if request.cookies.get("_cookies_redirect_completed") is not None:
-        return
-
-    # Perform session check and and create redirect if needed
-    # response = check_session_and_redirect()
-
-    if "user_uuid" in session:
-        return False
-
-    service_url = app.config["CENTRAL_COOKIE_SERVICE_URL"]
-    params = urlencode({"return_uri": request.url})
-    redirect_url = (
-        f"{service_url}/api/v1/cookies/session?{params}"
-    )
-
-    response = redirect(redirect_url)
-    
-    # If we got a response (redirect), set flag cookie for this session
-    if response:
-            response.set_cookie(
-                "_cookies_redirect_completed",
-                "true",
-                samesite="Lax",
-                secure=True,
-            )
-    return response
-
-@app.after_request
-def my_after_request(response):
-    # Your custom logic here
-    response = sync_preferences_cookie(response)
-    return response
 
 @app.route("/sitemap.xml")
 def sitemap_index():
