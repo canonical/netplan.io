@@ -102,10 +102,10 @@
   resolved "https://registry.yarnpkg.com/@canonical/cookie-policy/-/cookie-policy-3.4.0.tgz#0d6708da340df5867fd2cc9dbd95538c46f20cf8"
   integrity sha512-cdVqxQmGu+j+Q86UobihWWVFzGzHlekFeMFxlbRpm+yqxEOUCrLkA9/t/RsMfLNDToP2ECPgsMbS20aPlA2tIg==
 
-"@canonical/cookie-policy@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@canonical/cookie-policy/-/cookie-policy-3.8.0.tgz#8f20b5d6d0c2e5553bbe05d1513f7f1af7d0836c"
-  integrity sha512-njUYf10gFmuXr47Aj5jayuFbyq08IkBdr/W6qtvHjZvJ8Dt4ru9ehMacWa4mostfQoXVARusIucOARSgnMoArg==
+"@canonical/cookie-policy@3.8.4":
+  version "3.8.4"
+  resolved "https://registry.yarnpkg.com/@canonical/cookie-policy/-/cookie-policy-3.8.4.tgz#38fd82f35d98ab0476bc106b0d813a2719bae26c"
+  integrity sha512-mCPcaqscSt/6gbT9Pmf/VDhTmyGC192xz7N+xLs18hpJuFSrNK44vT9jGwnOS5WsdDW2B7tRc78KioTtATPk2g==
 
 "@canonical/global-nav@3.2.4":
   version "3.2.4"

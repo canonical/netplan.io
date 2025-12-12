@@ -1,8 +1,7 @@
-from urllib.parse import urlencode
 from canonicalwebteam.flask_base.app import FlaskBase
-from flask import render_template, make_response, redirect, g, request, session
+from flask import render_template, make_response, redirect
 from canonicalwebteam.templatefinder import TemplateFinder
-from canonicalwebteam.cookie_service import CookieConsent, check_session_and_redirect, sync_preferences_cookie
+from canonicalwebteam.cookie_service import CookieConsent
 from datetime import datetime, timedelta
 from flask_caching import Cache
 
