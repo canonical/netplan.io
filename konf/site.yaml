@@ -2,6 +2,17 @@ domain: netplan.io
 
 image: prod-comms.ps5.docker-registry.canonical.com/netplan.io
 
+env:
+  - name: COOKIE_SERVICE_API_KEY
+    secretKeyRef:
+      key: cookies-api-key
+      name: cookies-canonical-com-credentials
+
+  - name: SECRET_KEY
+    secretKeyRef:
+      key: netplan-io
+      name: secret-keys
+
 # Overrides for production
 production:
   replicas: 5
@@ -17,3 +28,4 @@ staging:
   nginxConfigurationSnippet: |
     more_set_headers "X-Robots-Tag: noindex";
     more_set_headers "Link: <https://assets.ubuntu.com>; rel=preconnect; crossorigin, <https://assets.ubuntu.com>; rel=preconnect";
+
