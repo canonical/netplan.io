@@ -57,5 +57,6 @@
     "stylelint-config-standard-scss": "^6.1.0",
     "stylelint-order": "5.0.0",
     "watch-cli": "0.2.3"
-  }
+  },
+  "version": "0.0.0"
 }
