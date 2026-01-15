@@ -25,4 +25,4 @@ config:
   options:
     cookies-service:
       type: secret
-      description: "Cookies service credentials, must contain (api-key)
+      description: Cookies service credentials, must contain (api-key)
