@@ -21,9 +21,8 @@ description: |
 extensions:
   - flask-framework
 
-# config:
-#   options:
-#     secret-key:
-#       type: string
-#       description: "The secret key used by the Flask application."
-#       default: "local_development_fake_key"
+config:
+  options:
+    cookies-service:
+      type: secret
+      description: "Cookies service credentials, must contain (api-key)
