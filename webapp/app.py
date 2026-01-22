@@ -19,6 +19,7 @@ app = FlaskBase(
 
 
 # Configuration for shared cookie service
+app.config["CENTRAL_COOKIE_SERVICE_URL"] = "https://cookies.staging.canonical.com"
 
 # Initialize Flask-Caching
 app.config["CACHE_TYPE"] = "SimpleCache"
