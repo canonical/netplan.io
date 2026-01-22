@@ -32,7 +32,7 @@
   },
   "homepage": "https://netplan.io",
   "dependencies": {
-    "@canonical/cookie-policy": "3.8.4",
+    "@canonical/cookie-policy": "https://github.com/canonical/cookie-policy.git#initialize-shared-cookies-on-client",
     "@canonical/global-nav": "3.2.4",
     "vanilla-framework": "3.14.0"
   },
@@ -57,6 +57,5 @@
     "stylelint-config-standard-scss": "^6.1.0",
     "stylelint-order": "5.0.0",
     "watch-cli": "0.2.3"
-  },
-  "version": "0.0.0"
+  }
 }
