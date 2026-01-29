@@ -1,4 +1,3 @@
-import os
 from canonicalwebteam.flask_base.app import FlaskBase
 from flask import render_template, make_response, redirect
 from canonicalwebteam.templatefinder import TemplateFinder
@@ -19,7 +18,9 @@ app = FlaskBase(
 
 
 # Configuration for shared cookie service
-app.config["CENTRAL_COOKIE_SERVICE_URL"] = "https://cookies.staging.canonical.com"
+app.config["CENTRAL_COOKIE_SERVICE_URL"] = (
+    "https://cookies.staging.canonical.com"
+)
 
 # Initialize Flask-Caching
 app.config["CACHE_TYPE"] = "SimpleCache"
