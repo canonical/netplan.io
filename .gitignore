@@ -64,3 +64,5 @@ env[23]/
 js/app.js.map
 css
 src/js/build
+
+*.rock
