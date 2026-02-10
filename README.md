@@ -5,21 +5,50 @@ This is the repo for the Netplan site
 
 ## Local development
 
-The simplest way to run the site locally is to first [install Docker](https://docs.docker.com/engine/installation/) (on Linux you may need to [add your user to the `docker` group](https://docs.docker.com/engine/installation/linux/linux-postinstall/)), and then use the `./run` script:
+### Using Task (Recommended)
 
-``` bash
+The recommended way to run the site locally uses [Task](https://taskfile.dev/) for dependency management and task automation.
+
+**Prerequisites:**
+- [Task](https://taskfile.dev/installation/) installed
+- [mise](https://mise.jup.re/getting-started.html) installed (for managing Python and Node versions)
+- Python 3.10+ and Node.js 20+ (mise will install these automatically)
+
+**Setup and run:**
+
+```bash
+# Install dependencies (Python packages and Node modules)
+task install
+
+# Start the development server with watch mode
+task start
+```
+
+This will build the CSS/JS and start the Flask server at http://127.0.0.1:8024. Changes to Sass/JS files will automatically rebuild.
+
+**Useful tasks:**
+- `task build` - Build CSS and JavaScript assets
+- `task watch` - Watch for file changes and rebuild assets (run in separate terminal)
+- `task serve` - Run the Flask server only
+- `task test` - Run all tests
+- `task lint` - Run linters (Python, JS, SCSS)
+- `task format` - Format Python code
+- `task clean` - Remove build artifacts and dependencies
+- `task clean-all` - Complete environment reset
+
+### Using Docker (Alternative)
+
+For Docker-based development, use the `./run` script:
+
+```bash
 ./run
 ```
 
 Once the containers are setup, you can visit <http://127.0.0.1:8024> in your browser.
 
-### Building CSS
+To watch for changes and rebuild CSS:
 
-For working on [Sass files](sass), you may want to dynamically watch for changes to rebuild the CSS whenever something changes.
-
-To setup the watcher, open a new terminal window and run:
-
-``` bash
+```bash
 ./run watch
 ```
 
