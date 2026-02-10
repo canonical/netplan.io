@@ -5,7 +5,6 @@ from canonicalwebteam.cookie_service import CookieConsent
 from datetime import datetime, timedelta
 from flask_caching import Cache
 
-
 # Rename your project below
 app = FlaskBase(
     __name__,
