@@ -1,0 +1,182 @@
+version: "3"
+
+vars:
+  VENV_DIR: .venv
+  VENV_BIN: "{{ .VENV_DIR }}/bin"
+  PYTHON_BIN: "{{ .VENV_BIN }}/python3"
+  PIP_BIN: "{{ .VENV_BIN }}/pip3"
+
+env:
+  PORT: 8024
+  PYTHON_VERSION: "3.10"
+  NODE_VERSION: "20"
+  PATH: "{{ .VENV_BIN }}:$PATH"
+
+dotenv: [".env.local", ".env"]
+
+# Available tasks:
+# - start (default)
+# - install
+# - build
+# - watch
+# - serve
+# - test
+# - lint
+# - format
+# - clean
+# - shell
+tasks:
+  default:
+    cmds:
+      - task: start
+
+  start:
+    desc: "Start the project with watch and live reload"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn start
+
+  install:
+    desc: "Install Python and Node.js dependencies"
+    deps:
+      - install-python
+      - install-yarn
+    cmds:
+      - echo "Installation complete"
+
+  build:
+    desc: "Build the project static files (CSS and JS)"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn build
+
+  watch:
+    desc: "Watch for file changes and rebuild assets"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn watch
+
+  serve:
+    desc: "Run the Flask development server"
+    deps:
+      - build
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn serve
+
+  test:
+    desc: "Run all project tests"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" python3 -m unittest discover tests
+
+  lint:
+    desc: "Run all project linting"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn lint-python
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn lint-js
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn lint-scss
+
+  format:
+    desc: "Format Python code with black"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" yarn format-python
+
+  clean:
+    desc: "Remove build artifacts, dependencies, and caches"
+    cmds:
+      - rm -rf static/css static/js/dist node_modules {{ .VENV_DIR }} .task
+      - find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+      - find . -type f -name "*.pyc" -delete
+      - find . -type f -name "*.pyo" -delete
+      - rm -rf .pytest_cache .coverage htmlcov
+
+  clean-all:
+    desc: "Complete reset - remove all build artifacts, dependencies, caches, and environment files"
+    cmds:
+      - task: clean
+      - rm -rf .env.local .venv_cache pip-cache yarn-cache
+      - rm -rf .task
+      - echo "Development environment completely cleaned"
+
+  shell:
+    desc: "Open a shell with the virtual environment activated"
+    deps:
+      - install
+    cmds:
+      - PATH="{{ .VENV_BIN }}:$PATH" $SHELL
+
+  # Version management setup (uses mise)
+  setup-mise:
+    internal: true
+    desc: "Setup mise for version management"
+    preconditions:
+      - which curl
+    status:
+      - ! which mise
+    cmds:
+      - curl https://mise.run | sh
+
+  setup-python:
+    internal: true
+    deps:
+      - setup-mise
+    cmds:
+      - mise install python@{{ .PYTHON_VERSION }}
+      - mise use python@{{ .PYTHON_VERSION }}
+
+  setup-node:
+    internal: true
+    deps:
+      - setup-mise
+    cmds:
+      - mise install node@{{ .NODE_VERSION }}
+      - mise use node@{{ .NODE_VERSION }}
+
+  # Python virtual environment setup
+  venv:
+    internal: true
+    desc: "Setup Python virtual environment"
+    deps:
+      - setup-python
+    status:
+      - test -f {{ .PYTHON_BIN }}
+    cmds:
+      - mise exec python@{{ .PYTHON_VERSION }} -- python3 -m venv .venv
+      - echo "Using Python $({{ .PYTHON_BIN }} --version)"
+
+  install-python:
+    internal: true
+    desc: "Install Python dependencies from requirements.txt"
+    deps:
+      - venv
+    sources:
+      - requirements.txt
+    generates:
+      - "{{ .VENV_DIR }}/*"
+    cmds:
+      - "{{ .PIP_BIN }} install -r requirements.txt"
+
+  # Node.js dependency installation
+  install-yarn:
+    internal: true
+    desc: "Install Node.js dependencies with Yarn"
+    deps:
+      - setup-node
+    status:
+      - which yarn
+      - which node
+    sources:
+      - yarn.lock
+      - package.json
+    generates:
+      - "node_modules/**"
+    cmds:
+      - yarn install
