@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dotrun
-        run: sudo pip3 install -y dotrun requests==2.31.0 
+        run: sudo pip3 install dotrun requests==2.31.0 
       
       - name: Install node dependencies
         run: |
