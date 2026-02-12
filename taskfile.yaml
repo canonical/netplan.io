@@ -159,8 +159,8 @@ tasks:
       - venv
     sources:
       - requirements.txt
-    generates:
-      - "{{ .VENV_DIR }}/*"
+    status:
+      - "{{ .PYTHON_BIN }} -c 'import canonicalwebteam'"
     cmds:
       - "{{ .PIP_BIN }} install -r requirements.txt"
 
