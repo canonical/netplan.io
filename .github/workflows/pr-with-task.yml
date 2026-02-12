@@ -1,6 +1,5 @@
 name: PR checks with taskfile
 on:
-  push:
   pull_request:
 
 jobs:
