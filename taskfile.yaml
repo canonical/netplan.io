@@ -10,7 +10,8 @@ env:
   PORT: 8024
   PYTHON_VERSION: "3.10"
   NODE_VERSION: "20"
-  PATH: "{{ .VENV_BIN }}:$PATH"
+  MISE_TRUST: "1"
+  PATH: "$HOME/.local/bin:{{ .VENV_BIN }}:$PATH"
 
 dotenv: [".env.local", ".env"]
 
