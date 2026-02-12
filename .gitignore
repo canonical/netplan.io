@@ -68,3 +68,4 @@ src/js/build
 *.rock
 
 mise.toml
+.mise.toml
