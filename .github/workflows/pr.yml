@@ -19,6 +19,8 @@ jobs:
 
   run-dotrun:
     runs-on: ubuntu-22.04
+    env:
+      MISE_YES: 1
 
     steps:
       - uses: actions/checkout@v4
