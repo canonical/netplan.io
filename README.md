@@ -11,14 +11,12 @@ The recommended way to run the site locally uses [Task](https://taskfile.dev/) f
 
 **Prerequisites:**
 - [Task](https://taskfile.dev/installation/) installed
-- [mise](https://mise.jup.re/getting-started.html) installed (for managing Python and Node versions)
-- Python 3.10+ and Node.js 20+ (mise will install these automatically)
 
 **Setup and run:**
 
 ```bash
-# Install dependencies (Python packages and Node modules)
-task install
+# install Task
+sudo snap install task --classic
 
 # Start the development server with watch mode
 task start
@@ -38,19 +36,16 @@ This will build the CSS/JS and start the Flask server at http://127.0.0.1:8024. 
 
 ### Using Docker (Alternative)
 
-For Docker-based development, use the `./run` script:
+**Prerequisites:**
+- [dotrun](https://github.com/canonical/dotrun/) installed
+
 
 ```bash
-./run
+# at project root
+dotrun
 ```
 
 Once the containers are setup, you can visit <http://127.0.0.1:8024> in your browser.
-
-To watch for changes and rebuild CSS:
-
-```bash
-./run watch
-```
 
 # Deploy
 You can find the deployment config in the deploy folder.
