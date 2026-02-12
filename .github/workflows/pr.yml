@@ -29,11 +29,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo chmod -R 777 .
-          dotrun --env MISE_YES=1 install
+          dotrun install
 
       - name: Build assets and run dotrun
         run: |
-          dotrun --env MISE_YES=1 & sleep 5
+          dotrun & sleep 5
           curl --head --fail --retry-delay 2 --retry 30 --retry-connrefused http://localhost:8024
 
 
