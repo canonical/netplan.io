@@ -15,17 +15,6 @@ env:
 
 dotenv: [".env.local", ".env"]
 
-# Available tasks:
-# - start (default)
-# - install
-# - build
-# - watch
-# - serve
-# - test
-# - lint
-# - format
-# - clean
-# - shell
 tasks:
   default:
     cmds:
