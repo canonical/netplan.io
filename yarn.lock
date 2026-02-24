@@ -102,9 +102,10 @@
   resolved "https://registry.yarnpkg.com/@canonical/cookie-policy/-/cookie-policy-3.4.0.tgz#0d6708da340df5867fd2cc9dbd95538c46f20cf8"
   integrity sha512-cdVqxQmGu+j+Q86UobihWWVFzGzHlekFeMFxlbRpm+yqxEOUCrLkA9/t/RsMfLNDToP2ECPgsMbS20aPlA2tIg==
 
-"@canonical/cookie-policy@https://github.com/canonical/cookie-policy.git#initialize-shared-cookies-on-client":
+"@canonical/cookie-policy@3.9.0":
   version "3.9.0"
-  resolved "https://github.com/canonical/cookie-policy.git#655adc5b3e36a8a2737e3366bb402e384034e2b5"
+  resolved "https://registry.yarnpkg.com/@canonical/cookie-policy/-/cookie-policy-3.9.0.tgz#8fa2a24f2b884a8f9221f062b2495c2e81a94c5c"
+  integrity sha512-ql3eO/SQD+x9tO+PqPR2CFKAoleHUvi3j0oxkbSjKZ3d2Ddzu05YA/fq40QiojDc7tT/64GoIzSi29n6Nwjtng==
 
 "@canonical/global-nav@3.2.4":
   version "3.2.4"

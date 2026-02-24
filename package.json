@@ -32,7 +32,7 @@
   },
   "homepage": "https://netplan.io",
   "dependencies": {
-    "@canonical/cookie-policy": "https://github.com/canonical/cookie-policy.git#initialize-shared-cookies-on-client",
+    "@canonical/cookie-policy": "3.9.0",
     "@canonical/global-nav": "3.2.4",
     "vanilla-framework": "3.14.0"
   },
