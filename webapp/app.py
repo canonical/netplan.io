@@ -2,7 +2,7 @@ from canonicalwebteam.flask_base.app import FlaskBase
 from flask import render_template, make_response, redirect
 from canonicalwebteam.templatefinder import TemplateFinder
 from canonicalwebteam.cookie_service import CookieConsent
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask_caching import Cache
 
 # Rename your project below
@@ -17,14 +17,6 @@ app = FlaskBase(
 
 
 # Configuration for shared cookie service
-
-# Configure Flask session
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=365)
-app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SECURE"] = True
-
-# Initialize Flask-Caching
 app.config["CACHE_TYPE"] = "SimpleCache"
 cache = Cache(app)
 
@@ -43,7 +35,6 @@ cookie_service = CookieConsent().init_app(
     get_cache_func=get_cache,
     set_cache_func=set_cache,
     start_health_check=True,
-    auto_register_hooks=True,
 )
 
 
