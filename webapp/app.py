@@ -1,7 +1,8 @@
 from canonicalwebteam.flask_base.app import FlaskBase
 from flask import render_template, make_response, redirect
 from canonicalwebteam.templatefinder import TemplateFinder
-from canonicalwebteam.cookie_service import CookieConsent
+
+# from canonicalwebteam.cookie_service import CookieConsent
 from datetime import datetime
 from flask_caching import Cache
 
@@ -30,12 +31,12 @@ def set_cache(key, value, timeout):
     cache.set(key, value, timeout)
 
 
-cookie_service = CookieConsent().init_app(
-    app,
-    get_cache_func=get_cache,
-    set_cache_func=set_cache,
-    start_health_check=True,
-)
+# cookie_service = CookieConsent().init_app(
+#     app,
+#     get_cache_func=get_cache,
+#     set_cache_func=set_cache,
+#     start_health_check=True,
+# )
 
 
 @app.route("/sitemap.xml")
