@@ -7,7 +7,7 @@ jobs:
     name: "Start Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
@@ -44,7 +44,7 @@ jobs:
     name: "Build Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
@@ -58,7 +58,7 @@ jobs:
     name: "Test Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
@@ -72,7 +72,7 @@ jobs:
     name: "Lint Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
@@ -86,7 +86,7 @@ jobs:
     name: "Install Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
@@ -100,7 +100,7 @@ jobs:
     name: "Format Project"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Taskfile
         uses: arduino/setup-task@v2
