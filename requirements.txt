@@ -1,4 +1,4 @@
-setuptools==65.0.0
+setuptools==78.1.1
 canonicalwebteam.flask-base==2.6.1
 canonicalwebteam.templatefinder==1.0.0
 canonicalwebteam.cookie-service==2.0.1
