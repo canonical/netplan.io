@@ -6,4 +6,4 @@ vcrpy-unittest==0.1.7
 Flask-Caching==2.1.0
 blinker>=1.6.2
 flake8>=5.0.0
-black==25.1.0
+black==26.3.1
